@@ -30,7 +30,16 @@
             >
                 <button
                 >
-                    B
+                    Start
+                </button>
+            </form>
+            <form
+            method="POST"
+            action=?/pauseTime
+            >
+                <button
+                >
+                    Pause
                 </button>
             </form>
         </div>
