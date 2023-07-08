@@ -7,6 +7,7 @@
     export let data: PageData
     export let form: ActionData
 
+    let mouseHasMoved: number = 0;
     let loading: boolean = false;
     let loadingDelayIsActive: boolean = true;
     let loadingIcon: HTMLElement;
@@ -18,7 +19,6 @@
     function handleMouseMove(event: MouseEvent) {
         m.x = event.clientX;
         m.y = event.clientY;
-        loadingIcon.style.position = "absolute";
     }
 
     // used to show loading spinner if it takes more than 150 ms for update
@@ -50,9 +50,15 @@
 
     // moves loading spinner to cursor's position
     function loadingElementToCursor() {
-        loadingIcon.style.top = m.y - 20 + 'px';
-        loadingIcon.style.left = m.x - 20 + 'px';
-        console.log('we are inside of the if condition');
+        if (mouseHasMoved > 1) {
+            loadingIcon.style.top = m.y - 20 + 'px';
+            loadingIcon.style.left = m.x - 20 + 'px';
+        }
+        else if (mouseHasMoved === 1) {
+            loadingIcon.style.margin = '0px';
+            loadingIcon.style.position = "absolute";  
+        }
+        mouseHasMoved++;
     }
 
     afterUpdate(() => {
@@ -70,7 +76,7 @@
 <div class="background">
     <h1>Welcome to SvelteKit</h1>
     <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-    <div class="timer">
+    <div class="timer center">
         <h2>Timer</h2>
         <p class="numbersTime">13:45<p>
         <div class="buttons">
@@ -99,6 +105,7 @@
 
     <div 
     id={loading === true ? "loadingIcon" : "noID"}
+    class="center"
     bind:this={loadingIcon}
     />
     <p>{m.x}, {m.y}</p>
@@ -118,6 +125,10 @@
     * {
         box-sizing: border-box;
     }
+    .center {
+        justify-content: center;
+        text-align: center;
+    }
     .background {
         height: 100%;
         width: 100%;
@@ -126,13 +137,15 @@
     .timer {
         justify-content: center;
         text-align: center;
+        /* will actually add unique elements here later */
     }
     .timer .buttons form {
         display:inline;
     }
     #loadingIcon {
-        border: 4px solid #f3f3f3; /* Light grey */
-        border-top: 4px solid #3073BA; /* Blue */
+        margin: 8px calc(50vw - 30px) 8px calc(50vw - 30px);
+        border: 4px solid #f3f3f3;
+        border-top: 4px solid #3073BA;
         border-radius: 50%;
         width: 30px;
         height: 30px;
