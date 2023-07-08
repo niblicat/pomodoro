@@ -45,8 +45,8 @@
     })
     function loadingElementToCursor(loadingStatus: boolean) {
         if (loadingStatus) {
-                loadingIcon.style.top = m.x + 'px';
-                loadingIcon.style.left = m.y + 'px';
+                loadingIcon.style.top = m.y - 20+ 'px';
+                loadingIcon.style.left = m.x - 20 + 'px';
                 console.log('we are inside of the if condition');
             }
     }
@@ -111,6 +111,9 @@
 
 
 <style>
+    .body {
+        position: relative;
+    }
     .timer {
         justify-content: center;
         text-align: center;
@@ -125,6 +128,6 @@
         width: 30px;
         height: 30px;
         animation: spin 0.5s linear infinite;
-        
+        position: absolute;
     }
 </style>
