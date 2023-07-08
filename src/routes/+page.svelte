@@ -130,4 +130,8 @@
         animation: spin 0.5s linear infinite;
         position: absolute;
     }
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
 </style>
