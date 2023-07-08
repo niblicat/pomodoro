@@ -7,58 +7,59 @@
     export let data: PageData
     export let form: ActionData
 
-    let loading = true;
+    let loading: boolean = false;
+    let loadingDelayIsActive: boolean = true;
     let loadingIcon: HTMLElement;
     let m = { x: 0, y: 0};
     let loadingStatus: boolean;
 
+    // updates the internal cursor position based off the actual cursor
+    // changes loading icon's position to relative if user is using mouse
     function handleMouseMove(event: MouseEvent) {
         m.x = event.clientX;
         m.y = event.clientY;
+        loadingIcon.style.position = "absolute";
     }
+
+    // used to show loading spinner if it takes more than 150 ms for update
     const actionLoad: SubmitFunction = (input) => {
-        console.log('in progress');
-        loading = true;
+        loadingDelayIsActive = true;
+        setTimeout(() => {
+            if (loadingDelayIsActive) loading = true;
+        }, 150)
+        
         return async ({ update }) => {
             await update();
+            loadingDelayIsActive = false;
             loading = false;
         }
 
     }
+
     onMount(() => {
         document.body.addEventListener('mousemove', handleMouseMove);
-        // interval = setInterval(() => {
-        // loadingIcon = document.getElementById('loadingIcon');
-        //     if (loadingIcon !== null) {
-        //         loadingIcon.style.top = m.x + 'px';
-        //         loadingIcon.style.left = m.y + 'px';
-        //         console.log('we are inside of the if condition');
-        //     }
-        // }, 1000);
 
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
         };
     });
+    
     beforeUpdate(() => {
-        loadingStatus = loadingIcon !== null;
+        loadingStatus = loadingIcon !== null; // make sure loadingIcon exists on the page before changing it
     })
-    function loadingElementToCursor(loadingStatus: boolean) {
-        if (loadingStatus) {
-                loadingIcon.style.top = m.y - 20+ 'px';
-                loadingIcon.style.left = m.x - 20 + 'px';
-                console.log('we are inside of the if condition');
-            }
-    }
-    function loadingElementToCursorButton() {
-        loadingIcon.style.top = m.x + 'px';
-        loadingIcon.style.left = m.y + 'px';
-        console.log(loadingIcon);
+
+    // moves loading spinner to cursor's position
+    function loadingElementToCursor() {
+        loadingIcon.style.top = m.y - 20 + 'px';
+        loadingIcon.style.left = m.x - 20 + 'px';
         console.log('we are inside of the if condition');
     }
+
     afterUpdate(() => {
-        loadingElementToCursor(loadingStatus);
+        if (loadingStatus === true) loadingElementToCursor();
     })
+
+    // currently unused, might remove at later time
     onDestroy(() => {
     });
 
@@ -95,15 +96,8 @@
         </div>
     </div>
 
-    <button
-    on:click={loadingElementToCursorButton}
-    >
-        move loading spinner to cursor
-    </button>
-
     <div 
     id={loading === true ? "loadingIcon" : "noID"}
-    class="loadingIcon"
     bind:this={loadingIcon}
     />
     <p>{m.x}, {m.y}</p>
@@ -111,9 +105,6 @@
 
 
 <style>
-    .body {
-        position: relative;
-    }
     .timer {
         justify-content: center;
         text-align: center;
@@ -121,14 +112,13 @@
     .timer .buttons form {
         display:inline;
     }
-    .loadingIcon {
+    #loadingIcon {
         border: 4px solid #f3f3f3; /* Light grey */
         border-top: 4px solid #3073BA; /* Blue */
         border-radius: 50%;
         width: 30px;
         height: 30px;
         animation: spin 0.5s linear infinite;
-        position: absolute;
     }
     @keyframes spin {
         0% { transform: rotate(0deg); }
