@@ -1,10 +1,29 @@
 <script lang="ts">
     import type { ActionData, PageData, SubmitFunction } from './$types'
+    import { enhance            } from '$app/forms'
+    import { fade, fly          } from 'svelte/transition';
+    import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
 
     export let data: PageData
     export let form: ActionData
 
-    let loading = false;
+    let loading = true;
+    let interval: number;
+    let loadingIcon: HTMLElement;
+    let m = { x: 0, y: 0};
+    let loadingStatus: boolean;
+
+    function loadingElementToCursor(loadinStatus: boolean) {
+        if (loadingStatus) {
+                loadingIcon.style.top = m.x + 'px';
+                loadingIcon.style.left = m.y + 'px';
+                console.log('we are inside of the if condition');
+            }
+    }
+    function handleMouseMove(event: MouseEvent) {
+        m.x = event.clientX;
+        m.y = event.clientY;
+    }
     const actionLoad: SubmitFunction = (input) => {
         console.log('in progress');
         loading = true;
@@ -14,6 +33,32 @@
         }
 
     }
+    onMount(() => {
+        document.body.addEventListener('mousemove', handleMouseMove);
+        // interval = setInterval(() => {
+        // loadingIcon = document.getElementById('loadingIcon');
+        //     if (loadingIcon !== null) {
+        //         loadingIcon.style.top = m.x + 'px';
+        //         loadingIcon.style.left = m.y + 'px';
+        //         console.log('we are inside of the if condition');
+        //     }
+        // }, 1000);
+
+        return () => {
+            document.body.removeEventListener('mousemove', handleMouseMove);
+            clearInterval(interval);
+        };
+    });
+    beforeUpdate(() => {
+        loadingStatus = loadingIcon !== null
+    })
+    afterUpdate(() => {
+        loadingElementToCursor(loadingStatus);
+    })
+    onDestroy(() => {
+        clearInterval(interval);
+    });
+
 </script>
 
 <h1>Welcome to SvelteKit</h1>
@@ -27,6 +72,7 @@
             <form
             method="POST"
             action=?/startTime
+            use:enhance={actionLoad}
             >
                 <button
                 >
@@ -35,7 +81,8 @@
             </form>
             <form
             method="POST"
-            action=?/pauseTime
+            action=?/endTime
+            use:enhance={actionLoad}
             >
                 <button
                 >
@@ -44,7 +91,21 @@
             </form>
         </div>
     </div>
+
+    <button
+    on:click={loadingElementToCursor}
+    >
+        move loading spinner to cursor
+    </button>
+
+    <div 
+    id={loading === true ? "loadingIcon" : "noID"}
+    class="loadingIcon"
+    bind:this={loadingIcon}
+    />
+    <p>{m.x}, {m.y}</p>
 </body>
+
 
 <style>
     .timer {
@@ -53,5 +114,14 @@
     }
     .timer .buttons form {
         display:inline;
+    }
+    .loadingIcon {
+        border: 4px solid #f3f3f3; /* Light grey */
+        border-top: 4px solid #3073BA; /* Blue */
+        border-radius: 50%;
+        width: 30px;
+        height: 30px;
+        animation: spin 0.5s linear infinite;
+        
     }
 </style>
