@@ -8,18 +8,10 @@
     export let form: ActionData
 
     let loading = true;
-    let interval: number;
     let loadingIcon: HTMLElement;
     let m = { x: 0, y: 0};
     let loadingStatus: boolean;
 
-    function loadingElementToCursor(loadinStatus: boolean) {
-        if (loadingStatus) {
-                loadingIcon.style.top = m.x + 'px';
-                loadingIcon.style.left = m.y + 'px';
-                console.log('we are inside of the if condition');
-            }
-    }
     function handleMouseMove(event: MouseEvent) {
         m.x = event.clientX;
         m.y = event.clientY;
@@ -46,17 +38,28 @@
 
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
-            clearInterval(interval);
         };
     });
     beforeUpdate(() => {
-        loadingStatus = loadingIcon !== null
+        loadingStatus = loadingIcon !== null;
     })
+    function loadingElementToCursor(loadingStatus: boolean) {
+        if (loadingStatus) {
+                loadingIcon.style.top = m.x + 'px';
+                loadingIcon.style.left = m.y + 'px';
+                console.log('we are inside of the if condition');
+            }
+    }
+    function loadingElementToCursorButton() {
+        loadingIcon.style.top = m.x + 'px';
+        loadingIcon.style.left = m.y + 'px';
+        console.log(loadingIcon);
+        console.log('we are inside of the if condition');
+    }
     afterUpdate(() => {
         loadingElementToCursor(loadingStatus);
     })
     onDestroy(() => {
-        clearInterval(interval);
     });
 
 </script>
@@ -93,7 +96,7 @@
     </div>
 
     <button
-    on:click={loadingElementToCursor}
+    on:click={loadingElementToCursorButton}
     >
         move loading spinner to cursor
     </button>
