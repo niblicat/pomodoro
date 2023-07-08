@@ -27,7 +27,7 @@
         setTimeout(() => {
             if (loadingDelayIsActive) loading = true;
         }, 150)
-        
+
         return async ({ update }) => {
             await update();
             loadingDelayIsActive = false;
@@ -65,10 +65,11 @@
 
 </script>
 
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
-
+<html lang="en">
 <body>
+<div class="background">
+    <h1>Welcome to SvelteKit</h1>
+    <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
     <div class="timer">
         <h2>Timer</h2>
         <p class="numbersTime">13:45<p>
@@ -101,10 +102,27 @@
     bind:this={loadingIcon}
     />
     <p>{m.x}, {m.y}</p>
+</div>
 </body>
-
+</html>
 
 <style>
+    html, body {
+        margin: 0px;
+        padding: 0px;
+    }
+    body {
+        height: 100vh;
+        width: 100vw;
+    }
+    * {
+        box-sizing: border-box;
+    }
+    .background {
+        height: 100%;
+        width: 100%;
+        padding: 10px;
+    }
     .timer {
         justify-content: center;
         text-align: center;
