@@ -3,6 +3,7 @@
     import { enhance            } from '$app/forms'
     import { fade, fly          } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
+    import Timer from './timer.svelte';
 
     export let data: PageData
     export let form: ActionData
