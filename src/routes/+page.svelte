@@ -153,6 +153,7 @@
                 on:keydown={startTimer}
                 title="Start"
                 id="start"
+                transition:fade
                 >
                     Start
                 </button>
@@ -163,9 +164,11 @@
             use:enhance={actionLoad}
             >
                 <button
-                id="pause"
                 on:click={stopTimer}
                 on:keydown={stopTimer}
+                title="Pause"
+                id="pause"
+                transition:fade
                 >
                     Pause
                 </button>
@@ -199,6 +202,16 @@
         border-radius: 20%;
         padding: 0.2em;
         min-width: 60px;
+        border: 2px solid greenyellow;
+        background-color: transparent;
+    }
+    button:hover {
+        background-color: yellow;
+        border: 2px solid white;
+        transform: scale(1.2);
+    }
+    button:active {
+        transform: scale(0.5);
     }
     .center {
         justify-content: center;
