@@ -21,16 +21,32 @@
     let timeElement: TimeElement[] = [];
     let timerInProgress: boolean = false;
     let interval: number = 0;
+    
+    async function formatTime(time: number) {
+        let hours = Math.floor(time / 36000);
+        let minutes = Math.floor((time - 36000 * hours) / 600);
+        let seconds = Math.floor((time - 36000 * hours - 600 * minutes) / 10);
+ 
+        timeElement = [
+                {
+                    type: 'hours',
+                    value: hours
+                },
+                {
+                    type: 'minutes',
+                    value: minutes
+                },
+                {
+                    type: 'seconds',
+                    value: seconds
+                }
+            ];
+    }
 
     function timerActiveCount() {
         interval = setInterval(() => {
             endTime -= 1;
-                timeElement = [
-                {
-                    type: 'seconds',
-                    value: endTime
-                }
-            ]
+            formatTime(endTime);
             console.log(Math.ceil(endTime / 10));
             if (endTime <= 0) {
                 clearInterval(interval);
@@ -54,14 +70,9 @@
     async function setTime(timetoSet: number) {
         timerInProgress = false;
         endTime = timetoSet;
-        timeElement = [
-            {
-                type: 'seconds',
-                value: endTime
-            }
-        ]
+        formatTime(timetoSet);
     }
-    setTime(200);
+    setTime(36660);
     async function clearTimer() {
         await stopTimer();
         await setTime(0);
@@ -140,7 +151,7 @@
     <div class="timer center">
         <h2>Timer</h2>
         {#each timeElement as e (e.type)}
-            <p class="numbersTime">time left: {e.value}<p>
+            <p class="numbersTime">{e.type}: {e.value}<p>
         {/each}
         <div class="buttons center">
             <form
