@@ -3,63 +3,75 @@
     import { enhance            } from '$app/forms'
     import { fade, fly          } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
-	import Timer from './timer.svelte';
 	import { error } from '@sveltejs/kit';
 
     export let data: PageData
     export let form: ActionData
 
+    interface TimeElement {
+        type: string,
+        value: number
+    }
+
     // Counts down each time segment
     // Processes a length of time in deciseconds (10^-1 seconds)
     // Countdown method of 1 is a countdown, 0 is a countup
-    class Timer {;
-        constructor(public endTime: number) {
-            this.endTime: number = endTime;
-            this.timerInProgress: boolean = false;
-            this.interval: number = null;
-        }
-        private timerActiveCount() {
-            this.interval = setInterval(() => {
-                this.endTime -= 1;
-                console.log(Math.ceil(this.endTime / 10));
-                if (this.endTime < 0) {
-                    clearInterval(interval);
-                }
-            }, 100);
-        }
-        public async startTimer() {
-            if (timerInProgress === true) throw new Error('Timer has already started.')
-            timerInProgress = true;
-            this.timerActiveCount();
-        }
-        public async getCurrentTime(): Promise<number> {
-            if (this.endTime === null) return 0;
-            return this.endTime;
-        }
-        public async stopTimer(timeToSet: number) {
-            clearInterval(interval);
-            console.log(interval);
-            this.endTime = timeToSet;
-        }
-        private async setTime() {
-            timerInProgress = false;
 
-        }
-        public async clearTimer() {
-            await this.stopTimer();
-            await this.stopTimer(0);
-        }
+    let endTime: number = 200;
+    let timeElement: TimeElement[] = [];
+    let timerInProgress: boolean = false;
+    let interval: number = 0;
+
+    function timerActiveCount() {
+        interval = setInterval(() => {
+            endTime -= 1;
+                timeElement = [
+                {
+                    type: 'seconds',
+                    value: endTime
+                }
+            ]
+            console.log(Math.ceil(endTime / 10));
+            if (endTime < 0) {
+                clearInterval(interval);
+            }
+        }, 100);
+    }
+    async function startTimer() {
+        if (timerInProgress === true) throw new Error('Timer has already started.');
+        timerInProgress = true;
+        timerActiveCount();
+    }
+    async function getCurrentTime(): Promise<number> {
+        if (endTime === null) return 0;
+        return endTime;
+    }
+        async function stopTimer() {
+        clearInterval(interval);
+        console.log(interval);
+    }
+    async function setTime(timetoSet: number) {
+        timerInProgress = false;
+        endTime = timetoSet;
+        timeElement = [
+            {
+                type: 'seconds',
+                value: endTime
+            }
+        ]
+    }
+    setTime(200);
+    async function clearTimer() {
+        await stopTimer();
+        await setTime(0);
     }
 
-    let testTimer = new Timer(0);
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
     let loadingDelayIsActive: boolean = true;
     let loadingIcon: HTMLElement;
     let m = { x: 0, y: 0};
     let loadingStatus: boolean;
-
-    
 
     // updates the internal cursor position based off the actual cursor
     // changes loading icon's position to relative if user is using mouse
@@ -126,15 +138,19 @@
     <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
     <div class="timer center">
         <h2>Timer</h2>
-        <p class="numbersTime">13:45<p>
+        {#each timeElement as e (e.type)}
+            <p class="numbersTime">time left: {e.value}<p>
+        {/each}
         <div class="buttons">
             <form
             method="POST"
             action=?/startTime
             use:enhance={actionLoad}
-            on:click={}
             >
                 <button
+                on:click={startTimer}
+                on:keydown={startTimer}
+                title="Start"
                 >
                     Start
                 </button>
