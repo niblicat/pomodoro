@@ -10,6 +10,8 @@
     export let data: PageData
     export let form: ActionData
 
+    const debug: boolean = true;
+
     timer.setTime(36600); // temporary to set time to 1 hour 1 minute 6 seconds
 
     let mouseHasMoved: number = 0;
@@ -94,7 +96,6 @@
         <div class="buttons center">
             <form
             method="POST"
-            action=?/startTime
             use:enhance={actionLoad}
             >
                 <button
@@ -109,7 +110,6 @@
             </form>
             <form
             method="POST"
-            action=?/endTime
             use:enhance={actionLoad}
             >
                 <button
@@ -130,7 +130,9 @@
     class="center"
     bind:this={loadingIcon}
     />
-    <p>{m.x}, {m.y}</p>
+    {#if debug}
+        <p>{m.x}, {m.y}</p>
+    {/if}
 </div>
 </body>
 </html>
