@@ -86,7 +86,7 @@
     <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
     <div class="timer center">
         <h2>Timer</h2>
-        <p class="numbersTime">
+        <p class="numbersTime fade" transition:fade>
             {#each $timeElement as e (e.type)}
                 {#if !((e.type === 'hours') && (e.value <= 0))}
                     {#if ((e.type !== 'hours') && (e.value <= 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
@@ -94,34 +94,24 @@
             {/each}
         </p>
         <div class="buttons center">
-            <form
-            method="POST"
-            use:enhance={actionLoad}
+            <button
+            class="fade"
+            on:click={timer.startTimer}
+            on:keydown={timer.startTimer}
+            title="Start"
+            id="start"
             >
-                <button
-                on:click={timer.startTimer}
-                on:keydown={timer.startTimer}
-                title="Start"
-                id="start"
-                transition:fade
-                >
-                    Start
-                </button>
-            </form>
-            <form
-            method="POST"
-            use:enhance={actionLoad}
+                Start
+            </button>
+            <button
+            class="fade"
+            on:click={timer.stopTimer}
+            on:keydown={timer.stopTimer}
+            title="Pause"
+            id="pause"
             >
-                <button
-                on:click={timer.stopTimer}
-                on:keydown={timer.stopTimer}
-                title="Pause"
-                id="pause"
-                transition:fade
-                >
-                    Pause
-                </button>
-            </form>
+                Pause
+            </button>
         </div>
     </div>
 
@@ -151,10 +141,10 @@
     }
     button {
         border-radius: 20%;
-        padding: 0.2em;
         min-width: 60px;
         border: 2px solid greenyellow;
         background-color: transparent;
+        font-size: 20px;
     }
     button:hover {
         background-color: yellow;
@@ -173,9 +163,15 @@
         width: 100%;
         padding: 10px;
     }
+    .timer {
+        max-width: 20%;
+        margin: auto;
+        font-size: 20px;
+    }
     .timer .buttons {
         display: grid;
-        grid-template: 20px / minmax(40px, 80px) minmax(40px, 80px);
+        justify-content: space-around;
+        grid-template: 40px / minmax(80px, 100px) minmax(80px, 100px);
     }
     #loadingIcon {
         margin: 8px calc(50vw - 30px) 8px calc(50vw - 30px);
@@ -189,5 +185,13 @@
     @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
+    }
+    .fade {
+        transition: all .2s ease-in-out;
+        animation: fadeIn .5s;
+        -webkit-animation: fadeIn .5s;
+        -moz-animation: fadeIn .5s;
+        -o-animation: fadeIn .5s;
+        -ms-animation: fadeIn .5s;
     }
 </style>
