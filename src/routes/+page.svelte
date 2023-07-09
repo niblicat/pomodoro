@@ -3,17 +3,55 @@
     import { enhance            } from '$app/forms'
     import { fade, fly          } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
-    import Timer from './timer.svelte';
+	import Timer from './timer.svelte';
+	import { error } from '@sveltejs/kit';
 
     export let data: PageData
     export let form: ActionData
 
+    // Counts down each time segment
+    // Processes a length of time in deciseconds (10^-1 seconds)
+    // Countdown method of 1 is a countdown, 0 is a countup
+    class Timer {
+        let endTime: number = 100;
+        let timerInProgress: boolean = false;
+        let interval: number = null;
+        constructor(public endTime: number) {
+            this.endTime = endTime;
+        }
+        private timerActiveCount() {
+            this.interval = setInterval(() => {
+                this.endTime -= 1;
+                console.log(Math.ceil(this.endTime / 10));
+                if (this.endTime < 0) {
+                    clearInterval(interval);
+                }
+            }, 100);
+        }
+        public async startTimer() {
+            if (timerInProgress === true) throw new Error('Timer has already started.')
+            timerInProgress = true;
+            this.timerActiveCount();
+        }
+        public async getCurrentTime(): Promise<number> {
+            if (this.endTime === null) return 0;
+            return this.endTime;
+        }
+        public stopTimer() {
+            clearInterval(interval);
+            console.log(interval);
+        }
+    }
+
+    let testTimer = new Timer(0);
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
     let loadingDelayIsActive: boolean = true;
     let loadingIcon: HTMLElement;
     let m = { x: 0, y: 0};
     let loadingStatus: boolean;
+
+    
 
     // updates the internal cursor position based off the actual cursor
     // changes loading icon's position to relative if user is using mouse
@@ -70,6 +108,7 @@
     onDestroy(() => {
     });
 
+
 </script>
 
 <html lang="en">
@@ -85,6 +124,7 @@
             method="POST"
             action=?/startTime
             use:enhance={actionLoad}
+            on:click={}
             >
                 <button
                 >
