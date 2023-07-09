@@ -4,79 +4,13 @@
     import { fade, fly          } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
 	import { error } from '@sveltejs/kit';
+    import * as timer from './timer.svelte';
+    import { timeElement } from './timer.svelte';
 
     export let data: PageData
     export let form: ActionData
 
-    interface TimeElement {
-        type: string,
-        value: number
-    }
-
-    // Counts down each time segment
-    // Processes a length of time in deciseconds (10^-1 seconds)
-    // Countdown method of 1 is a countdown, 0 is a countup
-
-    let endTime: number = 200;
-    let timeElement: TimeElement[] = [];
-    let timerInProgress: boolean = false;
-    let interval: number = 0;
-    
-    async function formatTime(time: number) {
-        let hours = Math.floor(time / 36000);
-        let minutes = Math.floor((time - 36000 * hours) / 600);
-        let seconds = Math.floor((time - 36000 * hours - 600 * minutes) / 10);
- 
-        timeElement = [
-                {
-                    type: 'hours',
-                    value: hours
-                },
-                {
-                    type: 'minutes',
-                    value: minutes
-                },
-                {
-                    type: 'seconds',
-                    value: seconds
-                }
-            ];
-    }
-
-    function timerActiveCount() {
-        interval = setInterval(() => {
-            endTime -= 1;
-            formatTime(endTime);
-            console.log(Math.ceil(endTime / 10));
-            if (endTime <= 0) {
-                clearInterval(interval);
-            }
-        }, 100);
-    }
-    async function startTimer() {
-        if (timerInProgress === true) throw new Error('Timer has already started.');
-        timerInProgress = true;
-        timerActiveCount();
-    }
-    async function getCurrentTime(): Promise<number> {
-        if (endTime === null) return 0;
-        return endTime;
-    }
-    async function stopTimer() {
-        timerInProgress = false;
-        clearInterval(interval);
-        console.log(interval);
-    }
-    async function setTime(timetoSet: number) {
-        timerInProgress = false;
-        endTime = timetoSet;
-        formatTime(timetoSet);
-    }
-    setTime(36660);
-    async function clearTimer() {
-        await stopTimer();
-        await setTime(0);
-    }
+    timer.setTime(36660); // temporary to set time to 1 hour 1 minute 6 seconds
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -150,7 +84,7 @@
     <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
     <div class="timer center">
         <h2>Timer</h2>
-        {#each timeElement as e (e.type)}
+        {#each $timeElement as e (e.type)}
             <p class="numbersTime">{e.type}: {e.value}<p>
         {/each}
         <div class="buttons center">
@@ -160,8 +94,8 @@
             use:enhance={actionLoad}
             >
                 <button
-                on:click={startTimer}
-                on:keydown={startTimer}
+                on:click={timer.startTimer}
+                on:keydown={timer.startTimer}
                 title="Start"
                 id="start"
                 transition:fade
@@ -175,8 +109,8 @@
             use:enhance={actionLoad}
             >
                 <button
-                on:click={stopTimer}
-                on:keydown={stopTimer}
+                on:click={timer.stopTimer}
+                on:keydown={timer.stopTimer}
                 title="Pause"
                 id="pause"
                 transition:fade
