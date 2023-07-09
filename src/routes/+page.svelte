@@ -12,12 +12,11 @@
     // Counts down each time segment
     // Processes a length of time in deciseconds (10^-1 seconds)
     // Countdown method of 1 is a countdown, 0 is a countup
-    class Timer {
-        let endTime: number = 100;
-        let timerInProgress: boolean = false;
-        let interval: number = null;
+    class Timer {;
         constructor(public endTime: number) {
-            this.endTime = endTime;
+            this.endTime: number = endTime;
+            this.timerInProgress: boolean = false;
+            this.interval: number = null;
         }
         private timerActiveCount() {
             this.interval = setInterval(() => {
@@ -37,9 +36,18 @@
             if (this.endTime === null) return 0;
             return this.endTime;
         }
-        public stopTimer() {
+        public async stopTimer(timeToSet: number) {
             clearInterval(interval);
             console.log(interval);
+            this.endTime = timeToSet;
+        }
+        private async setTime() {
+            timerInProgress = false;
+
+        }
+        public async clearTimer() {
+            await this.stopTimer();
+            await this.stopTimer(0);
         }
     }
 
