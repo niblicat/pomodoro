@@ -10,7 +10,7 @@
     export let data: PageData
     export let form: ActionData
 
-    timer.setTime(36660); // temporary to set time to 1 hour 1 minute 6 seconds
+    timer.setTime(36600); // temporary to set time to 1 hour 1 minute 6 seconds
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -86,7 +86,9 @@
         <h2>Timer</h2>
         <p class="numbersTime">
             {#each $timeElement as e (e.type)}
-                {#if ((e.type !== 'hours') && (e.value <= 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
+                {#if !((e.type === 'hours') && (e.value <= 0))}
+                    {#if ((e.type !== 'hours') && (e.value <= 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
+                {/if}
             {/each}
         </p>
         <div class="buttons center">
