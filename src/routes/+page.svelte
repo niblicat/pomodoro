@@ -84,9 +84,11 @@
     <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
     <div class="timer center">
         <h2>Timer</h2>
-        {#each $timeElement as e (e.type)}
-            <p class="numbersTime">{e.type}: {e.value}<p>
-        {/each}
+        <p class="numbersTime">
+            {#each $timeElement as e (e.type)}
+                {#if ((e.type !== 'hours') && (e.value <= 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
+            {/each}
+        </p>
         <div class="buttons center">
             <form
             method="POST"
