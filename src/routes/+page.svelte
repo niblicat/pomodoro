@@ -72,8 +72,8 @@
         if (loadingStatus === true) loadingElementToCursor();
     })
 
-    // currently unused, might remove at later time
     onDestroy(() => {
+        timer.clearTimer();
     });
 
 
