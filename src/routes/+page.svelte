@@ -32,7 +32,7 @@
                 }
             ]
             console.log(Math.ceil(endTime / 10));
-            if (endTime < 0) {
+            if (endTime <= 0) {
                 clearInterval(interval);
             }
         }, 100);
@@ -46,7 +46,8 @@
         if (endTime === null) return 0;
         return endTime;
     }
-        async function stopTimer() {
+    async function stopTimer() {
+        timerInProgress = false;
         clearInterval(interval);
         console.log(interval);
     }
@@ -141,7 +142,7 @@
         {#each timeElement as e (e.type)}
             <p class="numbersTime">time left: {e.value}<p>
         {/each}
-        <div class="buttons">
+        <div class="buttons center">
             <form
             method="POST"
             action=?/startTime
@@ -151,6 +152,7 @@
                 on:click={startTimer}
                 on:keydown={startTimer}
                 title="Start"
+                id="start"
                 >
                     Start
                 </button>
@@ -161,6 +163,9 @@
             use:enhance={actionLoad}
             >
                 <button
+                id="pause"
+                on:click={stopTimer}
+                on:keydown={stopTimer}
                 >
                     Pause
                 </button>
@@ -190,6 +195,9 @@
     * {
         box-sizing: border-box;
     }
+    button {
+        
+    }
     .center {
         justify-content: center;
         text-align: center;
@@ -204,8 +212,9 @@
         text-align: center;
         /* will actually add unique elements here later */
     }
-    .timer .buttons form {
-        display:inline;
+    .timer .buttons {
+        display: grid;
+        grid-template: 20px / minmax(40px, 80px) minmax(40px, 80px)
     }
     #loadingIcon {
         margin: 8px calc(50vw - 30px) 8px calc(50vw - 30px);
