@@ -196,7 +196,9 @@
         box-sizing: border-box;
     }
     button {
-        
+        border-radius: 20%;
+        padding: 0.2em;
+        min-width: 60px;
     }
     .center {
         justify-content: center;
@@ -207,14 +209,9 @@
         width: 100%;
         padding: 10px;
     }
-    .timer {
-        justify-content: center;
-        text-align: center;
-        /* will actually add unique elements here later */
-    }
     .timer .buttons {
         display: grid;
-        grid-template: 20px / minmax(40px, 80px) minmax(40px, 80px)
+        grid-template: 20px / minmax(40px, 80px) minmax(40px, 80px);
     }
     #loadingIcon {
         margin: 8px calc(50vw - 30px) 8px calc(50vw - 30px);
