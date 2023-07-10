@@ -12,7 +12,8 @@
 
     const debug: boolean = true;
 
-    timer.setTime(36600); // temporary to set time to 1 hour 1 minute 6 seconds
+    // timer.setTime(36600); // temporary to set time to 1 hour 1 minute 6 seconds
+    // timer.pomodoroActive();
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -76,7 +77,6 @@
         timer.clearTimer();
     });
 
-
 </script>
 
 <html lang="en">
@@ -96,12 +96,13 @@
         <div class="buttons center">
             <button
             class="fade"
-            on:click={timer.startTimer}
+            on:click={timer.timerState === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.startTimer}
             on:keydown={timer.startTimer}
             title="Start"
             id="start"
             >
-                Start
+            
+            {timer.timerState === timer.TimerStates.Pomodoro ? 'PStart' : 'Start'}
             </button>
             <button
             class="fade"
