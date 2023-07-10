@@ -35,9 +35,9 @@
 
     export let timeElement: Writable<TimeElement[]> = writable([]);
     let pomodoroTimes: PomodoroTimes = {
-        work: 0.1,
-        short: 0.05,
-        long: 2
+        work: .1,
+        short: 0.01,
+        long: .5
     };
     // by default 25 minutes, 5 minutes, 15 minutes
 
@@ -86,16 +86,14 @@
     }
     // called when the start button is pressed
     export async function startTimer(): Promise<void> {
-        return new Promise((resolve) => {
-            if (timerInProgress === true) {
-                alert('Timer has already started.');
-                resolve();
-            }
-            else {
-                timerInProgress = true;
-                return timerActiveCount(); // probably the issue here
-            }
-        });
+        if (timerInProgress === true) {
+            alert('Timer has already started.');
+        }
+        else {
+            timerInProgress = true;
+            await timerActiveCount(); // probably the issue here
+        }
+        return;
     }
     // currently unused
     export async function getCurrentTime(): Promise<number> {

@@ -47,6 +47,8 @@
     onMount(() => {
         document.body.addEventListener('mousemove', handleMouseMove);
 
+        timer.clearTimer();
+
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
         };
@@ -97,7 +99,6 @@
             <button
             class="fade"
             on:click={timer.timerState === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.startTimer}
-            on:keydown={timer.startTimer}
             title="Start"
             id="start"
             >
@@ -107,7 +108,6 @@
             <button
             class="fade"
             on:click={timer.stopTimer}
-            on:keydown={timer.stopTimer}
             title="Pause"
             id="pause"
             >
