@@ -125,6 +125,7 @@
 
 <style>
     html, body {
+        background-color: #22FFE9;
         margin: 0px;
         padding: 0px;
     }
@@ -138,12 +139,12 @@
     button {
         border-radius: 20%;
         min-width: 60px;
-        border: 2px solid greenyellow;
-        background-color: transparent;
+        border: 2px solid #14FF63;
+        background-color: white;
         font-size: 20px;
     }
     button:hover {
-        background-color: yellow;
+        background-color: #1499FF;
         border: 2px solid white;
         transform: scale(1.2);
     }
