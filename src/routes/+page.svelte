@@ -10,10 +10,7 @@
     export let data: PageData
     export let form: ActionData
 
-    const debug: boolean = true;
-
-    // timer.setTime(36600); // temporary to set time to 1 hour 1 minute 6 seconds
-    // timer.pomodoroActive();
+    const debug: boolean = false;
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -77,13 +74,13 @@
         timer.clearTimer();
     });
 
+    timer.clearTimer(); // initialise timer to 0 seconds
+
 </script>
 
 <html lang="en">
 <body>
 <div class="background">
-    <h1>Welcome to SvelteKit</h1>
-    <p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
     <div class="timer center">
         <h2>Timer</h2>
         <p class="numbersTime fade" transition:fade>
@@ -101,7 +98,7 @@
             id="start"
             >
             
-            {timer.timerState === timer.TimerStates.Pomodoro ? 'PStart' : 'Start'}
+            Start
             </button>
             <button
             class="fade"
