@@ -13,7 +13,7 @@
         short: number,
         long: number
     }
-    const PomodoroStates = {
+    export const PomodoroStates = {
         Work: Symbol("Work"),
         Short: Symbol("Short"),
         Long: Symbol("Long")

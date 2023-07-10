@@ -47,8 +47,6 @@
     onMount(() => {
         document.body.addEventListener('mousemove', handleMouseMove);
 
-        timer.clearTimer();
-
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
         };
