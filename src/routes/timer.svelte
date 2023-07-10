@@ -138,7 +138,6 @@
 	export async function pomodoroActive() {
 		pomodoroCounting = true;
 		while (pomodoroCounting) {
-			console.log(pomodoroState);
 			if (!(sessionNumber % longSession)) pomodoroState = PomodoroStates.Long; // forcefully modify state to long if we are on a long session number
 			switch (pomodoroState) {
 				case PomodoroStates.Work:

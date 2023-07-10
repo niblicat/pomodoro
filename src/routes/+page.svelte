@@ -55,7 +55,6 @@
 
     // moves loading spinner to cursor's position
     function loadingElementToCursor() {
-        console.log('move');
         if (mouseHasMoved > 1) {
             loadingIcon.style.top = m.y - 15 + 'px';
             loadingIcon.style.left = m.x - 15 + 'px';
