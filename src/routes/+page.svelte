@@ -134,7 +134,7 @@
             <p class="numbersTime fade" transition:fade>
                 {#each $timeElement as e (e.type)}
                     {#if !((e.type === 'hours') && (e.value <= 0))}
-                        {#if ((e.type !== 'hours') && (Math.floor(e.value) <= 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
+                        {#if ((e.type !== 'hours') && (e.value < 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
                     {/if}
                 {/each}
             </p>
