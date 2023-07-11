@@ -46,6 +46,7 @@
     onMount(() => {
         timer.clearTimer(); // initialise timer to 0 seconds
         document.body.addEventListener('mousemove', handleMouseMove);
+        openSettings();
 
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
@@ -108,6 +109,24 @@
         id={menuVisible ? "visible" : "invisible"}
         >
             <div class="modes" style="background-color: #cc0000;">
+                <button
+                class="fade"
+                id="Pomodoro"
+                >
+                Pomodoro
+                </button>
+                <button
+                class="fade"
+                id="Sage"
+                >
+                Coming Soon
+                </button>
+                <button
+                class="fade"
+                id="Standard"
+                >
+                Standard
+                </button>
 
             </div>
             <div class="stats" style="background-color: #00cc00;">
@@ -342,7 +361,7 @@
         background-color: var(--neutral);
         overflow: auto;
         display: grid;
-        grid-template: 20% 80% / 70% 20% 10%;
+        grid-template: 25% 75% / 60% 25% 15%;
     }
 
     .menuWrapper {
@@ -396,6 +415,35 @@
         -o-transform : scale(1, 0.8);
         -ms-transform : scale(1, 0.8);
     }
+    
+    .modes {
+        padding-left: 4px;
+        display: flex;
+        align-items: end;
+        justify-content: baseline;
+    }
+
+    .modes button {
+        border-bottom: 0px;
+        border-radius: 25px 25px 0px 0px;
+        width: 25%;
+        height: 80%;
+    }
+
+    .modes button#Pomodoro {
+        border-radius: 25px 0px 0px 0px;
+        border-right: 0px;
+    }
+    .modes button#Sage {
+        border-radius: 0px 0px 0px 0px;
+        border-left: 0px;
+        border-right: 0px;
+    }
+    .modes button#Standard {
+        border-radius: 0px 25px 0px 0px;
+        border-left: 0px;
+    }
+
 
     #closeMenu {
         padding: 4px;
