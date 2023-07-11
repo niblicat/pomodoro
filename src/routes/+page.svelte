@@ -44,6 +44,7 @@
     }
 
     onMount(() => {
+        timer.clearTimer(); // initialise timer to 0 seconds
         document.body.addEventListener('mousemove', handleMouseMove);
 
         return () => {
@@ -73,8 +74,6 @@
     onDestroy(() => {
         timer.clearTimer();
     });
-
-    timer.clearTimer(); // initialise timer to 0 seconds
 
     // closes preference menu
     function closeSettings() {

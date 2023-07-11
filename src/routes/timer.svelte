@@ -91,6 +91,22 @@
 		]);
 	}
 
+    // modifies pomodoro state to next state based on current
+    async function modifyPomodoroState() {
+        switch (pomodoroState) {
+            case PomodoroStates.Work:
+                pomodoroState = PomodoroStates.Short;
+                break;
+            case PomodoroStates.Short:
+                pomodoroState = PomodoroStates.Work;
+                break;
+            case PomodoroStates.Long:
+                pomodoroState = PomodoroStates.Work;
+                break;
+        }
+        if (!(sessionNumber % longSession)) pomodoroState = PomodoroStates.Long; // forcefully modify state to long if we are on a long session number
+    }
+
 	// modifies the change in time between now and the end time every decisecond
 	async function timerActiveCount(): Promise<void> {
 		return new Promise(async (resolve) => {
@@ -99,19 +115,21 @@
 			endTime = currentTime + 100 * goalTime;
             let timerProgressState: boolean = await TimerProgress.getTimerInProgress();
             timeDifference = endTime - currentTime;
-            alert('timer is Active?' + await timerProgressState);
             interval = setInterval(async () => {
                 await formatTime(timeDifference / 100);
                 timerProgressState = await TimerProgress.getTimerInProgress();
                 currentTime = Date.now();
                 timeDifference = endTime - currentTime;
-                if (timeDifference <= 0 && timerProgressState === false) {
+                if (timeDifference <= 0 || timerProgressState === false) {
+                    if ((timerProgressState === true) && (timerState === TimerStates.Pomodoro)) await modifyPomodoroState();
                     await TimerProgress.updateTimerInProgressToFalse();
+                    clearInterval(interval);
                     resolve();
                 }
             }, 100)        
 		});
 	}
+
 
 	// called when the start button is pressed
 	export async function startTimer(): Promise<void> {
@@ -157,6 +175,10 @@
 	export async function clearTimer() {
 		await stopTimer();
 		await setTime(0);
+        setTimeout(async () => {
+            await formatTime(0);
+        }, 100); // patchwork solution bc the timer doesn't like to update to 0 when I want it to
+        // first time clearing does the weird effect
 	}
 
     // converts hh:mm:ss to equivalent in deciseconds
@@ -168,22 +190,18 @@
 	export async function pomodoroActive() {
 		pomodoroCounting = true;
 		while (pomodoroCounting) {
-			if (!(sessionNumber % longSession)) pomodoroState = PomodoroStates.Long; // forcefully modify state to long if we are on a long session number
 			switch (pomodoroState) {
 				case PomodoroStates.Work:
 					await setTime(convertTimeToDeciseconds(0, pomodoroTimes.work, 0));
 					await startTimer();
-					pomodoroState = PomodoroStates.Short;
 					break;
 				case PomodoroStates.Short:
 					await setTime(convertTimeToDeciseconds(0, pomodoroTimes.short, 0));
 					await startTimer();
-					pomodoroState = PomodoroStates.Work;
 					break;
 				case PomodoroStates.Long:
 					await setTime(convertTimeToDeciseconds(0, pomodoroTimes.long, 0));
 					await startTimer();
-					pomodoroState = PomodoroStates.Work;
 					break;
 			}
 			sessionNumber++; // increase session number so we can properly update state to long when needed
