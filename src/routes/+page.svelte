@@ -45,9 +45,9 @@
 
     onMount(() => {
         timer.clearTimer(); // initialise timer to 0 seconds
-        document.body.addEventListener('mousemove', handleMouseMove);
         openSettings();
-
+        document.body.addEventListener('mousemove', handleMouseMove);
+        
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
         };
@@ -59,8 +59,7 @@
 
     // moves loading spinner to cursor's position
     function loadingElementToCursor() {
-        if (mouseHasMoved > 2) {
-            console.log('heyy');
+        if (mouseHasMoved > 3) {
             loadingIcon.style.top = m.y - 15 + 'px';
             loadingIcon.style.left = m.x - 15 + 'px';
             loadingIcon.style.position = 'absolute';  
@@ -129,19 +128,22 @@
                 </button>
 
             </div>
-            <div class="stats" style="background-color: #00cc00;">
+            <div class="statsHead" style="background-color: #00cc00;">
 
             </div>
             <div class="close" style="background-color: #0000cc;">
 
             </div>
-            <div class="modes" style="background-color: #cccc00;">
+            <div class="modesOptionsPadding" style="background-color: #cccc00;">
+                <div class="modesOptions">
+                    meow meow
+                </div>
 
             </div>
             <div class="stats" style="background-color: #00cccc;">
 
             </div>
-            <div class="close" style="background-color: #cc00cc;">
+            <div class="profile" style="background-color: #cc00cc;">
 
             </div>
         </div>
@@ -230,8 +232,9 @@
         --accent2: #13C4E8;
         --contrast: #1499FF;
         --complement: #FF14B0;
-        --neutral: #f8fffb;
+        --neutral: #bcc6c0;
         --neutralbright: #feffff;
+        --neutraldark: #e3eaea;
     }
 
     html, body {
@@ -255,13 +258,13 @@
         border-radius: 25px;
         min-width: 60px;
         border: 2px solid var(--divback);
-        background-color: var(--neutral);
+        background-color: var(--neutralbright);
         font-size: 20px;
     }
 
     button:hover {
         background-color: var(--accent2);
-        border: 2px solid var(--neutral);
+        border: 2px solid var(--neutralbright);
         transform: scale(1.1);
         -webkit-transform : scale(1.1);
         -moz-transform : scale(1.1);
@@ -358,7 +361,7 @@
     .menu {
         width: 100%;
         height: 100%;
-        background-color: var(--neutral);
+        background-color: var(--neutralbright);
         overflow: auto;
         display: grid;
         grid-template: 25% 75% / 60% 25% 15%;
@@ -424,24 +427,51 @@
     }
 
     .modes button {
+        margin-bottom: -1px;
         border-bottom: 0px;
         border-radius: 25px 25px 0px 0px;
         width: 25%;
         height: 80%;
+        z-index: 2;
+    }
+
+    .modes button:hover {
+        transform: scale(1.0);
+        -webkit-transform : scale(1.0);
+        -moz-transform : scale(1.0);
+        -o-transform : scale(1.0);
+        -ms-transform : scale(1.0);
     }
 
     .modes button#Pomodoro {
         border-radius: 25px 0px 0px 0px;
         border-right: 0px;
     }
+
     .modes button#Sage {
+        background-color: var(--neutraldark);
         border-radius: 0px 0px 0px 0px;
         border-left: 0px;
         border-right: 0px;
     }
+
     .modes button#Standard {
         border-radius: 0px 25px 0px 0px;
         border-left: 0px;
+    }
+
+    .modesOptionsPadding {
+        display: flex;
+        padding: 0px 4px 4px 4px;
+    }
+
+    .modesOptions {
+        display: grid;
+        border-radius: 0px 25px 25px 25px;
+        height: 100%;
+        width: 100%;
+        background-color: var(--neutralbright);
+        border: 2px solid var(--divback);
     }
 
 
@@ -458,7 +488,7 @@
     #loadingIcon {
         grid-row: 3;
         justify-self: center;
-        border: 4px solid var(--neutralbright);
+        border: 4px solid var(--neutral);
         border-top: 4px solid var(--contrast);
         border-radius: 50%;
         width: 30px;
