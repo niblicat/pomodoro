@@ -9,7 +9,7 @@
     export let data: PageData
     export let form: ActionData
 
-    const debug: boolean = true;
+    const debug: boolean = false;
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -58,7 +58,8 @@
 
     // moves loading spinner to cursor's position
     function loadingElementToCursor() {
-        if (mouseHasMoved > 1) {
+        if (mouseHasMoved > 2) {
+            console.log('heyy');
             loadingIcon.style.top = m.y - 15 + 'px';
             loadingIcon.style.left = m.x - 15 + 'px';
             loadingIcon.style.position = 'absolute';  
@@ -113,6 +114,15 @@
 
             </div>
             <div class="close" style="background-color: #0000cc;">
+
+            </div>
+            <div class="modes" style="background-color: #cccc00;">
+
+            </div>
+            <div class="stats" style="background-color: #00cccc;">
+
+            </div>
+            <div class="close" style="background-color: #cc00cc;">
 
             </div>
         </div>
@@ -206,7 +216,8 @@
     }
 
     html, body {
-        background-color: var(--background);
+        /* background-color: var(--background); */
+        background-image: linear-gradient(to bottom right, var(--background), var(--accent2));
         margin: 0px;
         padding: 0px;
     }
@@ -398,7 +409,7 @@
 
     #loadingIcon {
         grid-row: 3;
-        margin: 8px calc(50vw - 30px) 8px calc(50vw - 30px);
+        justify-self: center;
         border: 4px solid var(--neutralbright);
         border-top: 4px solid var(--contrast);
         border-radius: 50%;
