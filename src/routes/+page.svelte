@@ -4,12 +4,12 @@
     import { fade, fly, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
-    import { timeElement } from './timer.svelte';
+    import { timeElement, timerInProgressRead } from './timer.svelte';
 
     export let data: PageData
     export let form: ActionData
 
-    const debug: boolean = false;
+    const debug: boolean = true;
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -107,6 +107,15 @@
         class="menu"
         id={menuVisible ? "visible" : "invisible"}
         >
+            <div class="modes" style="background-color: #cc0000;">
+
+            </div>
+            <div class="stats" style="background-color: #00cc00;">
+
+            </div>
+            <div class="close" style="background-color: #0000cc;">
+
+            </div>
         </div>
         
         <div class="optionsPadding">
@@ -125,25 +134,36 @@
             <p class="numbersTime fade" transition:fade>
                 {#each $timeElement as e (e.type)}
                     {#if !((e.type === 'hours') && (e.value <= 0))}
-                        {#if ((e.type !== 'hours') && (e.value <= 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
+                        {#if ((e.type !== 'hours') && (Math.floor(e.value) <= 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
                     {/if}
                 {/each}
             </p>
+            {#if !$timerInProgressRead}
+                <button
+                class="fade"
+                on:click={timer.timerState === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.startTimer}
+                title="Start"
+                id="start"
+                >
+                start
+                </button>
+            {:else}
+                <button
+                class="fade"
+                on:click={timer.stopTimer}
+                title="Pause"
+                id="pause"
+                >
+                pause
+                </button>
+            {/if}
             <button
             class="fade"
-            on:click={timer.timerState === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.startTimer}
-            title="Start"
-            id="start"
+            on:click={timer.clearTimer}
+            title="Clear"
+            id="clear"
             >
-            start
-            </button>
-            <button
-            class="fade"
-            on:click={timer.stopTimer}
-            title="Pause"
-            id="pause"
-            >
-            pause
+            clear
             </button>
         </div>
         <div 
@@ -152,7 +172,21 @@
         bind:this={loadingIcon}
         />
         {#if debug}
-            <p>{m.x}, {m.y}</p>
+            <div class="debug">
+                <p>{m.x}, {m.y}</p>
+                <button
+                on:click={() => {
+                    alert($timerInProgressRead);
+                }}>
+                    timer in progress = {$timerInProgressRead}
+                </button>
+                <button
+                on:click={() => {
+                    alert(timer.timerState);
+                }}>
+                    state = {timer.timerState.toString()}
+                </button>
+            </div>
         {/if}
     </div>
 
@@ -167,6 +201,7 @@
         --accent1: #13E896;
         --accent2: #13C4E8;
         --contrast: #1499FF;
+        --complement: white;
         --neutral: #f8fffb;
         --neutralbright: #feffff;
     }
@@ -227,7 +262,7 @@
 
     .wrapper {
         display: grid;
-        grid-template: 30% 30% 30% / 1fr;
+        grid-template: 30% 30% 10% 20% / 1fr;
         vertical-align: middle;
         text-align: center;
         height: 100%;
@@ -279,11 +314,15 @@
         width: 80%;
     }
 
-    .timer button#start {
+    .timer button#start, .timer button#pause {
         grid-column: 1;
     }
-
+    
     .timer button#pause {
+        background-color: var(--complement);
+    }
+
+    .timer button#clear {
         grid-column: 2;
     }
 
@@ -293,7 +332,9 @@
         background-color: var(--neutral);
         overflow: auto;
         display: grid;
+        grid-template: 20% 80% / 70% 20% 10%;
     }
+
     .menuWrapper {
         transition: all 200ms ease-out;
         top: -260px;
@@ -309,9 +350,13 @@
     .optionsPadding {
         display: flex;
         justify-content: end;
-        padding-right: 40px;
-        padding-left: 40px;
+        padding-right: 20px;
+        padding-left: 20px;
         order: 2;
+    }
+
+    .debug {
+        grid-row: 4;
     }
 
     button#hanging {

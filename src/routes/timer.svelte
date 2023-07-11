@@ -2,7 +2,7 @@
 	// Counts down each time segment
 	// Processes a length of time in deciseconds (10^-1 seconds)
 
-	import { writable, type Writable } from 'svelte/store';
+	import { writable, type Writable} from 'svelte/store';
 
 	interface TimeElement {
 		type: string;
@@ -22,6 +22,32 @@
 		Pomodoro: Symbol('Pomodoro'),
 		Standard: Symbol('Standard')
 	};
+    
+    export let timerInProgressRead: Writable<boolean> = writable(false);
+    let TimerProgress = new class TimerProgress {
+        #timerInProgress: boolean;
+        
+        constructor() {
+            this.#timerInProgress = false;
+        }
+        public async updateTimerInProgress() {
+            this.#timerInProgress = !this.#timerInProgress; // flips value
+            timerInProgressRead.set(this.#timerInProgress);
+        }
+        public async updateTimerInProgressToTrue() {
+            this.#timerInProgress = true;
+            timerInProgressRead.set(true);
+        }
+        public async updateTimerInProgressToFalse() {
+            this.#timerInProgress = false;
+            timerInProgressRead.set(false);
+        }
+        public async getTimerInProgress(): Promise<boolean> {
+            return new Promise((resolve) => {
+                return resolve(this.#timerInProgress);
+            });
+        }
+    }
 
 	export let timerState = TimerStates.Pomodoro;
 	let pomodoroCounting: boolean = false;
@@ -41,7 +67,6 @@
 	};
 	// by default 25 minutes, 5 minutes, 15 minutes
 
-	let timerInProgress: boolean = false;
 	let interval: number = 0;
 
 	// formats the time that is displayed on screen
@@ -68,30 +93,34 @@
 
 	// modifies the change in time between now and the end time every decisecond
 	async function timerActiveCount(): Promise<void> {
-		return new Promise((resolve) => {
+		return new Promise(async (resolve) => {
 			let timeDifference: number = 0;
 			currentTime = Date.now();
 			endTime = currentTime + 100 * goalTime;
-			interval = setInterval(() => {
-				timeDifference = endTime - currentTime;
-				currentTime = Date.now();
-				formatTime(timeDifference / 100);
-				if (timeDifference <= 0 || timerInProgress === false) {
-					clearInterval(interval);
-					timerInProgress = false;
-					resolve();
-				}
-			}, 100);
+            let timerProgressState: boolean = await TimerProgress.getTimerInProgress();
+            timeDifference = endTime - currentTime;
+            alert('timer is Active?' + await timerProgressState);
+            interval = setInterval(async () => {
+                await formatTime(timeDifference / 100);
+                timerProgressState = await TimerProgress.getTimerInProgress();
+                currentTime = Date.now();
+                timeDifference = endTime - currentTime;
+                if (timeDifference <= 0 && timerProgressState === false) {
+                    await TimerProgress.updateTimerInProgressToFalse();
+                    resolve();
+                }
+            }, 100)        
 		});
 	}
 
 	// called when the start button is pressed
 	export async function startTimer(): Promise<void> {
-		if (timerInProgress === true) {
-			alert('Timer has already started.');
+        const timerProgressState: boolean = await TimerProgress.getTimerInProgress();
+		if (timerProgressState) {
+            await TimerProgress.updateTimerInProgressToFalse();
 		} else {
-			timerInProgress = true;
-			await timerActiveCount(); // probably the issue here
+			await TimerProgress.updateTimerInProgressToTrue();
+			await timerActiveCount();
 		}
 		return;
 	}
@@ -109,14 +138,15 @@
 
 	// pauses the timer and stops the time updater from looping
 	export async function stopTimer() {
-		timerInProgress = false;
+		await TimerProgress.updateTimerInProgressToFalse();
 		pomodoroCounting = false;
 		await updateGoalTime();
 	}
 
 	// sets the time based on deciseconds
 	export async function setTime(timetoSet: number) {
-		timerInProgress = false;
+        sessionNumber = 1;
+		await TimerProgress.updateTimerInProgressToFalse();
 		goalTime = timetoSet;
 		currentTime = Date.now();
 		endTime = currentTime + 100 * goalTime;
