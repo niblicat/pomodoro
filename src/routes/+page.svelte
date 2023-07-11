@@ -16,6 +16,8 @@
     let loading: boolean = false;
     let loadingDelayIsActive: boolean = true;
     let loadingIcon: HTMLElement;
+    let menu: HTMLElement;
+    let menuVisible: bool = true;
     let m = { x: 0, y: 0};
     let loadingStatus: boolean;
 
@@ -58,7 +60,7 @@
         if (mouseHasMoved > 1) {
             loadingIcon.style.top = m.y - 15 + 'px';
             loadingIcon.style.left = m.x - 15 + 'px';
-            loadingIcon.style.position = "absolute";  
+            loadingIcon.style.position = 'absolute';  
             loadingIcon.style.margin = '0px';
         }
         mouseHasMoved++;
@@ -74,48 +76,68 @@
 
     timer.clearTimer(); // initialise timer to 0 seconds
 
+    function closeSettings() {
+        console.log('close menu')
+        menuVisible = false;
+    }
+
 </script>
 
 <html lang="en">
 <body>
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
 <div class="background">
-    <div class="wrapper center">
-    <div class="timer center">
-        <div class="timerTitle">{timer.timerState === timer.TimerStates.Pomodoro ? 'Pomodoro Timer' : 'Timer'}</div>
-        <p class="numbersTime fade" transition:fade>
-            {#each $timeElement as e (e.type)}
-                {#if !((e.type === 'hours') && (e.value <= 0))}
-                    {#if ((e.type !== 'hours') && (e.value <= 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
-                {/if}
-            {/each}
-        </p>
-        <button
-        class="fade"
-        on:click={timer.timerState === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.startTimer}
-        title="Start"
-        id="start"
-        >
-        start
-        </button>
-        <button
-        class="fade"
-        on:click={timer.stopTimer}
-        title="Pause"
-        id="pause"
-        >
-        pause
-        </button>
-    </div>
-    </div>
+    {#if menuVisible}
     <div 
-    id={loading === true ? "loadingIcon" : "noID"}
-    class="center"
-    bind:this={loadingIcon}
-    />
-    {#if debug}
-        <p>{m.x}, {m.y}</p>
+    class="menu"
+    bind:this={menu}
+    transition:fly={{ y: -2000, duration: 2000 }}
+    >
+        <button 
+        class="fade"
+        on:click={closeSettings}
+        
+        >
+            close
+        </button>
+    </div>
     {/if}
+    <div class="wrapper center">
+        <div class="timer center">
+            <div class="timerTitle">{timer.timerState === timer.TimerStates.Pomodoro ? 'Pomodoro Timer' : 'Timer'}</div>
+            <p class="numbersTime fade" transition:fade>
+                {#each $timeElement as e (e.type)}
+                    {#if !((e.type === 'hours') && (e.value <= 0))}
+                        {#if ((e.type !== 'hours') && (e.value <= 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
+                    {/if}
+                {/each}
+            </p>
+            <button
+            class="fade"
+            on:click={timer.timerState === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.startTimer}
+            title="Start"
+            id="start"
+            >
+            start
+            </button>
+            <button
+            class="fade"
+            on:click={timer.stopTimer}
+            title="Pause"
+            id="pause"
+            >
+            pause
+            </button>
+        </div>
+        <div 
+        id={loading === true ? "loadingIcon" : "noID"}
+        class="center"
+        bind:this={loadingIcon}
+        />
+        {#if debug}
+            <p>{m.x}, {m.y}</p>
+        {/if}
+    </div>
 
 </div>
 </body>
@@ -166,15 +188,19 @@
     .background {
         height: 100%;
         width: 100%;
-        padding: 10px;
     }
 
     .wrapper {
-        height: 80%;
+        display: grid;
+        grid-template: 30% 30% 30% / 1fr;
+        vertical-align: middle;
+        text-align: center;
+        height: 100%;
         width: 100%;
     }
 
     .timer {
+        grid-row: 2;
         width: 80%;
         max-width: 380px;
         height: 100%;
@@ -225,7 +251,18 @@
     grid-column: 2;
     }
 
+    .menu {
+        width: 100%;
+        height: 40%;
+        display: flex;
+        background-color: white;
+        overflow: auto;
+        z-index: 3;
+        position: absolute;
+    }
+
     #loadingIcon {
+        grid-row: 3;
         margin: 8px calc(50vw - 30px) 8px calc(50vw - 30px);
         border: 4px solid white;
         border-top: 4px solid #13C4E8;
