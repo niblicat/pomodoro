@@ -201,7 +201,7 @@
         --accent1: #13E896;
         --accent2: #13C4E8;
         --contrast: #1499FF;
-        --complement: white;
+        --complement: #FF14B0;
         --neutral: #f8fffb;
         --neutralbright: #feffff;
     }
@@ -318,7 +318,7 @@
         grid-column: 1;
     }
     
-    .timer button#pause {
+    .timer button#pause:hover {
         background-color: var(--complement);
     }
 
