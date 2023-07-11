@@ -17,7 +17,7 @@
     let loadingDelayIsActive: boolean = true;
     let loadingIcon: HTMLElement;
     let menu: HTMLElement;
-    let menuVisible: boolean = true;
+    let menuVisible: boolean = false;
     let m = { x: 0, y: 0};
     let loadingStatus: boolean;
 
@@ -80,7 +80,7 @@
     function closeSettings() {
         menuVisible = false;
     }
-    
+
     // opens preference menu
     function openSettings() {
         menuVisible = true;
@@ -274,6 +274,7 @@
     }
 
     .closeMenu {
+        padding: 4px;
         align-self: baseline;
         justify-self: end;
     }
