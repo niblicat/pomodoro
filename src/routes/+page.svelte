@@ -78,6 +78,7 @@
 
 <html lang="en">
 <body>
+<link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
 <div class="background">
     <div class="wrapper center">
     <div class="timer center">
