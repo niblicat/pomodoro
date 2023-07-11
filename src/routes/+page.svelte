@@ -77,13 +77,13 @@
 
     // closes preference menu
     function closeSettings() {
-        menu.style.top = m.y - 250 + 'px';
+        menu.style.top = -260 + 'px';
         menuVisible = false;
     }
 
     // opens preference menu
     function openSettings() {
-        menu.style.top = m.y + 250 + 'px';
+        menu.style.top = 0 + 'px';
         menuVisible = true;
     }
 
@@ -93,18 +93,18 @@
 <body>
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
 <div class="background">
-    <div class="menuWrapper">
+    <div class="menuWrapper" bind:this={menu}>
         <div 
         class="menu"
-        bind:this={menu}
+        id={menuVisible ? "visible" : "invisible"}
         >
         </div>
-        
+
         <div class="optionsPadding">
             <button 
             class="fade"
             id="hanging"
-            on:click={closeSettings}
+            on:click={menuVisible ? closeSettings : openSettings}
             >
                 settings
             </button>
@@ -177,7 +177,6 @@
         box-sizing: border-box;
         font-family: ExoRegular, Arial, Helvetica, sans-serif;
     }
-
 
     button {
         border-radius: 25px;
@@ -287,14 +286,13 @@
         display: grid;
     }
     .menuWrapper {
+        top: -260px;
         width: 100%;
-        height: 286px;
-        max-height: 45%;
+        height: 296px;
         display: grid;
         position: absolute;
         grid-template: 1fr 36px / 1fr;
         text-align: center;
-        height: 100%;
         z-index: 3;
     }
     
@@ -338,6 +336,10 @@
         padding: 4px;
         align-self: baseline;
         justify-self: end;
+    }
+
+    #invisible {
+        visibility: hidden;
     }
 
     #loadingIcon {
