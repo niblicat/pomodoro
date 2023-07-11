@@ -82,7 +82,7 @@
 <div class="background">
     <div class="wrapper center">
     <div class="timer center">
-        <div class="timerTitle">Timer</div>
+        <div class="timerTitle">{timer.timerState === timer.TimerStates.Pomodoro ? 'Pomodoro Timer' : 'Timer'}</div>
         <p class="numbersTime fade" transition:fade>
             {#each $timeElement as e (e.type)}
                 {#if !((e.type === 'hours') && (e.value <= 0))}
@@ -96,7 +96,6 @@
         title="Start"
         id="start"
         >
-        
         start
         </button>
         <button
@@ -105,7 +104,7 @@
         title="Pause"
         id="pause"
         >
-            pause
+        pause
         </button>
     </div>
     </div>
@@ -136,7 +135,7 @@
 
     * {
         box-sizing: border-box;
-        font-family: Arial, Helvetica, sans-serif;
+        font-family: ExoRegular, Arial, Helvetica, sans-serif;
     }
 
     button {
@@ -208,6 +207,7 @@
         font-size: 48px;
         grid-row: 2;
         grid-column: span 2;
+        font-family: ExoExtraLight, Arial, Helvetica, sans-serif;
     }
 
     .timer button {
