@@ -17,7 +17,7 @@
     let loadingDelayIsActive: boolean = true;
     let loadingIcon: HTMLElement;
     let menu: HTMLElement;
-    let menuVisible: bool = true;
+    let menuVisible: boolean = true;
     let m = { x: 0, y: 0};
     let loadingStatus: boolean;
 
@@ -76,9 +76,14 @@
 
     timer.clearTimer(); // initialise timer to 0 seconds
 
+    // closes preference menu
     function closeSettings() {
-        console.log('close menu')
         menuVisible = false;
+    }
+    
+    // opens preference menu
+    function openSettings() {
+        menuVisible = true;
     }
 
 </script>
@@ -91,18 +96,25 @@
     <div 
     class="menu"
     bind:this={menu}
-    transition:fly={{ y: -2000, duration: 2000 }}
+    transition:fly={{ y: -500, duration: 500 }}
     >
         <button 
         class="fade"
         on:click={closeSettings}
-        
         >
             close
         </button>
     </div>
     {/if}
     <div class="wrapper center">
+        <div class="closeMenu">
+            <button 
+                class="fade"
+                on:click={openSettings}
+                >
+                    open
+            </button>
+        </div>
         <div class="timer center">
             <div class="timerTitle">{timer.timerState === timer.TimerStates.Pomodoro ? 'Pomodoro Timer' : 'Timer'}</div>
             <p class="numbersTime fade" transition:fade>
@@ -259,6 +271,11 @@
         overflow: auto;
         z-index: 3;
         position: absolute;
+    }
+
+    .closeMenu {
+        align-self: baseline;
+        justify-self: end;
     }
 
     #loadingIcon {
