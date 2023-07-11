@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { ActionData, PageData, SubmitFunction } from './$types'
-    import { enhance            } from '$app/forms'
-    import { fade, fly          } from 'svelte/transition';
+    import { enhance } from '$app/forms'
+    import { fade, fly, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
     import { timeElement } from './timer.svelte';
@@ -19,6 +19,7 @@
     let menuVisible: boolean = false;
     let m = { x: 0, y: 0};
     let loadingStatus: boolean;
+    let allowHover: boolean = true; // to prevent settings button from having hover effect after click
 
     // updates the internal cursor position based off the actual cursor
     // changes loading icon's position to relative if user is using mouse
@@ -77,14 +78,22 @@
 
     // closes preference menu
     function closeSettings() {
+        allowHover = false;
         menu.style.top = -260 + 'px';
-        menuVisible = false;
+        setTimeout(() => {
+            menuVisible = false;
+            allowHover = true;
+        }, 200);
     }
 
     // opens preference menu
     function openSettings() {
-        menu.style.top = 0 + 'px';
+        allowHover = false;
         menuVisible = true;
+        menu.style.top = 0 + 'px';
+        setTimeout(() => {
+            allowHover = true;
+        }, 200);
     }
 
 </script>
@@ -93,16 +102,16 @@
 <body>
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
 <div class="background">
-    <div class="menuWrapper" bind:this={menu}>
+    <div class="menuWrapper" bind:this={menu} transition:slide|global>
         <div 
         class="menu"
         id={menuVisible ? "visible" : "invisible"}
         >
         </div>
-
+        
         <div class="optionsPadding">
             <button 
-            class="fade"
+            class={allowHover ? "fade hoverable" : "fade unhoverable"}
             id="hanging"
             on:click={menuVisible ? closeSettings : openSettings}
             >
@@ -286,6 +295,7 @@
         display: grid;
     }
     .menuWrapper {
+        transition: all 200ms ease-out;
         top: -260px;
         width: 100%;
         height: 296px;
@@ -316,7 +326,7 @@
         -ms-transform-origin : 50% 0px;
     }
 
-    button#hanging:hover {
+    button#hanging.hoverable:hover {
         border-top: 0px;
         transform: scale(1, 1.25);
         -webkit-transform : scale(1, 1.25);
