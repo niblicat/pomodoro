@@ -3,7 +3,6 @@
     import { enhance            } from '$app/forms'
     import { fade, fly          } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
-	import { error } from '@sveltejs/kit';
     import * as timer from './timer.svelte';
     import { timeElement } from './timer.svelte';
 
@@ -78,11 +77,13 @@
 
     // closes preference menu
     function closeSettings() {
+        menu.style.top = m.y - 250 + 'px';
         menuVisible = false;
     }
 
     // opens preference menu
     function openSettings() {
+        menu.style.top = m.y + 250 + 'px';
         menuVisible = true;
     }
 
@@ -92,29 +93,24 @@
 <body>
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
 <div class="background">
-    {#if menuVisible}
-    <div 
-    class="menu"
-    bind:this={menu}
-    transition:fly={{ y: -500, duration: 500 }}
-    >
-        <button 
-        class="fade"
-        on:click={closeSettings}
+    <div class="menuWrapper">
+        <div 
+        class="menu"
+        bind:this={menu}
         >
-            close
-        </button>
-    </div>
-    {/if}
-    <div class="wrapper center">
-        <div class="openMenu">
+        </div>
+        
+        <div class="optionsPadding">
             <button 
-                class="fade"
-                on:click={openSettings}
-                >
-                    open
+            class="fade"
+            id="hanging"
+            on:click={closeSettings}
+            >
+                settings
             </button>
         </div>
+    </div>
+    <div class="wrapper center">
         <div class="timer center">
             <div class="timerTitle">{timer.timerState === timer.TimerStates.Pomodoro ? 'Pomodoro Timer' : 'Timer'}</div>
             <p class="numbersTime fade" transition:fade>
@@ -156,8 +152,18 @@
 </html>
 
 <style>
+    :root {
+        --background: #22FFE9;
+        --divback: #14FF63;
+        --accent1: #13E896;
+        --accent2: #13C4E8;
+        --contrast: #1499FF;
+        --neutral: #f8fffb;
+        --neutralbright: #feffff;
+    }
+
     html, body {
-        background-color: #22FFE9;
+        background-color: var(--background);
         margin: 0px;
         padding: 0px;
     }
@@ -172,22 +178,31 @@
         font-family: ExoRegular, Arial, Helvetica, sans-serif;
     }
 
+
     button {
         border-radius: 25px;
         min-width: 60px;
-        border: 2px solid #14FF63;
-        background-color: white;
+        border: 2px solid var(--divback);
+        background-color: var(--neutral);
         font-size: 20px;
     }
 
     button:hover {
-        background-color: #1499FF;
-        border: 2px solid white;
+        background-color: var(--accent2);
+        border: 2px solid var(--neutral);
         transform: scale(1.1);
+        -webkit-transform : scale(1.1);
+        -moz-transform : scale(1.1);
+        -o-transform : scale(1.1);
+        -ms-transform : scale(1.1);
     }
 
     button:active {
         transform: scale(0.9);
+        -webkit-transform : scale(0.9);
+        -moz-transform : scale(0.9);
+        -o-transform : scale(0.9);
+        -ms-transform : scale(0.9);
     }
 
     .center {
@@ -211,6 +226,7 @@
         width: 100%;
     }
 
+    
     .timer {
         grid-row: 2;
         width: 80%;
@@ -222,7 +238,7 @@
         grid-template-rows: 30% 30% 30% 10%;
         grid-gap: 10px;
         border-radius: 25px;
-        background-color: #13E896;
+        background-color: var(--divback);
         margin: auto;
         font-size: 20px;
     }
@@ -256,24 +272,69 @@
     }
 
     .timer button#start {
-    grid-column: 1;
+        grid-column: 1;
     }
 
     .timer button#pause {
-    grid-column: 2;
+        grid-column: 2;
     }
 
     .menu {
         width: 100%;
-        height: 40%;
-        background-color: white;
+        height: 100%;
+        background-color: var(--neutral);
         overflow: auto;
-        z-index: 3;
-        position: absolute;
         display: grid;
     }
+    .menuWrapper {
+        width: 100%;
+        height: 286px;
+        max-height: 45%;
+        display: grid;
+        position: absolute;
+        grid-template: 1fr 36px / 1fr;
+        text-align: center;
+        height: 100%;
+        z-index: 3;
+    }
+    
+    .optionsPadding {
+        display: flex;
+        justify-content: end;
+        padding-right: 40px;
+        padding-left: 40px;
+        order: 2;
+    }
 
-    .openMenu {
+    button#hanging {
+        min-width: 120px;
+        width: 120px;
+        border-radius: 0px 0px 25px 25px;
+        border-top: 0px;
+        transform-origin : 50% 0px;
+        -webkit-transform-origin : 50% 0px;
+        -moz-transform-origin : 50% 0px;
+        -o-transform-origin : 50% 0px;
+        -ms-transform-origin : 50% 0px;
+    }
+
+    button#hanging:hover {
+        border-top: 0px;
+        transform: scale(1, 1.25);
+        -webkit-transform : scale(1, 1.25);
+        -moz-transform : scale(1, 1.25);
+        -o-transform : scale(1, 1.25);
+        -ms-transform : scale(1, 1.25);
+    }
+    button#hanging:active {
+        transform: scale(1, 0.8);
+        -webkit-transform : scale(1, 0.8);
+        -moz-transform : scale(1, 0.8);
+        -o-transform : scale(1, 0.8);
+        -ms-transform : scale(1, 0.8);
+    }
+
+    #closeMenu {
         padding: 4px;
         align-self: baseline;
         justify-self: end;
@@ -282,8 +343,8 @@
     #loadingIcon {
         grid-row: 3;
         margin: 8px calc(50vw - 30px) 8px calc(50vw - 30px);
-        border: 4px solid white;
-        border-top: 4px solid #13C4E8;
+        border: 4px solid var(--neutralbright);
+        border-top: 4px solid var(--contrast);
         border-radius: 50%;
         width: 30px;
         height: 30px;
