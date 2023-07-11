@@ -107,7 +107,7 @@
     </div>
     {/if}
     <div class="wrapper center">
-        <div class="closeMenu">
+        <div class="openMenu">
             <button 
                 class="fade"
                 on:click={openSettings}
@@ -266,14 +266,14 @@
     .menu {
         width: 100%;
         height: 40%;
-        display: flex;
         background-color: white;
         overflow: auto;
         z-index: 3;
         position: absolute;
+        display: grid;
     }
 
-    .closeMenu {
+    .openMenu {
         padding: 4px;
         align-self: baseline;
         justify-self: end;
