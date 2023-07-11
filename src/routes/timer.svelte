@@ -112,14 +112,11 @@
 		return new Promise(async (resolve) => {
 			let timeDifference: number = 0;
 			currentTime = Date.now();
-            console.log('goaltime: ' + goalTime);
 			endTime = currentTime + 100 * goalTime;
             let timerProgressState: boolean = await TimerProgress.getTimerInProgress();
             timeDifference = endTime - currentTime;
-            console.log('time difference: ' + timeDifference)
             interval = setInterval(async () => {
                 await formatTime(timeDifference / 100);
-                console.log(timeDifference / 100);
                 timerProgressState = await TimerProgress.getTimerInProgress();
                 currentTime = Date.now();
                 timeDifference = endTime - currentTime;
@@ -155,7 +152,6 @@
 	// changes the goal time from current and end time values
 	async function updateGoalTime() {
         goalTime = (endTime - currentTime) / 100;
-        console.log('goalTime in update: ' + goalTime);
 	}
 
 	// pauses the timer and stops the time updater from looping
