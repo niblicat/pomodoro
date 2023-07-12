@@ -109,7 +109,7 @@
         >
             <div class="modes" style="background-color: #cc0000;">
                 <button
-                class='fade {$timerStateRead === timer.TimerStates.Pomodoro ? 'selectedOption' : ''}'
+                class='fade {$timerStateRead === timer.TimerStates.Pomodoro ? 'selectedOption' : 'unselectedOption'}'
                 id="Pomodoro"
                 on:click={() => {
                     timer.switchTimerMode(timer.TimerStates.Pomodoro);
@@ -118,7 +118,7 @@
                 Pomodoro
                 </button>
                 <button
-                class='fade {$timerStateRead === timer.TimerStates.Sage ? 'selectedOption' : ''}'
+                class='fade {$timerStateRead === timer.TimerStates.Sage ? 'selectedOption' : 'unselectedOption'}'
                 id="Sage"
                 on:click={() => {
                     timer.switchTimerMode(timer.TimerStates.Sage);
@@ -127,7 +127,7 @@
                 Coming Soon
                 </button>
                 <button
-                class='fade {$timerStateRead === timer.TimerStates.Standard ? 'selectedOption' : ''}'
+                class='fade {$timerStateRead === timer.TimerStates.Standard ? 'selectedOption' : 'unselectedOption'}'
                 id="Standard"
                 on:click={() => {
                     timer.switchTimerMode(timer.TimerStates.Standard);
@@ -470,12 +470,17 @@
         border-left: 0px;
     }
 
-    .selectedOption {
-        background-color: var(--accent1);
+    .unselectedOption {
+        background-color: var(--neutral);
     }
 
+    .unselectedOption:hover {
+        background-color: var(--accent2);
+        border: 2px solid var(--neutralbright);
+        border-bottom: 0px;
+    }
     .selectedOption:hover {
-        background-color: var(--accent1);
+        background-color: var(--neutralbright);
         border: 2px solid var(--divback);
         border-bottom: 0px;
     }
