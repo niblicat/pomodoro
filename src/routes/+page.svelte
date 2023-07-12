@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { ActionData, PageData, SubmitFunction } from './$types';
     import { enhance } from '$app/forms';
-    import { fade, fly, slide } from 'svelte/transition';
+    import { fade, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgressRead, timerStateRead } from './timer.svelte';
@@ -145,7 +145,11 @@
             </div>
             <div class="modesOptionsPadding" style="background-color: #cccc00;">
                 <div class="modesOptions">
-                    meow meow
+                    {#if $timerStateRead === timer.TimerStates.Standard}
+                        meow meow standr
+                    {:else if $timerStateRead === timer.TimerStates.Pomodoro}
+                        meow meow pomo
+                    {/if}
                 </div>
 
             </div>
