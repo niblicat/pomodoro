@@ -1,15 +1,15 @@
 <script lang="ts">
-    import type { ActionData, PageData, SubmitFunction } from './$types'
-    import { enhance } from '$app/forms'
+    import type { ActionData, PageData, SubmitFunction } from './$types';
+    import { enhance } from '$app/forms';
     import { fade, fly, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
-    import { timeElement, timerInProgressRead } from './timer.svelte';
+    import { timeElement, timerInProgressRead, timerStateRead } from './timer.svelte';
 
     export let data: PageData
     export let form: ActionData
 
-    const debug: boolean = false;
+    const debug: boolean = true;
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -109,20 +109,29 @@
         >
             <div class="modes" style="background-color: #cc0000;">
                 <button
-                class="fade"
+                class='fade {$timerStateRead === timer.TimerStates.Pomodoro ? 'selectedOption' : ''}'
                 id="Pomodoro"
+                on:click={() => {
+                    timer.switchTimerMode(timer.TimerStates.Pomodoro);
+                }}
                 >
                 Pomodoro
                 </button>
                 <button
-                class="fade"
+                class='fade {$timerStateRead === timer.TimerStates.Sage ? 'selectedOption' : ''}'
                 id="Sage"
+                on:click={() => {
+                    timer.switchTimerMode(timer.TimerStates.Sage);
+                }}
                 >
                 Coming Soon
                 </button>
                 <button
-                class="fade"
+                class='fade {$timerStateRead === timer.TimerStates.Standard ? 'selectedOption' : ''}'
                 id="Standard"
+                on:click={() => {
+                    timer.switchTimerMode(timer.TimerStates.Standard);
+                }}
                 >
                 Standard
                 </button>
@@ -160,7 +169,7 @@
     </div>
     <div class="wrapper center">
         <div class="timer center">
-            <div class="timerTitle">{timer.timerState === timer.TimerStates.Pomodoro ? 'Pomodoro Timer' : 'Timer'}</div>
+            <div class="timerTitle">{$timerStateRead === timer.TimerStates.Pomodoro ? 'Pomodoro Timer' : 'Timer'}</div>
             <p class="numbersTime fade" transition:fade>
                 {#each $timeElement as e (e.type)}
                     {#if !((e.type === 'hours') && (e.value <= 0))}
@@ -171,7 +180,7 @@
             {#if !$timerInProgressRead}
                 <button
                 class="fade"
-                on:click={timer.timerState === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.startTimer}
+                on:click={$timerStateRead === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.startTimer}
                 title="Start"
                 id="start"
                 >
@@ -212,9 +221,9 @@
                 </button>
                 <button
                 on:click={() => {
-                    alert(timer.timerState);
+                    alert($timerStateRead.toString());
                 }}>
-                    state = {timer.timerState.toString()}
+                    state = {$timerStateRead.toString()}
                 </button>
             </div>
         {/if}
@@ -397,26 +406,27 @@
         border-radius: 0px 0px 25px 25px;
         border-top: 0px;
         transform-origin : 50% 0px;
-        -webkit-transform-origin : 50% 0px;
-        -moz-transform-origin : 50% 0px;
-        -o-transform-origin : 50% 0px;
-        -ms-transform-origin : 50% 0px;
+        -webkit-transform-origin: 50% 0px;
+        -moz-transform-origin: 50% 0px;
+        -o-transform-origin: 50% 0px;
+        -ms-transform-origin: 50% 0px;
     }
 
     button#hanging.hoverable:hover {
         border-top: 0px;
-        transform: scale(1, 1.25);
-        -webkit-transform : scale(1, 1.25);
-        -moz-transform : scale(1, 1.25);
-        -o-transform : scale(1, 1.25);
-        -ms-transform : scale(1, 1.25);
+        transform: scale(1);
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
+
     button#hanging:active {
-        transform: scale(1, 0.8);
-        -webkit-transform : scale(1, 0.8);
-        -moz-transform : scale(1, 0.8);
-        -o-transform : scale(1, 0.8);
-        -ms-transform : scale(1, 0.8);
+        transform: scale(1);
+        -webkit-transform: scale(1);
+        -moz-transform: scale(1);
+        -o-transform: scale(1);
+        -ms-transform: scale(1);
     }
     
     .modes {
@@ -436,11 +446,11 @@
     }
 
     .modes button:hover {
-        transform: scale(1.0);
-        -webkit-transform : scale(1.0);
-        -moz-transform : scale(1.0);
-        -o-transform : scale(1.0);
-        -ms-transform : scale(1.0);
+        transform: none;
+        -webkit-transform: none;
+        -moz-transform: none;
+        -o-transform: none;
+        -ms-transform: none;
     }
 
     .modes button#Pomodoro {
@@ -460,6 +470,16 @@
         border-left: 0px;
     }
 
+    .selectedOption {
+        background-color: var(--accent1);
+    }
+
+    .selectedOption:hover {
+        background-color: var(--accent1);
+        border: 2px solid var(--divback);
+        border-bottom: 0px;
+    }
+
     .modesOptionsPadding {
         display: flex;
         padding: 0px 4px 4px 4px;
@@ -473,7 +493,6 @@
         background-color: var(--neutralbright);
         border: 2px solid var(--divback);
     }
-
 
     #closeMenu {
         padding: 4px;

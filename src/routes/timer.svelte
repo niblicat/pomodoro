@@ -7,12 +7,12 @@
 	interface TimeElement {
 		type: string;
 		value: number;
-	}
+	};
 	interface PomodoroTimes {
 		work: number;
 		short: number;
 		long: number;
-	}
+	};
 	export const PomodoroStates = {
 		Work: Symbol('Work'),
 		Short: Symbol('Short'),
@@ -20,7 +20,8 @@
 	};
 	export const TimerStates = {
 		Pomodoro: Symbol('Pomodoro'),
-		Standard: Symbol('Standard')
+		Standard: Symbol('Standard'),
+		Sage: Symbol('Sage')
 	};
     
     export let timerInProgressRead: Writable<boolean> = writable(false);
@@ -48,8 +49,8 @@
             });
         }
     }
-
-	export let timerState = TimerStates.Pomodoro;
+	export let timerState: Symbol = TimerStates.Pomodoro;
+    export let timerStateRead: Writable<Symbol> = writable(timerState);
 	let pomodoroCounting: boolean = false;
 	let pomodoroState = PomodoroStates.Work;
 	let sessionNumber: number = 1;
@@ -212,4 +213,22 @@
 			}
 		}
 	}
+
+    export function switchTimerMode(newTimerState: Symbol) {
+        if (timerState !== newTimerState) {
+            switch (newTimerState) {
+                case TimerStates.Pomodoro:
+                    timerState = TimerStates.Pomodoro;
+                    timerStateRead.set(timerState);
+                    break;
+                case TimerStates.Standard:
+                    timerState = TimerStates.Standard;
+                    break;
+                case TimerStates.Sage:
+                    timerState = TimerStates.Sage;
+                    break;
+            }
+            timerStateRead.set(timerState);
+        }
+    }
 </script>
