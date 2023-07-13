@@ -243,7 +243,6 @@
     <div class="wrapper center">
         <div class="timer center">
             <div class="timerTitle">{($timerStateRead === timer.TimerStates.Pomodoro ? 'Pomodoro Timer' : 'Timer')}</div>
-            {#if $timerNumberVisibility === true}
                 <p class="numbersTime fade" transition:fade>
                     {#each $timeElement as e (e.type)}
                         {#if !((e.type === 'hours') && (e.value <= 0))}
@@ -251,7 +250,6 @@
                         {/if}
                     {/each}
                 </p>
-            {/if}
             {#if !$timerInProgressRead}
                 <button
                 class="fade"
