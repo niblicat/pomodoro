@@ -214,12 +214,12 @@
 		}
 	}
 
-    export function switchTimerMode(newTimerState: Symbol) {
+    export async function switchTimerMode(newTimerState: Symbol) {
+        await clearTimer();
         if (timerState !== newTimerState) {
             switch (newTimerState) {
                 case TimerStates.Pomodoro:
                     timerState = TimerStates.Pomodoro;
-                    timerStateRead.set(timerState);
                     break;
                 case TimerStates.Standard:
                     timerState = TimerStates.Standard;

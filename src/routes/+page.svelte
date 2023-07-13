@@ -147,8 +147,10 @@
                 <div class="modesOptions">
                     {#if $timerStateRead === timer.TimerStates.Standard}
                         meow meow standr
+
                     {:else if $timerStateRead === timer.TimerStates.Pomodoro}
                         meow meow pomo
+
                     {/if}
                 </div>
 
@@ -378,6 +380,7 @@
         overflow: auto;
         display: grid;
         grid-template: 25% 75% / 60% 25% 15%;
+        border-bottom: 2px solid var(--divback);
     }
 
     .menuWrapper {
@@ -405,10 +408,12 @@
     }
 
     button#hanging {
+        margin-top: -1px;
         min-width: 120px;
         width: 120px;
         border-radius: 0px 0px 25px 25px;
         border-top: 0px;
+        z-index: 2;
         transform-origin : 50% 0px;
         -webkit-transform-origin: 50% 0px;
         -moz-transform-origin: 50% 0px;
@@ -418,11 +423,11 @@
 
     button#hanging.hoverable:hover {
         border-top: 0px;
-        transform: scale(1);
-        -webkit-transform: scale(1);
-        -moz-transform: scale(1);
-        -o-transform: scale(1);
-        -ms-transform: scale(1);
+        transform: none;
+        -webkit-transform: none;
+        -moz-transform: none;
+        -o-transform: none;
+        -ms-transform: none;
     }
 
     button#hanging:active {
@@ -441,7 +446,7 @@
     }
 
     .modes button {
-        margin-bottom: -1px;
+        margin-bottom: -2px;
         border-bottom: 0px;
         border-radius: 25px 25px 0px 0px;
         width: 25%;
