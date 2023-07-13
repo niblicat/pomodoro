@@ -180,7 +180,25 @@
                     {#if $timerStateRead === timer.TimerStates.Pomodoro}
                         <div>
                             <label for="workInput">work</label>
+
+                            <button 
+                            class="inputButton left"
+                            on:click={() => {
+                                if (pomoWork > 1) pomoWork--;
+                            }}
+                            >
+                            -
+                            </button>
                             <input type="number" id="workInput" bind:value={pomoWork} min="1" step="1"/>
+                            <button 
+                            class="inputButton right"
+                            on:click={() => {
+                                pomoWork++;
+                            }}
+                            >
+                            +
+                            </button>
+
                             <label for="shortInput">short</label>
                             <input type="number" id="shortInput" bind:value={pomoShort} min="0" step="1"/>
                             <label for="longInput">long</label>
@@ -414,9 +432,20 @@
     }
 
     input[type="number"] {
-        width: 48px;
-        border: 2px solid var(--divback);
-        border-radius: 25px;
+        font-size: 14px;
+        height: 24px;
+        width: 25px;
+        border-top: 2px solid var(--divback);
+        border-bottom: 2px solid var(--divback);
+        border-left: 0px;
+        border-right: 0px;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+    input[type=number]::-webkit-inner-spin-button,
+    input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
     }
 
     .background {
@@ -633,6 +662,21 @@
 
     .modesOptions button {
         width: 90%;
+    }
+
+    button.inputButton {
+        font-size: 16px;
+        min-width: 25px;
+        width: 25px;
+        height: 25px;
+        padding: 0px;
+        
+    }
+    button.inputButton.left {
+        border-radius: 25px 0px 0px 25px;
+    }
+    button.inputButton.right {
+        border-radius: 0px 25px 25px 0px;
     }
 
     #closeMenu {
