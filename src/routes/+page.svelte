@@ -433,12 +433,13 @@
 
     input[type="number"] {
         font-size: 14px;
-        height: 24px;
+        height: 27px;
         width: 25px;
         border-top: 2px solid var(--divback);
         border-bottom: 2px solid var(--divback);
         border-left: 0px;
         border-right: 0px;
+        text-align: center;
         -webkit-appearance: textfield;
         -moz-appearance: textfield;
         appearance: textfield;
@@ -665,11 +666,12 @@
     }
 
     button.inputButton {
+        margin-right: -4px;
+        margin-left: -4px;
         font-size: 16px;
         min-width: 25px;
         width: 25px;
-        height: 25px;
-        padding: 0px;
+        height: 27px;
         
     }
     button.inputButton.left {
