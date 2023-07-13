@@ -4,7 +4,7 @@
     import { fade, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
-    import { timeElement, timerInProgressRead, timerStateRead } from './timer.svelte';
+    import { timeElement, timerInProgressRead, timerStateRead, timerNumberVisibility } from './timer.svelte';
 
     export let data: PageData
     export let form: ActionData
@@ -56,8 +56,7 @@
 
     onMount(() => {
         currentModePage = ModePage.Options;
-        timer.clearTimer(); // initialise timer to 0 seconds
-        openSettings();
+        openSettings(); //temporary 
         document.body.addEventListener('mousemove', handleMouseMove);
         
         return () => {
@@ -244,13 +243,15 @@
     <div class="wrapper center">
         <div class="timer center">
             <div class="timerTitle">{($timerStateRead === timer.TimerStates.Pomodoro ? 'Pomodoro Timer' : 'Timer')}</div>
-            <p class="numbersTime fade" transition:fade>
-                {#each $timeElement as e (e.type)}
-                    {#if !((e.type === 'hours') && (e.value <= 0))}
-                        {#if ((e.type !== 'hours') && (e.value < 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
-                    {/if}
-                {/each}
-            </p>
+            {#if $timerNumberVisibility === true}
+                <p class="numbersTime fade" transition:fade>
+                    {#each $timeElement as e (e.type)}
+                        {#if !((e.type === 'hours') && (e.value <= 0))}
+                            {#if ((e.type !== 'hours') && (e.value < 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
+                        {/if}
+                    {/each}
+                </p>
+            {/if}
             {#if !$timerInProgressRead}
                 <button
                 class="fade"
@@ -270,14 +271,14 @@
                 pause
                 </button>
             {/if}
-            <button
-            class="fade"
-            on:click={timer.clearTimer}
-            title="Clear"
-            id="clear"
-            >
-            clear
-            </button>
+                <button
+                class="fade"
+                on:click={timer.clearTimer}
+                title="Clear"
+                id="clear"
+                >
+                clear
+                </button>
         </div>
         <div 
         id={loading === true ? "loadingIcon" : "noID"}
@@ -304,6 +305,12 @@
                     alert(innerWidth + 'x' + innerHeight);
                 }}>
                     dim: {innerWidth + 'x' + innerHeight}
+                </button>
+                <button
+                on:click={() => {
+                    alert($timerNumberVisibility);
+                }}>
+                    numvis: {$timerNumberVisibility}
                 </button>
             </div>
         {/if}

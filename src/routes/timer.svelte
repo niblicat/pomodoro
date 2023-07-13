@@ -71,26 +71,48 @@
 
 	let interval: number = 0;
 
+    export let timerNumberVisibility: Writable<boolean> = writable(true);
+
 	// formats the time that is displayed on screen
 	async function formatTime(time: number) {
-		let hours = Math.floor(time / 36000);
-		let minutes = Math.floor((time - 36000 * hours) / 600);
-		let seconds = Math.floor((time - 36000 * hours - 600 * minutes) / 10);
-
-		timeElement.set([
-			{
-				type: 'hours',
-				value: hours
-			},
-			{
-				type: 'minutes',
-				value: minutes
-			},
-			{
-				type: 'seconds',
-				value: seconds
-			}
-		]);
+        if (time > 0) {
+            let hours = Math.floor(time / 36000);
+            let minutes = Math.floor((time - 36000 * hours) / 600);
+            let seconds = Math.floor((time - 36000 * hours - 600 * minutes) / 10);
+    
+            console.log(hours + ':' + minutes + ':' + seconds + ' - ' + time);
+    
+            timeElement.set([
+                {
+                    type: 'hours',
+                    value: hours
+                },
+                {
+                    type: 'minutes',
+                    value: minutes
+                },
+                {
+                    type: 'seconds',
+                    value: seconds
+                }
+            ]);
+        }
+        else {
+            timeElement.set([
+                {
+                    type: 'hours',
+                    value: 0
+                },
+                {
+                    type: 'minutes',
+                    value: 0
+                },
+                {
+                    type: 'seconds',
+                    value: 0
+                }
+            ]);
+        }
 	}
 
     // modifies pomodoro state to next state based on current
@@ -118,16 +140,16 @@
             let timerProgressState: boolean = await TimerProgress.getTimerInProgress();
             timeDifference = endTime - currentTime;
             interval = setInterval(async () => {
-                await formatTime(timeDifference / 100);
-                timerProgressState = await TimerProgress.getTimerInProgress();
-                currentTime = Date.now();
-                timeDifference = endTime - currentTime;
                 if (timeDifference <= 0 || timerProgressState === false) {
                     if ((timerProgressState === true) && (timerState === TimerStates.Pomodoro)) await modifyPomodoroState();
                     await TimerProgress.updateTimerInProgressToFalse();
                     clearInterval(interval);
                     resolve();
                 }
+                await formatTime(timeDifference / 100);
+                timerProgressState = await TimerProgress.getTimerInProgress();
+                currentTime = Date.now();
+                timeDifference = endTime - currentTime;
             }, 100)        
 		});
 	}
@@ -175,8 +197,19 @@
 
 	// completely resets the timer to 0 deciseconds
 	export async function clearTimer() {
-		await stopTimer();
-		await setTime(0);
+        timerNumberVisibility.set(false);
+        if (await TimerProgress.getTimerInProgress() === true) {
+            await stopTimer();
+            setTimeout(async () => {
+                await setTime(0);
+            }, 200);
+            timerNumberVisibility.set(true);
+        }
+        else {
+            await stopTimer();
+            await setTime(0);
+            timerNumberVisibility.set(true);
+        }
 	}
 
     // converts hh:mm:ss to equivalent in deciseconds
@@ -213,6 +246,8 @@
 
     // switches timer mode between pomodoro, standard, and descending
     export async function switchTimerMode(newTimerState: Symbol) {
+        timerNumberVisibility.set(false);
+        alert(timerNumberVisibility);
         await clearTimer();
         if (timerState !== newTimerState) {
             switch (newTimerState) {
@@ -230,6 +265,7 @@
             }
             timerStateRead.set(timerState);
         }
+        timerNumberVisibility.set(true);
     }
 
     // changes the pomodoro stored work, short, and long times and seconds and calls functions to update value for onscreen counter
