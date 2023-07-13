@@ -476,6 +476,9 @@
     input[type=number]::-webkit-outer-spin-button {
         -webkit-appearance: none;
     }
+    input[type="number"]:focus {
+        outline: none;
+    }
 
     .background {
         height: 100%;
