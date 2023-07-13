@@ -294,5 +294,9 @@
         if (goalTime <= 0) await setTime(standardTime);
         await startTimer();
     }
-    
+
+    export async function changeLongSession(num: number) {
+        longSession = 2 * num + 1;
+    }
+
 </script>

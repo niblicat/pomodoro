@@ -58,6 +58,7 @@
         currentModePage = ModePage.Options;
         openSettings(); //temporary 
         document.body.addEventListener('mousemove', handleMouseMove);
+        timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
         
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
@@ -122,6 +123,7 @@
     let pomoWork: number = 25;
     let pomoShort: number = 5;
     let pomoLong: number = 15;
+    let pomoLongPhase: number = 4;
 
 </script>
 
@@ -177,28 +179,43 @@
                 <div class="modesOptions">
                     {#if $timerStateRead === timer.TimerStates.Pomodoro}
                         <div>
-                            <input type="number" id="workInput" bind:value={pomoWork} min="0" step="1"/>
+                            <input type="number" id="workInput" bind:value={pomoWork} min="1" step="1"/>
                             <label for="workInput">work</label>
                             <input type="number" id="shortInput" bind:value={pomoShort} min="0" step="1"/>
                             <label for="shortInput">short</label>
                             <input type="number" id="longInput" bind:value={pomoLong} min="0" step="1"/>
                             <label for="longInput">long</label>
+                        </div>
+                        <div>
+                            <input type="number" id="longSession" bind:value={pomoLongPhase} min="1" step="1"/>
+                            <label for="longSession">Long-Short Repetitions</label>
+                        </div>
+                        <div>
                             <button 
                             class="fade"
                             on:click={async () => {
+                                await timer.changeLongSession(pomoLongPhase);
                                 await timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
                             }}
                             >
                                 set times
                             </button>
                         </div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
-                        <div></div>
+                        <div>
+                            <button 
+                            class="fade"
+                            on:click={async () => {
+                                pomoLongPhase = 4;
+                                pomoWork = 25;
+                                pomoShort = 5;
+                                pomoLong = 15;
+                                await timer.changeLongSession(pomoLongPhase);
+                                await timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
+                            }}
+                            >
+                                reset values
+                            </button>
+                        </div>
 
                     {:else if $timerStateRead === timer.TimerStates.Standard}
                     <div>
@@ -208,6 +225,8 @@
                         <label for="shortInput">minutes</label>
                         <input type="number" id="secondsInput" bind:value={seconds} min="0" max="59" step="1"/>
                         <label for="secondsInput">seconds</label>
+                    </div>
+                    <div>
                         <button 
                         class="fade"
                         on:click={async () => {
@@ -216,6 +235,19 @@
                         >
                             set times
                         </button>
+                    </div>
+                    <div>
+                        <button 
+                            class="fade"
+                            on:click={async () => {
+                                hours = 0;
+                                minutes = 5
+                                seconds = 0;
+                                await timer.modifyStandardTimes(hours, minutes, seconds);
+                            }}
+                            >
+                                reset values
+                            </button>
                     </div>
 
                     {/if}
@@ -497,11 +529,11 @@
         border-radius: 0px 0px 25px 25px;
         border-top: 0px;
         z-index: 2;
-        transform-origin : 50% 0px;
+        /* transform-origin : 50% 0px;
         -webkit-transform-origin: 50% 0px;
         -moz-transform-origin: 50% 0px;
         -o-transform-origin: 50% 0px;
-        -ms-transform-origin: 50% 0px;
+        -ms-transform-origin: 50% 0px; */
     }
 
     button#hanging.hoverable:hover {
@@ -571,6 +603,7 @@
         border: 2px solid var(--neutralbright);
         border-bottom: 0px;
     }
+
     .selectedOption:hover {
         background-color: var(--neutralbright);
         border: 2px solid var(--divback);
@@ -585,12 +618,19 @@
     .modesOptions {
         display: grid;
         grid-template: 1fr 1fr 1fr 1fr / 1fr 1fr;
-        overflow: hidden;
+        grid-auto-flow: column;
+        justify-content: center;
+        align-items: center;
+        overflow: scroll;
         border-radius: 0px 25px 25px 25px;
         height: 100%;
         width: 100%;
         background-color: var(--neutralbright);
         border: 2px solid var(--divback);
+    }
+
+    .modesOptions button {
+        width: 90%;
     }
 
     #closeMenu {
