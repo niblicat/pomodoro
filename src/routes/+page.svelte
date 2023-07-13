@@ -178,8 +178,8 @@
             <div class="modesOptionsPadding" style="background-color: #cccc00;">
                 <div class="modesOptions">
                     {#if $timerStateRead === timer.TimerStates.Pomodoro}
-                        <div>
-                            <label for="workInput">work</label>
+                        <div class="span2">
+                            <label for="workInput">work </label>
 
                             <button 
                             class="inputButton left"
@@ -198,19 +198,51 @@
                             >
                             +
                             </button>
-
-                            <label for="shortInput">short</label>
+                            
+                            <label for="shortInput">short </label>
+                            <button 
+                            class="inputButton left"
+                            on:click={() => {
+                                if (pomoShort > 0) pomoShort--;
+                            }}
+                            >
+                            -
+                            </button>
                             <input type="number" id="shortInput" bind:value={pomoShort} min="0" step="1"/>
-                            <label for="longInput">long</label>
+                            <button 
+                            class="inputButton right"
+                            on:click={() => {
+                                pomoShort++;
+                            }}
+                            >
+                            +
+                            </button>
+                            <label for="longInput">long </label>
+                            <button 
+                            class="inputButton left"
+                            on:click={() => {
+                                if (pomoLong > 0) pomoLong--;
+                            }}
+                            >
+                            -
+                            </button>
                             <input type="number" id="longInput" bind:value={pomoLong} min="0" step="1"/>
+                            <button 
+                            class="inputButton right"
+                            on:click={() => {
+                                pomoLong++;
+                            }}
+                            >
+                            +
+                            </button>
                         </div>
-                        <div>
-                            <label for="longSession">long-short repetitions</label>
+                        <div class="span2">
+                            <label for="longSession">long-short repetitions </label>
                             <input type="number" id="longSession" bind:value={pomoLongPhase} min="1" step="1"/>
                         </div>
-                        <div>
+                        <div class="optionsButtonsContainer span2">
                             <button 
-                            class="fade"
+                            class="optionsButton fade"
                             on:click={async () => {
                                 await timer.changeLongSession(pomoLongPhase);
                                 await timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
@@ -218,10 +250,8 @@
                             >
                                 set times
                             </button>
-                        </div>
-                        <div>
                             <button 
-                            class="fade"
+                            class="optionsButton fade"
                             on:click={async () => {
                                 pomoLongPhase = 4;
                                 pomoWork = 25;
@@ -244,28 +274,26 @@
                         <label for="secondsInput">seconds</label>
                         <input type="number" id="secondsInput" bind:value={seconds} min="0" max="59" step="1"/>
                     </div>
-                    <div>
+                    <div class="optionsButtonsContainer span2">
                         <button 
-                        class="fade"
+                        class="optionsButton fade"
                         on:click={async () => {
                             await timer.modifyStandardTimes(hours, minutes, seconds);
                         }}
                         >
                             set times
                         </button>
-                    </div>
-                    <div>
                         <button 
-                            class="fade"
+                            class="optionsButton fade"
                             on:click={async () => {
                                 hours = 0;
                                 minutes = 5
                                 seconds = 0;
                                 await timer.modifyStandardTimes(hours, minutes, seconds);
                             }}
-                            >
-                                reset values
-                            </button>
+                        >
+                            reset values
+                        </button>
                     </div>
 
                     {/if}
@@ -661,8 +689,11 @@
         border: 2px solid var(--divback);
     }
 
-    .modesOptions button {
-        width: 90%;
+    button.optionsButton {
+        min-width: 150px;
+        width: 100%;
+        margin-left: 12px;
+        margin-right: 12px;
     }
 
     button.inputButton {
@@ -674,6 +705,7 @@
         height: 27px;
         
     }
+
     button.inputButton.left {
         border-radius: 25px 0px 0px 25px;
     }
@@ -685,6 +717,15 @@
         padding: 4px;
         align-self: baseline;
         justify-self: end;
+    }
+
+    .span2 {
+        grid-column: span 2;
+    }
+
+    .optionsButtonsContainer {
+        display: flex;
+        justify-content: space-around;
     }
 
     #invisible {
