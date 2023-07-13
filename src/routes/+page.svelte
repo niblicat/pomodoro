@@ -179,16 +179,16 @@
                 <div class="modesOptions">
                     {#if $timerStateRead === timer.TimerStates.Pomodoro}
                         <div>
-                            <input type="number" id="workInput" bind:value={pomoWork} min="1" step="1"/>
                             <label for="workInput">work</label>
-                            <input type="number" id="shortInput" bind:value={pomoShort} min="0" step="1"/>
+                            <input type="number" id="workInput" bind:value={pomoWork} min="1" step="1"/>
                             <label for="shortInput">short</label>
-                            <input type="number" id="longInput" bind:value={pomoLong} min="0" step="1"/>
+                            <input type="number" id="shortInput" bind:value={pomoShort} min="0" step="1"/>
                             <label for="longInput">long</label>
+                            <input type="number" id="longInput" bind:value={pomoLong} min="0" step="1"/>
                         </div>
                         <div>
+                            <label for="longSession">long-short repetitions</label>
                             <input type="number" id="longSession" bind:value={pomoLongPhase} min="1" step="1"/>
-                            <label for="longSession">Long-Short Repetitions</label>
                         </div>
                         <div>
                             <button 
@@ -219,12 +219,12 @@
 
                     {:else if $timerStateRead === timer.TimerStates.Standard}
                     <div>
-                        <input type="number" id="hourInput" bind:value={hours} min="0" step="1"/>
                         <label for="hourInput">hours</label>
-                        <input type="number" id="minutesInput" bind:value={minutes} min="0" max="59" step="1"/>
+                        <input type="number" id="hourInput" bind:value={hours} min="0" step="1"/>
                         <label for="shortInput">minutes</label>
-                        <input type="number" id="secondsInput" bind:value={seconds} min="0" max="59" step="1"/>
+                        <input type="number" id="minutesInput" bind:value={minutes} min="0" max="59" step="1"/>
                         <label for="secondsInput">seconds</label>
+                        <input type="number" id="secondsInput" bind:value={seconds} min="0" max="59" step="1"/>
                     </div>
                     <div>
                         <button 
@@ -415,6 +415,8 @@
 
     input[type="number"] {
         width: 48px;
+        border: 2px solid var(--divback);
+        border-radius: 25px;
     }
 
     .background {
