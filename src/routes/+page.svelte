@@ -120,6 +120,9 @@
     let hours: number = 0;
     let minutes: number = 5;
     let seconds: number = 0;
+    let pomoWork: number = 25;
+    let pomoShort: number = 5;
+    let pomoLong: number = 15;
 
 </script>
 
@@ -148,7 +151,8 @@
                 class='fade {$timerStateRead === timer.TimerStates.Sage ? 'selectedOption' : 'unselectedOption'}'
                 id="Sage"
                 on:click={() => {
-                    timer.switchTimerMode(timer.TimerStates.Sage);
+                    alert('This feature is not yet available.');
+                    // timer.switchTimerMode(timer.TimerStates.Sage);
                 }}
                 >
                 Coming Soon
@@ -172,18 +176,18 @@
             </div>
             <div class="modesOptionsPadding" style="background-color: #cccc00;">
                 <div class="modesOptions">
-                    {#if $timerStateRead === timer.TimerStates.Standard}
+                    {#if $timerStateRead === timer.TimerStates.Pomodoro}
                         <div>
-                            <input type="number" id="hoursInput" bind:value={hours} min="0" max="59" step="1"/>
-                            <label for="hoursInput">hours</label>
-                            <input type="number" id="minutesInput" bind:value={minutes} min="0" max="59" step="1"/>
-                            <label for="minutesInput">minutes</label>
-                            <input type="number" id="secondsInput" bind:value={seconds} min="0" max="59" step="1"/>
-                            <label for="secondsInput">seconds</label>
+                            <input type="number" id="workInput" bind:value={pomoWork} min="0" step="1"/>
+                            <label for="workInput">work</label>
+                            <input type="number" id="shortInput" bind:value={pomoShort} min="0" step="1"/>
+                            <label for="shortInput">short</label>
+                            <input type="number" id="longInput" bind:value={pomoLong} min="0" step="1"/>
+                            <label for="longInput">long</label>
                             <button 
                             class="fade"
-                            on:click={() => {
-                                timer.setTime(timer.convertTimeToDeciseconds(hours, minutes, seconds));
+                            on:click={async () => {
+                                await timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
                             }}
                             >
                                 set times
@@ -197,8 +201,23 @@
                         <div></div>
                         <div></div>
 
-                    {:else if $timerStateRead === timer.TimerStates.Pomodoro}
-                        meow meow pomo
+                    {:else if $timerStateRead === timer.TimerStates.Standard}
+                    <div>
+                        <input type="number" id="hourInput" bind:value={hours} min="0" step="1"/>
+                        <label for="hourInput">hours</label>
+                        <input type="number" id="minutesInput" bind:value={minutes} min="0" max="59" step="1"/>
+                        <label for="shortInput">minutes</label>
+                        <input type="number" id="secondsInput" bind:value={seconds} min="0" max="59" step="1"/>
+                        <label for="secondsInput">seconds</label>
+                        <button 
+                        class="fade"
+                        on:click={async () => {
+                            await timer.modifyStandardTimes(hours, minutes, seconds);
+                        }}
+                        >
+                            set times
+                        </button>
+                    </div>
 
                     {/if}
                 </div>
@@ -235,7 +254,7 @@
             {#if !$timerInProgressRead}
                 <button
                 class="fade"
-                on:click={$timerStateRead === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.startTimer}
+                on:click={$timerStateRead === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.standardStartTimer}
                 title="Start"
                 id="start"
                 >

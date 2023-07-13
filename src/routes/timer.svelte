@@ -55,6 +55,7 @@
 	let pomodoroState = PomodoroStates.Work;
 	let sessionNumber: number = 1;
 	let longSession: number = 9;
+    let standardTime: number = 3000;
 
 	let goalTime: number = 0;
 	let currentTime: number = Date.now();
@@ -176,14 +177,10 @@
 	export async function clearTimer() {
 		await stopTimer();
 		await setTime(0);
-        setTimeout(async () => {
-            await formatTime(0);
-        }, 100); // patchwork solution bc the timer doesn't like to update to 0 when I want it to
-        // first time clearing does the weird effect
 	}
 
     // converts hh:mm:ss to equivalent in deciseconds
-	export function convertTimeToDeciseconds(hours: number, minutes: number, seconds: number): number {
+	export async function convertTimeToDeciseconds(hours: number, minutes: number, seconds: number): Promise<number> {
 		return 36000 * hours + 600 * minutes + 10 * seconds;
 	}
 
@@ -194,15 +191,15 @@
 			switch (pomodoroState) {
 				case PomodoroStates.Work:
                     // look out for this goalTime less than zero if problems come up in the future
-                    if (goalTime <= 0) await setTime(convertTimeToDeciseconds(0, pomodoroTimes.work, 0));
+                    if (goalTime <= 0) await setTime(await convertTimeToDeciseconds(0, pomodoroTimes.work, 0));
 					await startTimer();
 					break;
 				case PomodoroStates.Short:
-                    if (goalTime <= 0) await setTime(convertTimeToDeciseconds(0, pomodoroTimes.short, 0));
+                    if (goalTime <= 0) await setTime(await convertTimeToDeciseconds(0, pomodoroTimes.short, 0));
 					await startTimer();
 					break;
 				case PomodoroStates.Long:
-                    if (goalTime <= 0) await setTime(convertTimeToDeciseconds(0, pomodoroTimes.long, 0));
+                    if (goalTime <= 0) await setTime(await convertTimeToDeciseconds(0, pomodoroTimes.long, 0));
 					await startTimer();
 					break;
 			}
@@ -214,15 +211,18 @@
 		}
 	}
 
+    // switches timer mode between pomodoro, standard, and descending
     export async function switchTimerMode(newTimerState: Symbol) {
         await clearTimer();
         if (timerState !== newTimerState) {
             switch (newTimerState) {
                 case TimerStates.Pomodoro:
                     timerState = TimerStates.Pomodoro;
+                    await setTime(await convertTimeToDeciseconds(0, pomodoroTimes.work, 0));
                     break;
                 case TimerStates.Standard:
                     timerState = TimerStates.Standard;
+                    await setTime(standardTime);
                     break;
                 case TimerStates.Sage:
                     timerState = TimerStates.Sage;
@@ -231,4 +231,28 @@
             timerStateRead.set(timerState);
         }
     }
+
+    // changes the pomodoro stored work, short, and long times and seconds and calls functions to update value for onscreen counter
+    export async function modifyPomodoroTimes(work: number, short: number, long: number) {
+        await clearTimer();
+        pomodoroTimes = {
+            work: work,
+            short: short,
+            long: long
+        }
+        await setTime(await convertTimeToDeciseconds(0, work, 0));
+    }
+
+    // changes the standard timer's stored hours, minutes and seconds and calls functions to update value for onscreen counter
+    export async function modifyStandardTimes(hours: number, minutes: number, seconds: number) {
+        await clearTimer();
+        standardTime = await convertTimeToDeciseconds(hours, minutes, seconds);
+        await setTime(standardTime);
+    }
+
+    export async function standardStartTimer() {
+        if (goalTime <= 0) await setTime(standardTime);
+        await startTimer();
+    }
+    
 </script>
