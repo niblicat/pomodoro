@@ -3,7 +3,7 @@
     import { enhance } from '$app/forms';
     import { fade, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
-    import * as timer from './timer.svelte';
+    import Timer, * as timer from './timer.svelte';
     import { timeElement, timerInProgressRead, timerStateRead, timerNumberVisibility } from './timer.svelte';
 
     export let data: PageData
@@ -306,12 +306,12 @@
                 }}>
                     dim: {innerWidth + 'x' + innerHeight}
                 </button>
-                <button
+                <!-- <button
                 on:click={() => {
                     alert($timerNumberVisibility);
                 }}>
                     numvis: {$timerNumberVisibility}
-                </button>
+                </button> -->
             </div>
         {/if}
     </div>

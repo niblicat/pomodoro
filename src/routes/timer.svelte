@@ -2,9 +2,9 @@
 	// Counts down each time segment
 	// Processes a length of time in deciseconds (10^-1 seconds)
 
-	import { writable, type Writable} from 'svelte/store';
+	import { writable, type Writable, readable, type Readable } from 'svelte/store';
 
-	interface TimeElement {
+	export interface TimeElement {
 		type: string;
 		value: number;
 	};
@@ -60,8 +60,70 @@
 	let goalTime: number = 0;
 	let currentTime: number = Date.now();
 	let endTime: number = currentTime + 100 * goalTime;
+    let timeToSet: number = 0;
 
-	export let timeElement: Writable<TimeElement[]> = writable([]);
+    export let timerNumberVisibility: Writable<boolean> = writable(true);
+
+	export let timeElement: Readable<TimeElement[]> = readable([
+                {
+                    type: 'hours',
+                    value: 0
+                },
+                {
+                    type: 'minutes',
+                    value: 0
+                },
+                {
+                    type: 'seconds',
+                    value: 0
+                }
+            ], function start(set) {
+        const timeElementInterval = setInterval(async () => {
+            if (timeToSet > 0) {
+                let hours = Math.floor(timeToSet / 36000);
+                let minutes = Math.floor((timeToSet - 36000 * hours) / 600);
+                let seconds = Math.floor((timeToSet - 36000 * hours - 600 * minutes) / 10);
+    
+                console.log(hours + ':' + minutes + ':' + seconds + ' - ' + timeToSet);
+    
+                set([
+                    {
+                        type: 'hours',
+                        value: hours
+                    },
+                    {
+                        type: 'minutes',
+                        value: minutes
+                    },
+                    {
+                        type: 'seconds',
+                        value: seconds
+                    }
+                ]);
+            }
+            else {
+                set([
+                    {
+                        type: 'hours',
+                        value: 0
+                    },
+                    {
+                        type: 'minutes',
+                        value: 0
+                    },
+                    {
+                        type: 'seconds',
+                        value: 0
+                    }
+                ]);
+            }
+            }, 100);
+
+            return function stop() {
+                clearInterval(timeElementInterval);
+            };
+    });
+
 	let pomodoroTimes: PomodoroTimes = {
 		work: 25,
 		short: 5,
@@ -71,49 +133,48 @@
 
 	let interval: number = 0;
 
-    export let timerNumberVisibility: Writable<boolean> = writable(true);
 
 	// formats the time that is displayed on screen
-	async function formatTime(time: number) {
-        if (time > 0) {
-            let hours = Math.floor(time / 36000);
-            let minutes = Math.floor((time - 36000 * hours) / 600);
-            let seconds = Math.floor((time - 36000 * hours - 600 * minutes) / 10);
+	// async function formatTime(time: number) {
+    //     if (time > 0) {
+    //         let hours = Math.floor(time / 36000);
+    //         let minutes = Math.floor((time - 36000 * hours) / 600);
+    //         let seconds = Math.floor((time - 36000 * hours - 600 * minutes) / 10);
     
-            console.log(hours + ':' + minutes + ':' + seconds + ' - ' + time);
+    //         console.log(hours + ':' + minutes + ':' + seconds + ' - ' + time);
     
-            timeElement.set([
-                {
-                    type: 'hours',
-                    value: hours
-                },
-                {
-                    type: 'minutes',
-                    value: minutes
-                },
-                {
-                    type: 'seconds',
-                    value: seconds
-                }
-            ]);
-        }
-        else {
-            timeElement.set([
-                {
-                    type: 'hours',
-                    value: 0
-                },
-                {
-                    type: 'minutes',
-                    value: 0
-                },
-                {
-                    type: 'seconds',
-                    value: 0
-                }
-            ]);
-        }
-	}
+    //         timeElement.set([
+    //             {
+    //                 type: 'hours',
+    //                 value: hours
+    //             },
+    //             {
+    //                 type: 'minutes',
+    //                 value: minutes
+    //             },
+    //             {
+    //                 type: 'seconds',
+    //                 value: seconds
+    //             }
+    //         ]);
+    //     }
+    //     else {
+    //         timeElement.set([
+    //             {
+    //                 type: 'hours',
+    //                 value: 0
+    //             },
+    //             {
+    //                 type: 'minutes',
+    //                 value: 0
+    //             },
+    //             {
+    //                 type: 'seconds',
+    //                 value: 0
+    //             }
+    //         ]);
+    //     }
+	// }
 
     // modifies pomodoro state to next state based on current
     async function modifyPomodoroState() {
@@ -146,7 +207,7 @@
                     clearInterval(interval);
                     resolve();
                 }
-                await formatTime(timeDifference / 100);
+                timeToSet = timeToSet <= 0 ? 0 : (timeDifference / 100);
                 timerProgressState = await TimerProgress.getTimerInProgress();
                 currentTime = Date.now();
                 timeDifference = endTime - currentTime;
@@ -186,30 +247,19 @@
 	}
 
 	// sets the time based on deciseconds
-	export async function setTime(timetoSet: number) {
+	export async function setTime(newTime: number) {
         sessionNumber = 1;
 		await TimerProgress.updateTimerInProgressToFalse();
-		goalTime = timetoSet;
+		goalTime = newTime;
 		currentTime = Date.now();
 		endTime = currentTime + 100 * goalTime;
-		await formatTime(timetoSet);
+		timeToSet = newTime;
 	}
 
 	// completely resets the timer to 0 deciseconds
 	export async function clearTimer() {
-        timerNumberVisibility.set(false);
-        if (await TimerProgress.getTimerInProgress() === true) {
-            await stopTimer();
-            setTimeout(async () => {
-                await setTime(0);
-            }, 200);
-            timerNumberVisibility.set(true);
-        }
-        else {
-            await stopTimer();
-            await setTime(0);
-            timerNumberVisibility.set(true);
-        }
+        await stopTimer();
+        await setTime(0);
 	}
 
     // converts hh:mm:ss to equivalent in deciseconds
@@ -246,8 +296,6 @@
 
     // switches timer mode between pomodoro, standard, and descending
     export async function switchTimerMode(newTimerState: Symbol) {
-        timerNumberVisibility.set(false);
-        alert(timerNumberVisibility);
         await clearTimer();
         if (timerState !== newTimerState) {
             switch (newTimerState) {
@@ -265,7 +313,6 @@
             }
             timerStateRead.set(timerState);
         }
-        timerNumberVisibility.set(true);
     }
 
     // changes the pomodoro stored work, short, and long times and seconds and calls functions to update value for onscreen counter
