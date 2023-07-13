@@ -183,7 +183,7 @@
 	}
 
     // converts hh:mm:ss to equivalent in deciseconds
-	function convertTimeToDeciseconds(hours: number, minutes: number, seconds: number): number {
+	export function convertTimeToDeciseconds(hours: number, minutes: number, seconds: number): number {
 		return 36000 * hours + 600 * minutes + 10 * seconds;
 	}
 

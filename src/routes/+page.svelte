@@ -5,7 +5,6 @@
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgressRead, timerStateRead } from './timer.svelte';
-	import { page } from '$app/stores';
 
     export let data: PageData
     export let form: ActionData
@@ -118,6 +117,10 @@
         '#00dddd'
     ];
 
+    let hours: number = 0;
+    let minutes: number = 5;
+    let seconds: number = 0;
+
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
@@ -130,6 +133,7 @@
         class="menu"
         id={menuVisible ? "visible" : "invisible"}
         >
+        <!-- TODO: work on mobile friendly menu design -->
             <div class="modes" style="background-color: #cc0000;">
                 <button
                 class='fade {$timerStateRead === timer.TimerStates.Pomodoro ? 'selectedOption' : 'unselectedOption'}'
@@ -169,9 +173,29 @@
             <div class="modesOptionsPadding" style="background-color: #cccc00;">
                 <div class="modesOptions">
                     {#if $timerStateRead === timer.TimerStates.Standard}
-                        {#each colours as colour}
-                            <div style='background-color: {colour}'></div>
-                        {/each}
+                        <div>
+                            <input type="number" id="hoursInput" bind:value={hours} min="0" max="59" step="1"/>
+                            <label for="hoursInput">hours</label>
+                            <input type="number" id="minutesInput" bind:value={minutes} min="0" max="59" step="1"/>
+                            <label for="minutesInput">minutes</label>
+                            <input type="number" id="secondsInput" bind:value={seconds} min="0" max="59" step="1"/>
+                            <label for="secondsInput">seconds</label>
+                            <button 
+                            class="fade"
+                            on:click={() => {
+                                timer.setTime(timer.convertTimeToDeciseconds(hours, minutes, seconds));
+                            }}
+                            >
+                                set times
+                            </button>
+                        </div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
+                        <div></div>
 
                     {:else if $timerStateRead === timer.TimerStates.Pomodoro}
                         meow meow pomo
@@ -200,7 +224,7 @@
     </div>
     <div class="wrapper center">
         <div class="timer center">
-            <div class="timerTitle">{$timerStateRead === timer.TimerStates.Pomodoro ? 'Pomodoro Timer' : 'Timer'}</div>
+            <div class="timerTitle">{($timerStateRead === timer.TimerStates.Pomodoro ? 'Pomodoro Timer' : 'Timer')}</div>
             <p class="numbersTime fade" transition:fade>
                 {#each $timeElement as e (e.type)}
                     {#if !((e.type === 'hours') && (e.value <= 0))}
@@ -331,6 +355,10 @@
         justify-content: center;
         align-items: center;
         text-align: center;
+    }
+
+    input[type="number"] {
+        width: 48px;
     }
 
     .background {
