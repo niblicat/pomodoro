@@ -5,6 +5,7 @@
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgressRead, timerStateRead } from './timer.svelte';
+	import { page } from '$app/stores';
 
     export let data: PageData
     export let form: ActionData
@@ -20,6 +21,17 @@
     let m = { x: 0, y: 0};
     let loadingStatus: boolean;
     let allowHover: boolean = true; // to prevent settings button from having hover effect after click
+
+    let innerWidth: number = 0;
+    let innerHeight: number = 0;
+
+    const ModePage = {
+        Options: Symbol('Options'),
+        Stats: Symbol('Stats'),
+        Login: Symbol('Login')
+    }
+
+    let currentModePage: Symbol;
 
     // updates the internal cursor position based off the actual cursor
     // changes loading icon's position to relative if user is using mouse
@@ -44,6 +56,7 @@
     }
 
     onMount(() => {
+        currentModePage = ModePage.Options;
         timer.clearTimer(); // initialise timer to 0 seconds
         openSettings();
         document.body.addEventListener('mousemove', handleMouseMove);
@@ -96,8 +109,18 @@
         }, 200);
     }
 
+    const colours: string[] = [
+        '#dd0000',
+        '#00dd00',
+        '#0000dd',
+        '#dddd00',
+        '#dd00dd',
+        '#00dddd'
+    ];
+
 </script>
 
+<svelte:window bind:innerWidth bind:innerHeight />
 <html lang="en">
 <body>
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
@@ -146,7 +169,9 @@
             <div class="modesOptionsPadding" style="background-color: #cccc00;">
                 <div class="modesOptions">
                     {#if $timerStateRead === timer.TimerStates.Standard}
-                        meow meow standr
+                        {#each colours as colour}
+                            <div style='background-color: {colour}'></div>
+                        {/each}
 
                     {:else if $timerStateRead === timer.TimerStates.Pomodoro}
                         meow meow pomo
@@ -223,13 +248,19 @@
                 on:click={() => {
                     alert($timerInProgressRead);
                 }}>
-                    timer in progress = {$timerInProgressRead}
+                    timer in progress: {$timerInProgressRead}
                 </button>
                 <button
                 on:click={() => {
                     alert($timerStateRead.toString());
                 }}>
-                    state = {$timerStateRead.toString()}
+                    state: {$timerStateRead.toString()}
+                </button>
+                <button
+                on:click={() => {
+                    alert(innerWidth + 'x' + innerHeight);
+                }}>
+                    dim: {innerWidth + 'x' + innerHeight}
                 </button>
             </div>
         {/if}
@@ -431,11 +462,11 @@
     }
 
     button#hanging:active {
-        transform: scale(1);
-        -webkit-transform: scale(1);
-        -moz-transform: scale(1);
-        -o-transform: scale(1);
-        -ms-transform: scale(1);
+        transform: none;
+        -webkit-transform: none;
+        -moz-transform: none;
+        -o-transform: none;
+        -ms-transform: none;
     }
     
     .modes {
@@ -501,6 +532,8 @@
 
     .modesOptions {
         display: grid;
+        grid-template: 1fr 1fr 1fr 1fr / 1fr 1fr;
+        overflow: hidden;
         border-radius: 0px 25px 25px 25px;
         height: 100%;
         width: 100%;
