@@ -9,7 +9,7 @@
     export let data: PageData
     export let form: ActionData
 
-    const debug: boolean = true;
+    const debug: boolean = false;
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -56,7 +56,7 @@
 
     onMount(() => {
         currentModePage = ModePage.Options;
-        openSettings(); //temporary 
+        if (debug) openSettings(); //temporary 
         document.body.addEventListener('mousemove', handleMouseMove);
         timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
         
@@ -129,7 +129,7 @@
         id={menuVisible ? "visible" : "invisible"}
         >
         <!-- TODO: work on mobile friendly menu design -->
-            <div class="modes" style="background-color: #cc0000;">
+            <div class="modes" style={debug ? 'background-color: #cc0000;' : ''}>
                 <button
                 class='fade {$timerStateRead === timer.TimerStates.Pomodoro ? 'selectedOption' : 'unselectedOption'}'
                 id="Pomodoro"
@@ -160,13 +160,13 @@
                 </button>
 
             </div>
-            <div class="statsHead" style="background-color: #00cc00;">
+            <div class="statsHead" style={debug ? 'background-color: #00cc00;' : ''}>
 
             </div>
-            <div class="close" style="background-color: #0000cc;">
+            <div class="close" style={debug ? 'background-color: #0000cc;' : ''}>
 
             </div>
-            <div class="modesOptionsPadding" style="background-color: #cccc00;">
+            <div class="modesOptionsPadding" style={debug ? 'background-color: #cccc00;' : ''}>
                 <div class="modesOptions">
                     {#if $timerStateRead === timer.TimerStates.Pomodoro}
                         <div class="optionsInputsContainer span2">
@@ -418,10 +418,10 @@
                 </div>
 
             </div>
-            <div class="stats" style="background-color: #00cccc;">
+            <div class="stats" style={debug ? 'background-color: #00cccc;' : ''}>
 
             </div>
-            <div class="profile" style="background-color: #cc00cc;">
+            <div class="profile" style={debug ? 'background-color: #cc00cc;' : ''}>
 
             </div>
         </div>
@@ -528,7 +528,6 @@
     }
 
     html, body {
-        /* background-color: var(--background); */
         background-image: linear-gradient(to bottom right, var(--background), var(--accent2));
         margin: 0px;
         padding: 0px;
@@ -656,7 +655,7 @@
     .menu {
         width: 100%;
         height: 100%;
-        background-color: var(--neutralbright);
+        background-image: linear-gradient(to bottom, var(--accent1), var(--neutralbright));
         overflow: auto;
         display: grid;
         grid-template: 25% 75% / 60% 25% 15%;
@@ -688,7 +687,7 @@
     }
 
     button#hanging {
-        margin-top: -1px;
+        margin-top: -2px;
         min-width: 120px;
         width: 120px;
         border-radius: 0px 0px 25px 25px;
