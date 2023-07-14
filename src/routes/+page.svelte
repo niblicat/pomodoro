@@ -183,7 +183,7 @@
 
                             <div class="pillButtonContainer"> 
                                 <button 
-                                class="inputButton left"
+                                class="left fade"
                                 on:click={() => {
                                     if (pomoWork > 1) pomoWork--;
                                 }}
@@ -192,7 +192,7 @@
                                 </button>
                                 <input type="number" id="workInput" bind:value={pomoWork} min="1" step="1"/>
                                 <button 
-                                class="inputButton right"
+                                class="right fade"
                                 on:click={() => {
                                     pomoWork++;
                                 }}
@@ -313,7 +313,7 @@
         
         <div class="optionsPadding">
             <button 
-            class={allowHover ? "fade hoverable" : "fade unhoverable"}
+            class='fade {allowHover ? "hoverable" : "unhoverable"}'
             id="hanging"
             on:click={menuVisible ? closeSettings : openSettings}
             >
@@ -333,7 +333,7 @@
                 </p>
             {#if !$timerInProgressRead}
                 <button
-                class="fade"
+                class="bounce fade"
                 on:click={$timerStateRead === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.standardStartTimer}
                 title="Start"
                 id="start"
@@ -342,7 +342,7 @@
                 </button>
             {:else}
                 <button
-                class="fade"
+                class="bounce fade"
                 on:click={timer.stopTimer}
                 title="Pause"
                 id="pause"
@@ -351,7 +351,7 @@
                 </button>
             {/if}
                 <button
-                class="fade"
+                class="bounce fade"
                 on:click={timer.clearTimer}
                 title="Clear"
                 id="clear"
@@ -441,6 +441,9 @@
     button:hover {
         background-color: var(--accent2);
         border: 2px solid var(--neutralbright);
+    }
+
+    button.bounce:hover {
         transform: scale(1.1);
         -webkit-transform : scale(1.1);
         -moz-transform : scale(1.1);
@@ -448,7 +451,7 @@
         -ms-transform : scale(1.1);
     }
 
-    button:active {
+    button.bounce:active {
         transform: scale(0.9);
         -webkit-transform : scale(0.9);
         -moz-transform : scale(0.9);
@@ -575,28 +578,10 @@
         border-radius: 0px 0px 25px 25px;
         border-top: 0px;
         z-index: 2;
-        /* transform-origin : 50% 0px;
-        -webkit-transform-origin: 50% 0px;
-        -moz-transform-origin: 50% 0px;
-        -o-transform-origin: 50% 0px;
-        -ms-transform-origin: 50% 0px; */
     }
 
     button#hanging.hoverable:hover {
         border-top: 0px;
-        transform: none;
-        -webkit-transform: none;
-        -moz-transform: none;
-        -o-transform: none;
-        -ms-transform: none;
-    }
-
-    button#hanging:active {
-        transform: none;
-        -webkit-transform: none;
-        -moz-transform: none;
-        -o-transform: none;
-        -ms-transform: none;
     }
     
     .modes {
@@ -613,14 +598,6 @@
         width: 25%;
         height: 80%;
         z-index: 2;
-    }
-
-    .modes button:hover {
-        transform: none;
-        -webkit-transform: none;
-        -moz-transform: none;
-        -o-transform: none;
-        -ms-transform: none;
     }
 
     .modes button#Pomodoro {
@@ -695,9 +672,9 @@
         border-width: 0 2px;
         padding: 2px;
         text-align: center;
+        appearance: textfield;
         -webkit-appearance: textfield;
         -moz-appearance: textfield;
-        appearance: textfield;
     }
     .pillButtonContainer input[type=number]::-webkit-inner-spin-button,
     .pillButtonContainer input[type=number]::-webkit-outer-spin-button {
@@ -728,6 +705,7 @@
         border: none;
         appearance: none;
         -webkit-appearance: none;
+        -moz-appearance: none;
         align-items: center;
         justify-content: center;
         margin: 0px;
@@ -742,6 +720,10 @@
         position: absolute;
         content: '-';
         transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+        -moz-transform: translate(-50%, -50%);
+        -o-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
     }
 
     .pillButtonContainer button.left {
