@@ -552,6 +552,7 @@
         line-height: 24px;
         text-align: center;
         cursor: pointer;
+        pointer-events: auto;
     }
 
     button:hover {
@@ -662,6 +663,7 @@
         display: grid;
         grid-template: 25% 75% / 60% 25% 15%;
         border-bottom: 2px solid var(--divback);
+        pointer-events: auto;
     }
 
     .menuWrapper {
@@ -674,6 +676,7 @@
         grid-template: 1fr 36px / 1fr;
         text-align: center;
         z-index: 3;
+        pointer-events: none;
     }
     
     .optionsPadding {
@@ -682,6 +685,7 @@
         padding-right: 20px;
         padding-left: 20px;
         order: 2;
+        pointer-events: none;
     }
 
     .debug {
