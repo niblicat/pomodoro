@@ -608,6 +608,7 @@
         grid-gap: 10px;
         border-radius: 25px;
         background-color: var(--divback);
+        border: 2px solid var(--neutralbright);
         margin: auto;
         font-size: 20px;
     }
