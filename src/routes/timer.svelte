@@ -1,4 +1,5 @@
 <script lang="ts" context="module">
+    
 	// Counts down each time segment
 	// Processes a length of time in deciseconds (10^-1 seconds)
 

@@ -181,23 +181,26 @@
                         <div class="span2">
                             <label for="workInput">work </label>
 
-                            <button 
-                            class="inputButton left"
-                            on:click={() => {
-                                if (pomoWork > 1) pomoWork--;
-                            }}
-                            >
-                            -
-                            </button>
-                            <input type="number" id="workInput" bind:value={pomoWork} min="1" step="1"/>
-                            <button 
-                            class="inputButton right"
-                            on:click={() => {
-                                pomoWork++;
-                            }}
-                            >
-                            +
-                            </button>
+                            <div class="pillButtonContainer"> 
+                                <button 
+                                class="inputButton left"
+                                on:click={() => {
+                                    if (pomoWork > 1) pomoWork--;
+                                }}
+                                >
+                                
+                                </button>
+                                <input type="number" id="workInput" bind:value={pomoWork} min="1" step="1"/>
+                                <button 
+                                class="inputButton right"
+                                on:click={() => {
+                                    pomoWork++;
+                                }}
+                                >
+                                
+                                </button>
+                            </div>
+
                             
                             <label for="shortInput">short </label>
                             <button 
@@ -432,6 +435,7 @@
         border: 2px solid var(--divback);
         background-color: var(--neutralbright);
         font-size: 20px;
+        cursor: pointer;
     }
 
     button:hover {
@@ -457,27 +461,6 @@
         justify-content: center;
         align-items: center;
         text-align: center;
-    }
-
-    input[type="number"] {
-        font-size: 14px;
-        height: 27px;
-        width: 25px;
-        border-top: 2px solid var(--divback);
-        border-bottom: 2px solid var(--divback);
-        border-left: 0px;
-        border-right: 0px;
-        text-align: center;
-        -webkit-appearance: textfield;
-        -moz-appearance: textfield;
-        appearance: textfield;
-    }
-    input[type=number]::-webkit-inner-spin-button,
-    input[type=number]::-webkit-outer-spin-button {
-        -webkit-appearance: none;
-    }
-    input[type="number"]:focus {
-        outline: none;
     }
 
     .background {
@@ -667,6 +650,10 @@
         border-bottom: 0px;
     }
 
+    .selectedOption {
+        cursor: unset;
+    }
+
     .selectedOption:hover {
         background-color: var(--neutralbright);
         border: 2px solid var(--divback);
@@ -699,21 +686,77 @@
         margin-right: 12px;
     }
 
-    button.inputButton {
-        margin-right: -4px;
-        margin-left: -4px;
-        font-size: 16px;
-        min-width: 25px;
-        width: 25px;
-        height: 27px;
-        
+    .pillButtonContainer input[type="number"] {
+        background-color: transparent;
+        font-size: 14px;
+        height: 24px;
+        width: 26px;
+        border: solid var(--divback);
+        border-width: 0 2px;
+        padding: 2px;
+        text-align: center;
+        -webkit-appearance: textfield;
+        -moz-appearance: textfield;
+        appearance: textfield;
+    }
+    .pillButtonContainer input[type=number]::-webkit-inner-spin-button,
+    .pillButtonContainer input[type=number]::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+    }
+    .pillButtonContainer input[type="number"]:focus {
+        outline: none;
     }
 
-    button.inputButton.left {
+    .pillButtonContainer {
+        background-color: var(--neutralbright);
+        border: 2px solid var(--divback);
+        border-radius: 25px; 
+        display: inline-flex;
+        width: 82px;
+    }
+    .pillButtonContainer,
+    .pillButtonContainer * {
+        box-sizing: border-box;
+    }
+    
+
+    .pillButtonContainer button {
+        background-color: transparent;
+        width: 26px;
+        min-width: 26px;
+        outline: none;
+        border: none;
+        appearance: none;
+        -webkit-appearance: none;
+        align-items: center;
+        justify-content: center;
+        margin: 0px;
+        position: relative;
+    }
+    .pillButtonContainer button:hover {
+        background-color: var(--accent2);
+    }
+
+    .pillButtonContainer button:after {
+        display: inline-block;
+        position: absolute;
+        content: '-';
+        transform: translate(-50%, -50%);
+    }
+
+    .pillButtonContainer button.left {
         border-radius: 25px 0px 0px 25px;
     }
-    button.inputButton.right {
+    .pillButtonContainer button.left:after {
+        content: '-';
+    }
+
+    .pillButtonContainer button.right {
         border-radius: 0px 25px 25px 0px;
+    }
+
+    .pillButtonContainer button.right:after {
+        content: '+';
     }
 
     #closeMenu {
@@ -729,6 +772,7 @@
     .optionsButtonsContainer {
         display: flex;
         justify-content: space-around;
+        box-sizing: border-box;
     }
 
     #invisible {
