@@ -262,6 +262,9 @@
                                     <button 
                                     class="left fade"
                                     title="Decrement long-short repetitions"
+                                    on:click={() => {
+                                        if (pomoLongPhase > 0) pomoLongPhase--;
+                                    }}
                                     />
                                     <input
                                     type="number"
@@ -274,6 +277,9 @@
                                     <button 
                                     class="right fade"
                                     title="long-short repetitions"
+                                    on:click={() => {
+                                        pomoLongPhase++;
+                                    }}
                                     />
                                 </div>
                             </div>
