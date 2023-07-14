@@ -522,9 +522,9 @@
         --accent2: #13C4E8;
         --contrast: #1499FF;
         --complement: #FF14B0;
-        --neutral: #bcc6c0;
+        --neutraldark: #bcc6c0;
         --neutralbright: #feffff;
-        --neutraldark: #e3eaea;
+        --neutral: #e3eaea;
     }
 
     html, body {
@@ -549,6 +549,8 @@
         border: 2px solid var(--divback);
         background-color: var(--neutralbright);
         font-size: 20px;
+        line-height: 24px;
+        text-align: center;
         cursor: pointer;
     }
 
@@ -732,8 +734,16 @@
         border-left: 0px;
     }
 
+    .selectedOption, .unselectedOption {
+        align-content: space-around;
+    }
+
     .unselectedOption {
         background-color: var(--neutral);
+    }
+
+    .selectedOption {
+        cursor: unset;
     }
 
     .unselectedOption:hover {
@@ -742,9 +752,6 @@
         border-bottom: 0px;
     }
 
-    .selectedOption {
-        cursor: unset;
-    }
 
     .selectedOption:hover {
         background-color: var(--neutralbright);
