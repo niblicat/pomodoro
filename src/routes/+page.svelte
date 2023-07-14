@@ -267,7 +267,7 @@
                                     type="number"
                                     id="longInput"
                                     title="Set long-short repetitions"
-                                    bind:value={pomoLong}
+                                    bind:value={pomoLongPhase}
                                     min="0"
                                     step="1"
                                     />
