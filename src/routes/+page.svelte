@@ -39,6 +39,12 @@
         m.y = event.clientY;
     }
 
+    let escapeButtonHeld: boolean = false;
+    function handleKeyDown(event: KeyboardEvent) {
+        if (menuVisible) 
+            if (event.key === "Escape") closeSettings();
+    }
+
     // used to show loading spinner if it takes more than 150 ms for update
     const actionLoad: SubmitFunction = (input) => {
         loadingDelayIsActive = true;
@@ -51,17 +57,18 @@
             loadingDelayIsActive = false;
             loading = false;
         }
-
     }
 
     onMount(() => {
         currentModePage = ModePage.Options;
         if (debug) openSettings(); //temporary 
         document.body.addEventListener('mousemove', handleMouseMove);
+        document.body.addEventListener('keydown', handleKeyDown);
         timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
         
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
+            document.body.removeEventListener('keydown', handleKeyDown);
         };
     });
     
