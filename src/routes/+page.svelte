@@ -161,18 +161,26 @@
                     </button>
                     <button
                     class="fade {$timerStateRead === timer.TimerStates.Standard ? 'selectedOption' : 'unselectedOption'}"
-                    id="Standard"
+                    id="{!mobileMode ? 'Standard' : 'StandardMobile'}"
                     on:click={() => {
                         timer.switchTimerMode(timer.TimerStates.Standard);
                     }}
                     >
                     Stan&shy;dard
                     </button>
+                    {#if mobileMode}
+                        <button
+                        class="fade {$timerStateRead === timer.TimerStates.Standard ? 'selectedOption' : 'unselectedOption'}"
+                        id="Statistics"
+                        >
+                            Stats
+                        </button>
+                    {/if}
 
                 
                 </div>
                 <div class="modesOptionsPadding {mobileMode ? 'span3' : ''}" style={debug ? 'background-color: #cccc00;' : ''}>
-                    <div class="modesOptions">
+                    <div class="modesOptions {mobileMode ? 'mobile' : ''}">
                         {#if $timerStateRead === timer.TimerStates.Pomodoro}
                             <div class="optionsInputsContainer span2" style={mobileMode ? 'justify-content: left;' : 'justify-content: space-around;'}>
                                 <div class="labelPillBinder">
@@ -260,7 +268,7 @@
                                 </div>
                             </div>
 
-                            <div class="span2 optionsInputsContainer" style={mobileMode ? 'justify-content: baseline;' : 'justify-content: space-around;'}>
+                            <div class="span2 optionsInputsContainer {mobileMode ? 'mobile' : ''}" style={mobileMode ? 'justify-content: baseline;' : 'justify-content: space-around;'}>
                                 <div class="labelPillBinder">
                                     <label for="longSession">long-short repetitions</label>
                                     <div class="pillButtonContainer"> 
@@ -316,7 +324,7 @@
                             </div>
 
                         {:else if $timerStateRead === timer.TimerStates.Standard}
-                        <div class="optionsInputsContainer span2" style={mobileMode ? 'justify-content: left;' : 'justify-content: space-around;'}>
+                            <div class="optionsInputsContainer span2 {mobileMode ? 'mobile' : ''}" style={mobileMode ? 'justify-content: left;' : 'justify-content: space-around;'}>
                                 <div class="labelPillBinder">
                                     <label for="hourInput">hours</label>
                                     <div class="pillButtonContainer"> 
@@ -733,6 +741,7 @@
     
     .modes {
         padding-left: 4px;
+        padding-right: 4px;
         display: flex;
         align-items: end;
         justify-content: baseline;
@@ -760,6 +769,17 @@
     }
 
     .modes button#Standard {
+        border-radius: 0px 25px 0px 0px;
+        border-left: 0px;
+    }
+
+    .modes button#StandardMobile {
+        border-radius: 0px 0px 0px 0px;
+        border-right: 0px;
+        border-left: 0px;
+    }
+
+    .modes button#Statistics {
         border-radius: 0px 25px 0px 0px;
         border-left: 0px;
     }
@@ -808,6 +828,10 @@
         width: 100%;
         background-color: var(--neutralbright);
         border: 2px solid var(--divback);
+    }
+
+    .modesOptions.mobile {
+        border-radius: 0px 0px 25px 25px;
     }
 
     .modesOptions * {
