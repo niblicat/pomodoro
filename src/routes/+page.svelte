@@ -166,12 +166,7 @@
                 Standard
                 </button>
 
-            </div>
-            <div class="statsHead" style={debug ? 'background-color: #00cc00;' : ''}>
-
-            </div>
-            <div class="close" style={debug ? 'background-color: #0000cc;' : ''}>
-
+            
             </div>
             <div class="modesOptionsPadding" style={debug ? 'background-color: #cccc00;' : ''}>
                 <div class="modesOptions">
@@ -431,6 +426,13 @@
                 </div>
 
             </div>
+            <div class="statsHead" style={debug ? 'background-color: #00cc00;' : ''}>
+
+            </div>
+            <div class="close" style={debug ? 'background-color: #0000cc;' : ''}>
+
+            </div>
+
             <div class="stats" style={debug ? 'background-color: #00cccc;' : ''}>
 
             </div>
@@ -674,6 +676,7 @@
         background-image: linear-gradient(to bottom, var(--accent1), var(--neutralbright));
         overflow: auto;
         display: grid;
+        grid-auto-flow: column;
         grid-template: 25% 75% / 60% 25% 15%;
         border-bottom: 2px solid var(--divback);
         pointer-events: auto;
@@ -907,6 +910,10 @@
 
     .span2 {
         grid-column: span 2;
+    }
+
+    .span3 {
+        grid-column: span 3;
     }
 
     .optionsButtonsContainer {
