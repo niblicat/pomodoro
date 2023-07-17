@@ -429,13 +429,19 @@
             <div class="statsHead" style={debug ? 'background-color: #00cc00;' : ''}>
 
             </div>
-            <div class="close" style={debug ? 'background-color: #0000cc;' : ''}>
-
-            </div>
-
             <div class="stats" style={debug ? 'background-color: #00cccc;' : ''}>
 
             </div>
+            <div class="close" style={debug ? 'background-color: #0000cc;' : ''}>
+                <button
+                id="closeMenu"
+                class="fade"
+                on:click={closeSettings}
+                >
+                close
+                </button>
+            </div>
+
             <div class="profile" style={debug ? 'background-color: #cc00cc;' : ''}>
 
             </div>
@@ -515,12 +521,6 @@
                 }}>
                     dim: {innerWidth + 'x' + innerHeight}
                 </button>
-                <!-- <button
-                on:click={() => {
-                    alert($timerNumberVisibility);
-                }}>
-                    numvis: {$timerNumberVisibility}
-                </button> -->
             </div>
         {/if}
     </div>
@@ -836,6 +836,14 @@
         -webkit-appearance: textfield;
         -moz-appearance: textfield;
     }
+
+    .close {
+        display: flex;
+        justify-content: end;
+        align-items: baseline;
+        padding: 4px;
+    }
+
     .pillButtonContainer input[type=number]::-webkit-inner-spin-button,
     .pillButtonContainer input[type=number]::-webkit-outer-spin-button {
         -webkit-appearance: none;
@@ -900,12 +908,6 @@
 
     .pillButtonContainer button.right:after {
         content: '+';
-    }
-
-    #closeMenu {
-        padding: 4px;
-        align-self: baseline;
-        justify-self: end;
     }
 
     .span2 {
