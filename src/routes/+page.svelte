@@ -9,7 +9,7 @@
     export let data: PageData
     export let form: ActionData
 
-    const debug: boolean = false;
+    const debug: boolean = true;
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -27,7 +27,6 @@
     const ModePage = {
         Options: Symbol('Options'),
         Stats: Symbol('Stats'),
-        Login: Symbol('Login')
     }
 
     let currentModePage: Symbol;
@@ -60,7 +59,7 @@
     }
 
     onMount(() => {
-        currentModePage = ModePage.Options;
+        currentModePage = ModePage.Stats;
         if (debug) openSettings(); //temporary 
         document.body.addEventListener('mousemove', handleMouseMove);
         document.body.addEventListener('keydown', handleKeyDown);
@@ -123,6 +122,8 @@
     let pomoLong: number = 15;
     let pomoLongPhase: number = 4;
 
+    $: mobileMode = innerWidth <= 660;
+
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
@@ -136,315 +137,318 @@
         id={menuVisible ? "visible" : "invisible"}
         >
         <!-- TODO: work on mobile friendly menu design -->
-            <div class="modes" style={debug ? 'background-color: #cc0000;' : ''}>
-                <button
-                class='fade {$timerStateRead === timer.TimerStates.Pomodoro ? 'selectedOption' : 'unselectedOption'}'
-                id="Pomodoro"
-                on:click={() => {
-                    timer.switchTimerMode(timer.TimerStates.Pomodoro);
-                }}
-                >
-                Pomodoro
-                </button>
-                <button
-                class='fade {$timerStateRead === timer.TimerStates.Sage ? 'selectedOption' : 'unselectedOption'}'
-                id="Sage"
-                on:click={() => {
-                    alert('This feature is not yet available.');
-                    // timer.switchTimerMode(timer.TimerStates.Sage);
-                }}
-                >
-                Coming Soon
-                </button>
-                <button
-                class='fade {$timerStateRead === timer.TimerStates.Standard ? 'selectedOption' : 'unselectedOption'}'
-                id="Standard"
-                on:click={() => {
-                    timer.switchTimerMode(timer.TimerStates.Standard);
-                }}
-                >
-                Standard
-                </button>
+            {#if ((!mobileMode) || currentModePage === ModePage.Options)}
+                <div class="modes {mobileMode ? 'span3' : ''}" style={debug ? 'background-color: #cc0000;' : ''}>
+                    <button
+                    class="fade {$timerStateRead === timer.TimerStates.Pomodoro ? 'selectedOption' : 'unselectedOption'}"
+                    id="Pomodoro"
+                    on:click={() => {
+                        timer.switchTimerMode(timer.TimerStates.Pomodoro);
+                    }}
+                    >
+                    Pomodoro
+                    </button>
+                    <button
+                    class="fade {$timerStateRead === timer.TimerStates.Sage ? 'selectedOption' : 'unselectedOption'}"
+                    id="Sage"
+                    on:click={() => {
+                        alert('This feature is not yet available.');
+                        // timer.switchTimerMode(timer.TimerStates.Sage);
+                    }}
+                    >
+                    Coming Soon
+                    </button>
+                    <button
+                    class="fade {$timerStateRead === timer.TimerStates.Standard ? 'selectedOption' : 'unselectedOption'}"
+                    id="Standard"
+                    on:click={() => {
+                        timer.switchTimerMode(timer.TimerStates.Standard);
+                    }}
+                    >
+                    Standard
+                    </button>
 
-            
-            </div>
-            <div class="modesOptionsPadding" style={debug ? 'background-color: #cccc00;' : ''}>
-                <div class="modesOptions">
-                    {#if $timerStateRead === timer.TimerStates.Pomodoro}
-                        <div class="optionsInputsContainer span2">
-                            <div class="labelPillBinder">
-                                <label for="workInput">work</label>
-                                <div class="pillButtonContainer"> 
-                                    <button 
-                                    class="left fade"
-                                    title="Decrement work time"
-                                    on:click={() => {
-                                        if (pomoWork > 1) pomoWork--;
-                                    }}
-                                    />
-                                    <input
-                                    type="number"
-                                    id="workInput"
-                                    title="Set work time"
-                                    bind:value={pomoWork}
-                                    min="1"
-                                    step="1"
-                                    />
-                                    <button 
-                                    class="right fade"
-                                    title="Increment work time"
-                                    on:click={() => {
-                                        pomoWork++;
-                                    }}
-                                    />
+                
+                </div>
+                <div class="modesOptionsPadding {mobileMode ? 'span3' : ''}" style={debug ? 'background-color: #cccc00;' : ''}>
+                    <div class="modesOptions">
+                        {#if $timerStateRead === timer.TimerStates.Pomodoro}
+                            <div class="optionsInputsContainer span2">
+                                <div class="labelPillBinder">
+                                    <label for="workInput">work</label>
+                                    <div class="pillButtonContainer"> 
+                                        <button 
+                                        class="left fade"
+                                        title="Decrement work time"
+                                        on:click={() => {
+                                            if (pomoWork > 1) pomoWork--;
+                                        }}
+                                        />
+                                        <input
+                                        type="number"
+                                        id="workInput"
+                                        title="Set work time"
+                                        bind:value={pomoWork}
+                                        min="1"
+                                        step="1"
+                                        />
+                                        <button 
+                                        class="right fade"
+                                        title="Increment work time"
+                                        on:click={() => {
+                                            pomoWork++;
+                                        }}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="labelPillBinder">
+                                    <label for="shortInput">short</label>
+                                    <div class="pillButtonContainer"> 
+                                        <button 
+                                        class="left fade"
+                                        title="Decrement short time"
+                                        on:click={() => {
+                                            if (pomoShort > 0) pomoShort--;
+                                        }}
+                                        />
+                                        <input
+                                        type="number"
+                                        id="shortInput"
+                                        title="Set short time"
+                                        bind:value={pomoShort}
+                                        min="1"
+                                        step="1"
+                                        />
+                                        <button 
+                                        class="right fade"
+                                        title="Increment short time"
+                                        on:click={() => {
+                                            pomoShort++;
+                                        }}
+                                        />
+                                    </div>
+                                </div>
+
+                                <div class="labelPillBinder">
+                                    <label for="longInput">long</label>
+                                    <div class="pillButtonContainer"> 
+                                        <button 
+                                        class="left fade"
+                                        title="Decrement long time"
+                                        on:click={() => {
+                                            if (pomoLong > 0) pomoLong--;
+                                        }}
+                                        />
+                                        <input
+                                        type="number"
+                                        id="longInput"
+                                        title="Set long time"
+                                        bind:value={pomoLong}
+                                        min="0"
+                                        step="1"
+                                        />
+                                        <button 
+                                        class="right fade"
+                                        title="Increment long time"
+                                        on:click={() => {
+                                            pomoLong++;
+                                        }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
 
+                            <div class="span2 optionsInputsContainer">
+                                <div class="labelPillBinder">
+                                    <label for="longSession">long-short repetitions</label>
+                                    <div class="pillButtonContainer"> 
+                                        <button 
+                                        class="left fade"
+                                        title="Decrement long-short repetitions"
+                                        on:click={() => {
+                                            if (pomoLongPhase > 0) pomoLongPhase--;
+                                        }}
+                                        />
+                                        <input
+                                        type="number"
+                                        id="longInput"
+                                        title="Set long-short repetitions"
+                                        bind:value={pomoLongPhase}
+                                        min="0"
+                                        step="1"
+                                        />
+                                        <button 
+                                        class="right fade"
+                                        title="long-short repetitions"
+                                        on:click={() => {
+                                            pomoLongPhase++;
+                                        }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="optionsButtonsContainer span2">
+                                <button 
+                                class="optionsButton fade"
+                                on:click={async () => {
+                                    await timer.changeLongSession(pomoLongPhase);
+                                    await timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
+                                }}
+                                >
+                                    set times
+                                </button>
+                                <button 
+                                class="optionsButton fade"
+                                on:click={async () => {
+                                    pomoLongPhase = 4;
+                                    pomoWork = 25;
+                                    pomoShort = 5;
+                                    pomoLong = 15;
+                                    await timer.changeLongSession(pomoLongPhase);
+                                    await timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
+                                }}
+                                >
+                                    reset values
+                                </button>
+                            </div>
+
+                        {:else if $timerStateRead === timer.TimerStates.Standard}
+                        <div class='optionsInputsContainer {mobileMode ? 'span3' : 'span2'}'>
                             <div class="labelPillBinder">
-                                <label for="shortInput">short</label>
+                                <label for="hourInput">hours</label>
                                 <div class="pillButtonContainer"> 
                                     <button 
                                     class="left fade"
-                                    title="Decrement short time"
+                                    title="Decrement hours"
                                     on:click={() => {
-                                        if (pomoShort > 0) pomoShort--;
+                                        if (hours > 0) hours--;
                                     }}
                                     />
                                     <input
                                     type="number"
                                     id="shortInput"
-                                    title="Set short time"
-                                    bind:value={pomoShort}
-                                    min="1"
+                                    title="Set hours"
+                                    bind:value={hours}
+                                    min="0"
                                     step="1"
                                     />
                                     <button 
                                     class="right fade"
-                                    title="Increment short time"
+                                    title="Increment hours"
                                     on:click={() => {
-                                        pomoShort++;
+                                        hours++;
                                     }}
                                     />
                                 </div>
                             </div>
 
                             <div class="labelPillBinder">
-                                <label for="longInput">long</label>
+                                <label for="minuteInput">minutes</label>
                                 <div class="pillButtonContainer"> 
                                     <button 
                                     class="left fade"
-                                    title="Decrement long time"
+                                    title="Decrement minutes"
                                     on:click={() => {
-                                        if (pomoLong > 0) pomoLong--;
+                                        if (minutes > 0) minutes--;
                                     }}
                                     />
                                     <input
                                     type="number"
-                                    id="longInput"
-                                    title="Set long time"
-                                    bind:value={pomoLong}
+                                    id="minuteInput"
+                                    title="Set minutes"
+                                    bind:value={minutes}
                                     min="0"
+                                    max="59"
                                     step="1"
                                     />
                                     <button 
                                     class="right fade"
-                                    title="Increment long time"
+                                    title="Increment minutes"
                                     on:click={() => {
-                                        pomoLong++;
+                                        if (minutes < 59) minutes++;
                                     }}
                                     />
                                 </div>
                             </div>
-                        </div>
 
-                        <div class="span2 optionsInputsContainer">
                             <div class="labelPillBinder">
-                                <label for="longSession">long-short repetitions</label>
+                                <label for="secondInput">seconds</label>
                                 <div class="pillButtonContainer"> 
                                     <button 
                                     class="left fade"
-                                    title="Decrement long-short repetitions"
+                                    title="Decrement seconds"
                                     on:click={() => {
-                                        if (pomoLongPhase > 0) pomoLongPhase--;
+                                        if (seconds > 0) seconds--;
                                     }}
                                     />
                                     <input
                                     type="number"
-                                    id="longInput"
-                                    title="Set long-short repetitions"
-                                    bind:value={pomoLongPhase}
+                                    id="secondInput"
+                                    title="Set seconds"
+                                    bind:value={seconds}
                                     min="0"
+                                    max="59"
                                     step="1"
                                     />
                                     <button 
                                     class="right fade"
-                                    title="long-short repetitions"
+                                    title="Increment seconds"
                                     on:click={() => {
-                                        pomoLongPhase++;
+                                        if (seconds < 59) seconds++;
                                     }}
                                     />
                                 </div>
                             </div>
                         </div>
-
                         <div class="optionsButtonsContainer span2">
                             <button 
                             class="optionsButton fade"
                             on:click={async () => {
-                                await timer.changeLongSession(pomoLongPhase);
-                                await timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
+                                await timer.modifyStandardTimes(hours, minutes, seconds);
                             }}
                             >
                                 set times
                             </button>
                             <button 
-                            class="optionsButton fade"
-                            on:click={async () => {
-                                pomoLongPhase = 4;
-                                pomoWork = 25;
-                                pomoShort = 5;
-                                pomoLong = 15;
-                                await timer.changeLongSession(pomoLongPhase);
-                                await timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
-                            }}
+                                class="optionsButton fade"
+                                on:click={async () => {
+                                    hours = 0;
+                                    minutes = 5
+                                    seconds = 0;
+                                    await timer.modifyStandardTimes(hours, minutes, seconds);
+                                }}
                             >
                                 reset values
                             </button>
                         </div>
 
-                    {:else if $timerStateRead === timer.TimerStates.Standard}
-                    <div class="optionsInputsContainer span2">
-                        <div class="labelPillBinder">
-                            <label for="hourInput">hours</label>
-                            <div class="pillButtonContainer"> 
-                                <button 
-                                class="left fade"
-                                title="Decrement hours"
-                                on:click={() => {
-                                    if (hours > 0) hours--;
-                                }}
-                                />
-                                <input
-                                type="number"
-                                id="shortInput"
-                                title="Set hours"
-                                bind:value={hours}
-                                min="0"
-                                step="1"
-                                />
-                                <button 
-                                class="right fade"
-                                title="Increment hours"
-                                on:click={() => {
-                                    hours++;
-                                }}
-                                />
-                            </div>
-                        </div>
-
-                        <div class="labelPillBinder">
-                            <label for="minuteInput">minutes</label>
-                            <div class="pillButtonContainer"> 
-                                <button 
-                                class="left fade"
-                                title="Decrement minutes"
-                                on:click={() => {
-                                    if (minutes > 0) minutes--;
-                                }}
-                                />
-                                <input
-                                type="number"
-                                id="minuteInput"
-                                title="Set minutes"
-                                bind:value={minutes}
-                                min="0"
-                                max="59"
-                                step="1"
-                                />
-                                <button 
-                                class="right fade"
-                                title="Increment minutes"
-                                on:click={() => {
-                                    if (minutes < 59) minutes++;
-                                }}
-                                />
-                            </div>
-                        </div>
-
-                        <div class="labelPillBinder">
-                            <label for="secondInput">seconds</label>
-                            <div class="pillButtonContainer"> 
-                                <button 
-                                class="left fade"
-                                title="Decrement seconds"
-                                on:click={() => {
-                                    if (seconds > 0) seconds--;
-                                }}
-                                />
-                                <input
-                                type="number"
-                                id="secondInput"
-                                title="Set seconds"
-                                bind:value={seconds}
-                                min="0"
-                                max="59"
-                                step="1"
-                                />
-                                <button 
-                                class="right fade"
-                                title="Increment seconds"
-                                on:click={() => {
-                                    if (seconds < 59) seconds++;
-                                }}
-                                />
-                            </div>
-                        </div>
+                        {/if}
                     </div>
-                    <div class="optionsButtonsContainer span2">
-                        <button 
-                        class="optionsButton fade"
-                        on:click={async () => {
-                            await timer.modifyStandardTimes(hours, minutes, seconds);
-                        }}
-                        >
-                            set times
-                        </button>
-                        <button 
-                            class="optionsButton fade"
-                            on:click={async () => {
-                                hours = 0;
-                                minutes = 5
-                                seconds = 0;
-                                await timer.modifyStandardTimes(hours, minutes, seconds);
-                            }}
-                        >
-                            reset values
-                        </button>
-                    </div>
+                </div>
+            
+            {:else if ((!mobileMode) || currentModePage === ModePage.Stats)}
+                <div class="statsHead {mobileMode ? 'span2' : ''}" style={debug ? 'background-color: #00cc00;' : ''}>
 
-                    {/if}
+                </div>
+                <div class="stats {mobileMode ? 'span2' : ''}" style={debug ? 'background-color: #00cccc;' : ''}>
+
+                </div>
+                <div class="close" style={debug ? 'background-color: #0000cc;' : ''}>
+                    <button
+                    id="closeMenu"
+                    class="fade"
+                    on:click={closeSettings}
+                    >
+                    close
+                    </button>
                 </div>
 
-            </div>
-            <div class="statsHead" style={debug ? 'background-color: #00cc00;' : ''}>
+                <div class="profile" style={debug ? 'background-color: #cc00cc;' : ''}>
 
-            </div>
-            <div class="stats" style={debug ? 'background-color: #00cccc;' : ''}>
-
-            </div>
-            <div class="close" style={debug ? 'background-color: #0000cc;' : ''}>
-                <button
-                id="closeMenu"
-                class="fade"
-                on:click={closeSettings}
-                >
-                close
-                </button>
-            </div>
-
-            <div class="profile" style={debug ? 'background-color: #cc00cc;' : ''}>
-
-            </div>
+                </div>
+            {/if}
         </div>
         
         <div class="optionsPadding">
@@ -520,6 +524,12 @@
                     alert(innerWidth + 'x' + innerHeight);
                 }}>
                     dim: {innerWidth + 'x' + innerHeight}
+                </button>
+                <button
+                on:click={() => {
+                    alert(mobileMode);
+                }}>
+                    mobileMode: {mobileMode}
                 </button>
             </div>
         {/if}
