@@ -59,7 +59,7 @@
     }
 
     onMount(() => {
-        currentModePage = ModePage.Stats;
+        currentModePage = ModePage.Options;
         if (debug) openSettings(); //temporary 
         document.body.addEventListener('mousemove', handleMouseMove);
         document.body.addEventListener('keydown', handleKeyDown);
@@ -122,6 +122,7 @@
     let pomoLong: number = 15;
     let pomoLongPhase: number = 4;
 
+    
     $: mobileMode = innerWidth <= 660;
 
 </script>
@@ -146,7 +147,7 @@
                         timer.switchTimerMode(timer.TimerStates.Pomodoro);
                     }}
                     >
-                    Pomodoro
+                    Pomo&shy;doro
                     </button>
                     <button
                     class="fade {$timerStateRead === timer.TimerStates.Sage ? 'selectedOption' : 'unselectedOption'}"
@@ -165,7 +166,7 @@
                         timer.switchTimerMode(timer.TimerStates.Standard);
                     }}
                     >
-                    Standard
+                    Stan&shy;dard
                     </button>
 
                 
@@ -173,7 +174,7 @@
                 <div class="modesOptionsPadding {mobileMode ? 'span3' : ''}" style={debug ? 'background-color: #cccc00;' : ''}>
                     <div class="modesOptions">
                         {#if $timerStateRead === timer.TimerStates.Pomodoro}
-                            <div class="optionsInputsContainer span2">
+                            <div class="optionsInputsContainer span2" style={mobileMode ? 'justify-content: left;' : 'justify-content: space-around;'}>
                                 <div class="labelPillBinder">
                                     <label for="workInput">work</label>
                                     <div class="pillButtonContainer"> 
@@ -259,7 +260,7 @@
                                 </div>
                             </div>
 
-                            <div class="span2 optionsInputsContainer">
+                            <div class="span2 optionsInputsContainer" style={mobileMode ? 'justify-content: baseline;' : 'justify-content: space-around;'}>
                                 <div class="labelPillBinder">
                                     <label for="longSession">long-short repetitions</label>
                                     <div class="pillButtonContainer"> 
@@ -315,115 +316,114 @@
                             </div>
 
                         {:else if $timerStateRead === timer.TimerStates.Standard}
-                        <div class='optionsInputsContainer {mobileMode ? 'span3' : 'span2'}'>
-                            <div class="labelPillBinder">
-                                <label for="hourInput">hours</label>
-                                <div class="pillButtonContainer"> 
-                                    <button 
-                                    class="left fade"
-                                    title="Decrement hours"
-                                    on:click={() => {
-                                        if (hours > 0) hours--;
-                                    }}
-                                    />
-                                    <input
-                                    type="number"
-                                    id="shortInput"
-                                    title="Set hours"
-                                    bind:value={hours}
-                                    min="0"
-                                    step="1"
-                                    />
-                                    <button 
-                                    class="right fade"
-                                    title="Increment hours"
-                                    on:click={() => {
-                                        hours++;
-                                    }}
-                                    />
+                        <div class="optionsInputsContainer span2" style={mobileMode ? 'justify-content: left;' : 'justify-content: space-around;'}>
+                                <div class="labelPillBinder">
+                                    <label for="hourInput">hours</label>
+                                    <div class="pillButtonContainer"> 
+                                        <button 
+                                        class="left fade"
+                                        title="Decrement hours"
+                                        on:click={() => {
+                                            if (hours > 0) hours--;
+                                        }}
+                                        />
+                                        <input
+                                        type="number"
+                                        id="shortInput"
+                                        title="Set hours"
+                                        bind:value={hours}
+                                        min="0"
+                                        step="1"
+                                        />
+                                        <button 
+                                        class="right fade"
+                                        title="Increment hours"
+                                        on:click={() => {
+                                            hours++;
+                                        }}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="labelPillBinder">
-                                <label for="minuteInput">minutes</label>
-                                <div class="pillButtonContainer"> 
-                                    <button 
-                                    class="left fade"
-                                    title="Decrement minutes"
-                                    on:click={() => {
-                                        if (minutes > 0) minutes--;
-                                    }}
-                                    />
-                                    <input
-                                    type="number"
-                                    id="minuteInput"
-                                    title="Set minutes"
-                                    bind:value={minutes}
-                                    min="0"
-                                    max="59"
-                                    step="1"
-                                    />
-                                    <button 
-                                    class="right fade"
-                                    title="Increment minutes"
-                                    on:click={() => {
-                                        if (minutes < 59) minutes++;
-                                    }}
-                                    />
+                                <div class="labelPillBinder">
+                                    <label for="minuteInput">minutes</label>
+                                    <div class="pillButtonContainer"> 
+                                        <button 
+                                        class="left fade"
+                                        title="Decrement minutes"
+                                        on:click={() => {
+                                            if (minutes > 0) minutes--;
+                                        }}
+                                        />
+                                        <input
+                                        type="number"
+                                        id="minuteInput"
+                                        title="Set minutes"
+                                        bind:value={minutes}
+                                        min="0"
+                                        max="59"
+                                        step="1"
+                                        />
+                                        <button 
+                                        class="right fade"
+                                        title="Increment minutes"
+                                        on:click={() => {
+                                            if (minutes < 59) minutes++;
+                                        }}
+                                        />
+                                    </div>
                                 </div>
-                            </div>
 
-                            <div class="labelPillBinder">
-                                <label for="secondInput">seconds</label>
-                                <div class="pillButtonContainer"> 
-                                    <button 
-                                    class="left fade"
-                                    title="Decrement seconds"
-                                    on:click={() => {
-                                        if (seconds > 0) seconds--;
-                                    }}
-                                    />
-                                    <input
-                                    type="number"
-                                    id="secondInput"
-                                    title="Set seconds"
-                                    bind:value={seconds}
-                                    min="0"
-                                    max="59"
-                                    step="1"
-                                    />
-                                    <button 
-                                    class="right fade"
-                                    title="Increment seconds"
-                                    on:click={() => {
-                                        if (seconds < 59) seconds++;
-                                    }}
-                                    />
+                                <div class="labelPillBinder">
+                                    <label for="secondInput">seconds</label>
+                                    <div class="pillButtonContainer"> 
+                                        <button 
+                                        class="left fade"
+                                        title="Decrement seconds"
+                                        on:click={() => {
+                                            if (seconds > 0) seconds--;
+                                        }}
+                                        />
+                                        <input
+                                        type="number"
+                                        id="secondInput"
+                                        title="Set seconds"
+                                        bind:value={seconds}
+                                        min="0"
+                                        max="59"
+                                        step="1"
+                                        />
+                                        <button 
+                                        class="right fade"
+                                        title="Increment seconds"
+                                        on:click={() => {
+                                            if (seconds < 59) seconds++;
+                                        }}
+                                        />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="optionsButtonsContainer span2">
-                            <button 
-                            class="optionsButton fade"
-                            on:click={async () => {
-                                await timer.modifyStandardTimes(hours, minutes, seconds);
-                            }}
-                            >
-                                set times
-                            </button>
-                            <button 
+                            <div class="optionsButtonsContainer span2">
+                                <button 
                                 class="optionsButton fade"
                                 on:click={async () => {
-                                    hours = 0;
-                                    minutes = 5
-                                    seconds = 0;
                                     await timer.modifyStandardTimes(hours, minutes, seconds);
                                 }}
-                            >
-                                reset values
-                            </button>
-                        </div>
-
+                                >
+                                    set times
+                                </button>
+                                <button 
+                                    class="optionsButton fade"
+                                    on:click={async () => {
+                                        hours = 0;
+                                        minutes = 5
+                                        seconds = 0;
+                                        await timer.modifyStandardTimes(hours, minutes, seconds);
+                                    }}
+                                >
+                                    reset values
+                                </button>
+                            </div>
                         {/if}
                     </div>
                 </div>
@@ -766,6 +766,8 @@
 
     .selectedOption, .unselectedOption {
         align-content: space-around;
+        flex-wrap: auto;
+        hyphens: auto;
     }
 
     .unselectedOption {
@@ -800,7 +802,7 @@
         grid-auto-flow: column;
         justify-content: center;
         align-items: center;
-        overflow: scroll;
+        overflow: auto;
         border-radius: 0px 25px 25px 25px;
         height: 100%;
         width: 100%;
@@ -813,7 +815,7 @@
     }
 
     button.optionsButton {
-        min-width: 150px;
+        min-width: 120px;
         width: 100%;
         margin-left: 12px;
         margin-right: 12px;
@@ -821,7 +823,6 @@
 
     .optionsInputsContainer {
         display: flex;
-        justify-content: space-around;
         align-items: center;
     }
 
