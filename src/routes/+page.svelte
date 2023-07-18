@@ -9,7 +9,7 @@
     export let data: PageData
     export let form: ActionData
 
-    const debug: boolean = false;
+    const debug: boolean = true;
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -447,24 +447,26 @@
 
                 </div>
                 <div class="close" style={debug ? 'background-color: #0000cc;' : ''}>
-                    <button
-                    id="closeMenu"
-                    class="fade"
-                    on:click={closeSettings}
-                    >
-                    close
-                    </button>
                     {#if mobileMode}
                         <button
-                        id="menu"
+                        id="Settings"
                         class="fade"
                         on:click={() => {
                             currentModePage = ModePage.Options;
                         }}
                         >
-                        menu
+                        <svg id="SettingsIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90">
+                            <defs><style>.cls-1{fill:none;stroke:#000;stroke-linecap:round;stroke-miterlimit:10;stroke-width:6px;}</style></defs><g id="menu"><line class="cls-1" x1="24" y1="24" x2="84" y2="24"/><line class="cls-1" x1="24" y1="44" x2="84" y2="44"/><line class="cls-1" x1="24" y1="4" x2="84" y2="4"/><line class="cls-1" x1="24" y1="64" x2="84" y2="64"/><path class="cls-1" d="m4,4v55c0,13.81,11.19,25,25,25h55"/></g>
+                        </svg>
                         </button>
                     {/if}
+                    <button
+                    id="CloseMenu"
+                    class="fade"
+                    on:click={closeSettings}
+                    >
+                    x
+                    </button>
                 </div>
 
                 <div class="profile" style={debug ? 'background-color: #cc00cc;' : ''}>
@@ -756,6 +758,11 @@
     button#hanging.hoverable:hover {
         border-top: 0px;
     }
+
+    svg#SettingsIcon {
+        width: 16px;
+        height: 16px;
+    }
     
     .modes {
         padding-left: 4px;
@@ -800,6 +807,13 @@
     .modes button#Statistics {
         border-radius: 0px 25px 0px 0px;
         border-left: 0px;
+    }
+
+    button#CloseMenu {
+        min-width: 30px;
+    }
+    button#Settings {
+        min-width: 30px;
     }
 
     .selectedOption, .unselectedOption {
