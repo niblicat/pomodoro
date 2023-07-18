@@ -134,12 +134,12 @@
 <div class="background">
     <div class="menuWrapper" bind:this={menu} transition:slide|global>
         <div 
-        class="menu"
+        class="menu {mobileMode ? "mobile" : ""}"
         id={menuVisible ? "visible" : "invisible"}
         >
         <!-- TODO: work on mobile friendly menu design -->
             {#if ((!mobileMode) || currentModePage === ModePage.Options)}
-                <div class="modes {mobileMode ? 'span3' : ''}" style={debug ? 'background-color: #cc0000;' : ''}>
+                <div class="modes {mobileMode ? "span2" : ""}" style={debug ? 'background-color: #cc0000;' : ''}>
                     <button
                     class="fade {$timerStateRead === timer.TimerStates.Pomodoro ? 'selectedOption' : 'unselectedOption'}"
                     id="Pomodoro"
@@ -160,8 +160,8 @@
                     Coming Soon
                     </button>
                     <button
-                    class="fade {$timerStateRead === timer.TimerStates.Standard ? 'selectedOption' : 'unselectedOption'}"
-                    id="{!mobileMode ? 'Standard' : 'StandardMobile'}"
+                    class="fade {$timerStateRead === timer.TimerStates.Standard ? "selectedOption" : "unselectedOption"}"
+                    id="{!mobileMode ? "Standard" : "StandardMobile"}"
                     on:click={() => {
                         timer.switchTimerMode(timer.TimerStates.Standard);
                     }}
@@ -170,17 +170,20 @@
                     </button>
                     {#if mobileMode}
                         <button
-                        class="fade {$timerStateRead === timer.TimerStates.Standard ? 'selectedOption' : 'unselectedOption'}"
+                        class="fade {$timerStateRead === timer.TimerStates.Standard ? "selectedOption" : "unselectedOption"}"
                         id="Statistics"
+                        on:click={() => {
+                            currentModePage = ModePage.Stats;
+                        }}
                         >
-                            Stats
+                            Stat&shy;istics
                         </button>
                     {/if}
 
                 
                 </div>
-                <div class="modesOptionsPadding {mobileMode ? 'span3' : ''}" style={debug ? 'background-color: #cccc00;' : ''}>
-                    <div class="modesOptions {mobileMode ? 'mobile' : ''}">
+                <div class="modesOptionsPadding {mobileMode ? "span2" : ""}" style={debug ? 'background-color: #cccc00;' : ''}>
+                    <div class="modesOptions {mobileMode ? "mobile" : ""}">
                         {#if $timerStateRead === timer.TimerStates.Pomodoro}
                             <div class="optionsInputsContainer span2" style={mobileMode ? 'justify-content: left;' : 'justify-content: space-around;'}>
                                 <div class="labelPillBinder">
@@ -435,12 +438,12 @@
                         {/if}
                     </div>
                 </div>
-            
-            {:else if ((!mobileMode) || currentModePage === ModePage.Stats)}
-                <div class="statsHead {mobileMode ? 'span2' : ''}" style={debug ? 'background-color: #00cc00;' : ''}>
+            {/if}
+            {#if ((!mobileMode) || currentModePage === ModePage.Stats)}
+                <div class="statsHead" style={debug ? 'background-color: #00cc00;' : ''}>
 
                 </div>
-                <div class="stats {mobileMode ? 'span2' : ''}" style={debug ? 'background-color: #00cccc;' : ''}>
+                <div class="stats" style={debug ? 'background-color: #00cccc;' : ''}>
 
                 </div>
                 <div class="close" style={debug ? 'background-color: #0000cc;' : ''}>
@@ -451,6 +454,17 @@
                     >
                     close
                     </button>
+                    {#if mobileMode}
+                        <button
+                        id="menu"
+                        class="fade"
+                        on:click={() => {
+                            currentModePage = ModePage.Options;
+                        }}
+                        >
+                        menu
+                        </button>
+                    {/if}
                 </div>
 
                 <div class="profile" style={debug ? 'background-color: #cc00cc;' : ''}>
@@ -700,6 +714,10 @@
         pointer-events: auto;
     }
 
+    .menu.mobile {
+        grid-template: 25% 75% / 65% 35%;
+    }
+
     .menuWrapper {
         transition: all 200ms ease-out;
         top: -260px;
@@ -876,6 +894,7 @@
         display: flex;
         justify-content: end;
         align-items: baseline;
+        flex-wrap: wrap;
         padding: 4px;
     }
 
