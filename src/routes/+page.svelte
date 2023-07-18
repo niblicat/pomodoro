@@ -137,7 +137,7 @@
         class="menu {mobileMode ? "mobile" : ""}"
         id={menuVisible ? "visible" : "invisible"}
         >
-        <!-- TODO: work on mobile friendly menu design -->
+        <!-- TODO: move or delete debug style tags -->
             {#if ((!mobileMode) || currentModePage === ModePage.Options)}
                 <div class="modes {mobileMode ? "span2" : ""}" style={debug ? 'background-color: #cc0000;' : ''}>
                     <button
