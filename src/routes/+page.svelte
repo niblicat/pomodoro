@@ -141,7 +141,7 @@
             {#if ((!mobileMode) || currentModePage === ModePage.Options)}
                 <div class="modes {mobileMode ? "span2" : ""}" style={debug ? 'background-color: #cc0000;' : ''}>
                     <button
-                    class="fade {$timerStateRead === timer.TimerStates.Pomodoro ? 'selectedOption' : 'unselectedOption'}"
+                    class="fade {$timerStateRead === timer.TimerStates.Pomodoro ? "selectedOption" : "unselectedOption"}"
                     id="Pomodoro"
                     on:click={() => {
                         timer.switchTimerMode(timer.TimerStates.Pomodoro);
@@ -150,7 +150,7 @@
                     Pomo&shy;doro
                     </button>
                     <button
-                    class="fade {$timerStateRead === timer.TimerStates.Sage ? 'selectedOption' : 'unselectedOption'}"
+                    class="fade {$timerStateRead === timer.TimerStates.Sage ? "selectedOption" : "unselectedOption"}"
                     id="Sage"
                     on:click={() => {
                         alert('This feature is not yet available.');
@@ -185,7 +185,7 @@
                 <div class="modesOptionsPadding {mobileMode ? "span2" : ""}" style={debug ? 'background-color: #cccc00;' : ''}>
                     <div class="modesOptions {mobileMode ? "mobile" : ""}">
                         {#if $timerStateRead === timer.TimerStates.Pomodoro}
-                            <div class="optionsInputsContainer span2" style={mobileMode ? 'justify-content: left;' : 'justify-content: space-around;'}>
+                            <div class="optionsInputsContainer span2 {mobileMode ? "mobile" : ""}">
                                 <div class="labelPillBinder">
                                     <label for="workInput">work</label>
                                     <div class="pillButtonContainer"> 
@@ -271,7 +271,7 @@
                                 </div>
                             </div>
 
-                            <div class="span2 optionsInputsContainer {mobileMode ? 'mobile' : ''}" style={mobileMode ? 'justify-content: baseline;' : 'justify-content: space-around;'}>
+                            <div class="span2 optionsInputsContainer {mobileMode ? "mobile" : ""}">
                                 <div class="labelPillBinder">
                                     <label for="longSession">long-short repetitions</label>
                                     <div class="pillButtonContainer"> 
@@ -327,7 +327,7 @@
                             </div>
 
                         {:else if $timerStateRead === timer.TimerStates.Standard}
-                            <div class="optionsInputsContainer span2 {mobileMode ? 'mobile' : ''}" style={mobileMode ? 'justify-content: left;' : 'justify-content: space-around;'}>
+                            <div class="optionsInputsContainer span2 {mobileMode ? "mobile" : ""}">
                                 <div class="labelPillBinder">
                                     <label for="hourInput">hours</label>
                                     <div class="pillButtonContainer"> 
@@ -475,7 +475,7 @@
         
         <div class="optionsPadding">
             <button 
-            class='fade {allowHover ? "hoverable" : "unhoverable"}'
+            class="fade {allowHover ? "hoverable" : "unhoverable"}"
             id="hanging"
             on:click={menuVisible ? closeSettings : openSettings}
             >
@@ -485,7 +485,7 @@
     </div>
     <div class="wrapper center">
         <div class="timer center">
-            <div class="timerTitle">{($timerStateRead === timer.TimerStates.Pomodoro ? 'Pomodoro Timer' : 'Timer')}</div>
+            <div class="timerTitle">{($timerStateRead === timer.TimerStates.Pomodoro ? "Pomodoro Timer" : "Timer")}</div>
                 <p class="numbersTime fade" transition:fade>
                     {#each $timeElement as e (e.type)}
                         {#if !((e.type === 'hours') && (e.value <= 0))}
@@ -715,7 +715,7 @@
     }
 
     .menu.mobile {
-        grid-template: 25% 75% / 65% 35%;
+        grid-template: 25% 75% / 75% 25%;
     }
 
     .menuWrapper {
@@ -866,6 +866,11 @@
     .optionsInputsContainer {
         display: flex;
         align-items: center;
+        justify-content: space-around;
+    }
+
+    .optionsInputsContainer.mobile {
+        justify-content: left;
     }
 
     .labelPillBinder {
