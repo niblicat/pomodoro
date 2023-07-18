@@ -9,7 +9,7 @@
     export let data: PageData
     export let form: ActionData
 
-    const debug: boolean = true;
+    const debug: boolean = false;
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -170,7 +170,7 @@
                     </button>
                     {#if mobileMode}
                         <button
-                        class="fade {$timerStateRead === timer.TimerStates.Standard ? "selectedOption" : "unselectedOption"}"
+                        class="fade unselectedOption"
                         id="Statistics"
                         on:click={() => {
                             currentModePage = ModePage.Stats;
