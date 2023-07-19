@@ -3,7 +3,7 @@
 	// Counts down each time segment
 	// Processes a length of time in deciseconds (10^-1 seconds)
 
-	import { writable, type Writable, readable, type Readable } from 'svelte/store';
+	import { writable, type Writable} from 'svelte/store';
 
 	export interface TimeElement {
 		type: string;

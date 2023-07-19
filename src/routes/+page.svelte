@@ -3,9 +3,11 @@
     import { enhance } from '$app/forms';
     import { fade, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
-    import Timer, * as timer from './timer.svelte';
+    import * as timer from './timer.svelte';
     import { timeElement, timerInProgressRead, timerStateRead, timerNumberVisibility } from './timer.svelte';
-    import ImageSVG from './images.svelte'
+    import ImageSVG from './images.svelte';
+    import Themes, * as themes from './themes.svelte'
+    import { styles } from './themes.svelte';
 
     export let data: PageData
     export let form: ActionData
@@ -126,20 +128,7 @@
     
     $: mobileMode = innerWidth <= 720;
 
-    let styles = {
-        background: '#22FFE9',
-        divback: '#14FF63',
-        accent1: '#13E896',
-        accent2: '#13C4E8',
-        contrast: '#1499FF',
-        complement: '#FF14B0',
-        neutraldark: '#bcc6c0',
-        neutralbright: '#feffff',
-        neutralheavy: '#000',
-        neutral: '#e3eaea'
-    }
-
-    $: cssVarStyles = Object.entries(styles)
+    $: cssVarStyles = Object.entries($styles)
 		.map(([key, value]) => `--${key}:${value}`)
 		.join(';');
 
@@ -593,6 +582,12 @@
                     alert(buttonEnabled);
                 }}>
                     buttonEnabled: {buttonEnabled}
+                </button>
+                <button
+                on:click={() => {
+                    themes.changeTheme(themes.Themes.Funky);
+                }}>
+                    funkytime
                 </button>
             </div>
         {/if}
