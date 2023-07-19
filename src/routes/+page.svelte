@@ -79,6 +79,7 @@
     // moves loading spinner to cursor's position
     function loadingElementToCursor() {
         if (mouseHasMoved > 3) {
+            // move loadingIcon to mouse cursor plus some offset so it's centered
             loadingIcon.style.top = m.y - 15 + 'px';
             loadingIcon.style.left = m.x - 15 + 'px';
             loadingIcon.style.position = 'absolute';  
@@ -129,12 +130,14 @@
 	// 	.map(([key, value]) => `--${key}:${value}`)
 	// 	.join(';');
 
+    // handles button disable to prevent timer bug from spam
+    // could better be handled with a scheduler so buttons are responsive
     let buttonEnabled: boolean = true;
     function disableButtons() {
         buttonEnabled = false;
         setTimeout(() => {
             buttonEnabled = true;
-        }, 200);
+        }, 250);
     }
 
 </script>
