@@ -129,6 +129,14 @@
 	// 	.map(([key, value]) => `--${key}:${value}`)
 	// 	.join(';');
 
+    let buttonEnabled: boolean = true;
+    function disableButtons() {
+        buttonEnabled = false;
+        setTimeout(() => {
+            buttonEnabled = true;
+        }, 200);
+    }
+
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
@@ -479,7 +487,7 @@
         
         <div class="optionsPadding">
             <button 
-            class="fade {allowHover ? "hoverable" : "unhoverable"}"
+            class="fade"
             id="hanging"
             on:click={menuVisible ? closeSettings : openSettings}
             >
@@ -498,9 +506,8 @@
                     {/each}
                 </p>
                 <button
-                class="bounce fade"
+                class="bounce fade {buttonEnabled ? '' : 'disabled'}"
                 on:click={() => {
-                    // $timerStateRead === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.standardStartTimer
                     if ($timerInProgressRead) timer.stopTimer();
                     else {
                         switch ($timerStateRead) {
@@ -516,20 +523,14 @@
                             break;
                         }
                     }
+                    disableButtons();
                 }}
                 title={!$timerInProgressRead ? 'Start' : 'Pause'}
                 id={!$timerInProgressRead ? 'Start' : 'Pause'}
+                disabled={!buttonEnabled}
                 >
                 {!$timerInProgressRead ? 'start' : 'pause'}
                 </button>
-                <!-- <button
-                class="bounce fade"
-                on:click={timer.stopTimer}
-                title="Pause"
-                id="pause"
-                >
-                pause
-                </button> -->
                 <button
                 class="bounce fade"
                 on:click={timer.clearTimer}
@@ -570,6 +571,12 @@
                     alert(mobileMode);
                 }}>
                     mobileMode: {mobileMode}
+                </button>
+                <button
+                on:click={() => {
+                    alert(buttonEnabled);
+                }}>
+                    buttonEnabled: {buttonEnabled}
                 </button>
             </div>
         {/if}
@@ -620,6 +627,10 @@
         pointer-events: auto;
     }
 
+    button:disabled {
+        color: var(--neutraldark);
+    }
+
     button:not(:focus-visible) {
         border: 2px solid var(--divback);
         background-color: var(--neutralbright);
@@ -632,18 +643,28 @@
 
     button.bounce:hover, button.bounce:focus-visible {
         transform: scale(1.1);
-        -webkit-transform : scale(1.1);
-        -moz-transform : scale(1.1);
-        -o-transform : scale(1.1);
-        -ms-transform : scale(1.1);
+        -webkit-transform: scale(1.1);
+        -moz-transform: scale(1.1);
+        -o-transform: scale(1.1);
+        -ms-transform: scale(1.1);
+    }
+    
+    button.disabled:hover, button.disabled:focus-visible {
+        border: 2px solid var(--divback) !important;
+        background-color: var(--neutralbright) !important;
+        transform: none !important;
+        -webkit-transform: none !important;
+        -moz-transform: none !important;
+        -o-transform: none !important;
+        -ms-transform: none !important;
     }
 
     button.bounce:active {
         transform: scale(0.9);
-        -webkit-transform : scale(0.9);
-        -moz-transform : scale(0.9);
-        -o-transform : scale(0.9);
-        -ms-transform : scale(0.9);
+        -webkit-transform: scale(0.9);
+        -moz-transform: scale(0.9);
+        -o-transform: scale(0.9);
+        -ms-transform: scale(0.9);
     }
 
     .center {
@@ -776,7 +797,7 @@
         z-index: 2;
     }
 
-    button#hanging.hoverable:hover {
+    button#hanging:hover {
         border-top: 0px;
     }
     

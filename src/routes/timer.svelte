@@ -96,8 +96,6 @@
             let minutes = Math.floor((time - 36000 * hours) / 600);
             let seconds = Math.floor((time - 36000 * hours - 600 * minutes) / 10);
     
-            console.log(hours + ':' + minutes + ':' + seconds + ' - ' + time);
-    
             timeElement.set([
                 {
                     type: 'hours',
