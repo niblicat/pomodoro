@@ -10,7 +10,7 @@
     export let data: PageData
     export let form: ActionData
 
-    const debug: boolean = false;
+    const debug: boolean = true;
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -497,30 +497,44 @@
                         {/if}
                     {/each}
                 </p>
-            {#if !$timerInProgressRead}
                 <button
                 class="bounce fade"
-                on:click={$timerStateRead === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.standardStartTimer}
-                title="Start"
-                id="start"
+                on:click={() => {
+                    // $timerStateRead === timer.TimerStates.Pomodoro ? timer.pomodoroActive : timer.standardStartTimer
+                    if ($timerInProgressRead) timer.stopTimer();
+                    else {
+                        switch ($timerStateRead) {
+                        case timer.TimerStates.Pomodoro: 
+                            timer.pomodoroActive();
+                            break;
+                        case timer.TimerStates.Sage: 
+                            // call Sage mode
+                            alert('No implementation');
+                            break;
+                        case timer.TimerStates.Sage: 
+                            timer.standardStartTimer()
+                            break;
+                        }
+                    }
+                }}
+                title={!$timerInProgressRead ? 'Start' : 'Pause'}
+                id={!$timerInProgressRead ? 'Start' : 'Pause'}
                 >
-                start
+                {!$timerInProgressRead ? 'start' : 'pause'}
                 </button>
-            {:else}
-                <button
+                <!-- <button
                 class="bounce fade"
                 on:click={timer.stopTimer}
                 title="Pause"
                 id="pause"
                 >
                 pause
-                </button>
-            {/if}
+                </button> -->
                 <button
                 class="bounce fade"
                 on:click={timer.clearTimer}
                 title="Clear"
-                id="clear"
+                id="Clear"
                 >
                 clear
                 </button>
@@ -606,12 +620,17 @@
         pointer-events: auto;
     }
 
-    button:hover {
+    button:not(:focus-visible) {
+        border: 2px solid var(--divback);
+        background-color: var(--neutralbright);
+    }
+
+    button:hover, button:focus-visible {
         background-color: var(--accent2);
         border: 2px solid var(--neutralbright);
     }
 
-    button.bounce:hover {
+    button.bounce:hover, button.bounce:focus-visible {
         transform: scale(1.1);
         -webkit-transform : scale(1.1);
         -moz-transform : scale(1.1);
@@ -694,15 +713,15 @@
         width: 80%;
     }
 
-    .timer button#start, .timer button#pause {
+    .timer button#Start, .timer button#Pause {
         grid-column: 1;
     }
     
-    .timer button#pause:hover {
+    .timer button#Pause:hover {
         background-color: var(--complement);
     }
 
-    .timer button#clear {
+    .timer button#Clear {
         grid-column: 2;
     }
 
