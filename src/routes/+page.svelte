@@ -600,6 +600,7 @@
         --neutraldark: #bcc6c0;
         --neutralbright: #feffff;
         --neutral: #e3eaea;
+        --neutralheavy: #000;
     }
 
     html, body {
@@ -609,6 +610,7 @@
     }
 
     body {
+        color: var(--neutralheavy);
         height: 100vh;
         width: 100vw;
     }
@@ -621,6 +623,7 @@
     button {
         border-radius: 25px;
         min-width: 60px;
+        color: var(--neutralheavy);
         border: 2px solid var(--divback);
         background-color: var(--neutralbright);
         font-size: 20px;
@@ -668,6 +671,10 @@
         -moz-transform: scale(0.9);
         -o-transform: scale(0.9);
         -ms-transform: scale(0.9);
+    }
+
+    input {
+        color: var(--neutralheavy)
     }
 
     .center {
@@ -852,6 +859,7 @@
     button#CloseMenu {
         min-width: 30px;
     }
+
     button#Settings {
         min-width: 30px;
     }
