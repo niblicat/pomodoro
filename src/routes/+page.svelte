@@ -123,7 +123,7 @@
     let pomoLong: number = 15;
     let pomoLongPhase: number = 4;
     
-    $: mobileMode = innerWidth <= 660;
+    $: mobileMode = innerWidth <= 720;
 
     // $: cssVarStyles = Object.entries(styles)  // for later
 	// 	.map(([key, value]) => `--${key}:${value}`)
@@ -331,7 +331,7 @@
                             </div>
 
                         {:else if $timerStateRead === timer.TimerStates.Standard}
-                            <div class="optionsInputsContainer span2 {mobileMode ? "mobile" : ""}">
+                            <div class="span2 optionsInputsContainer {mobileMode ? "mobile" : ""}">
                                 <div class="labelPillBinder">
                                     <label for="hourInput">hours</label>
                                     <div class="pillButtonContainer"> 
