@@ -149,6 +149,7 @@
 <body style={cssVarStyles}>
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
 <div class="background">
+    <audio controls autoplay><source src="./squeaky.mp3" type="audio/mp3"></audio>
     <div class="menuWrapper" bind:this={menu} transition:slide|global>
         <div 
         class="menu {mobileMode ? "mobile" : ""}"
