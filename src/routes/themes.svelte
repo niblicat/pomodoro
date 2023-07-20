@@ -10,8 +10,10 @@
         complement: string,
         neutraldark: string,
         neutralbright: string,
-        neutralheavy: string,
-        neutral: string
+        text: string,
+        neutral: string,
+        altbackground: string,
+        alttext: string
     }
 
     export const Themes = {
@@ -33,8 +35,10 @@
         complement: '#FF14B0',
         neutraldark: '#bcc6c0',
         neutralbright: '#feffff',
-        neutralheavy: '#000',
-        neutral: '#e3eaea'
+        text: '#000',
+        neutral: '#e3eaea',
+        altbackground: '#feffff',
+        alttext: '#000'
     })
 
     export function changeTheme(newTheme: Symbol) {
@@ -49,22 +53,26 @@
                     complement: '#FF14B0',
                     neutraldark: '#bcc6c0',
                     neutralbright: '#feffff',
-                    neutralheavy: '#000',
-                    neutral: '#e3eaea'
+                    text: '#000',
+                    neutral: '#e3eaea',
+                    altbackground: '#feffff',
+                    alttext: '#000'
                 })
                 break;  
             case Themes.Funky:
                 styles.set({
-                    background: '#000',
-                    divback: '#14FF63',
-                    accent1: '#13E896',
-                    accent2: '#13C4E8',
-                    contrast: '#1499FF',
-                    complement: '#FF14B0',
-                    neutraldark: '#bcc6c0',
-                    neutralbright: '#feffff',
-                    neutralheavy: '#000',
-                    neutral: '#e3eaea'
+                    background: '#510d43',
+                    divback: '#f0f879',
+                    accent1: '#870f0f',
+                    accent2: '#e05ec6',
+                    contrast: '#e05ec6',
+                    complement: '#219E00',
+                    neutraldark: '#222',
+                    neutralbright: '#fff',
+                    text: '#1A0415',
+                    neutral: '#555',
+                    altbackground: '#870f0f',
+                    alttext: '#fff'
                 })
                 break;  
         }

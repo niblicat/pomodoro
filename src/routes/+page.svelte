@@ -12,7 +12,7 @@
     export let data: PageData
     export let form: ActionData
 
-    const debug: boolean = true;
+    const debug: boolean = false;
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -585,7 +585,7 @@
                 </button>
                 <button
                 on:click={() => {
-                    themes.changeTheme(themes.Themes.Funky);
+                    themes.changeTheme(themes.Themes.Funky)
                 }}>
                     funkytime
                 </button>
@@ -598,9 +598,6 @@
 </html>
 
 <style>
-    :root {
-    }
-
     html, body {
         background-image: linear-gradient(to bottom right, var(--background), var(--accent2));
         margin: 0px;
@@ -817,7 +814,10 @@
         justify-content: baseline;
     }
 
+
     .modes button {
+        color: var(--alttext);
+        background-color: var(--altbackground);
         margin-bottom: -2px;
         border-bottom: 0px;
         border-radius: 25px 25px 0px 0px;
@@ -832,10 +832,12 @@
     }
 
     .modes button#Sage {
-        background-color: var(--neutraldark);
+        border-color: var(--divback);
+        background-color: var(--neutraldark) !important;
         border-radius: 0px 0px 0px 0px;
         border-left: 0px;
         border-right: 0px;
+        pointer-events: none;
     }
 
     .modes button#Standard {
@@ -869,15 +871,16 @@
     }
 
     .unselectedOption {
-        background-color: var(--neutral);
+        background-color: var(--neutral) !important;
     }
 
-    .selectedOption {
+    .selectedOption, .selectedOption:hover {
         cursor: unset;
+        background-color: var(--altbackground) !important;
     }
 
     .unselectedOption:hover {
-        background-color: var(--accent2);
+        background-color: var(--accent2) !important;
         border: 2px solid var(--neutralbright);
         border-bottom: 0px;
     }
@@ -904,7 +907,7 @@
         border-radius: 0px 25px 25px 25px;
         height: 100%;
         width: 100%;
-        background-color: var(--neutralbright);
+        background-color: var(--altbackground);
         border: 2px solid var(--divback);
     }
 
@@ -927,6 +930,8 @@
         display: flex;
         align-items: center;
         justify-content: space-around;
+        background-color: var(--altbackground);
+        color: var(--alttext);
     }
 
     .optionsInputsContainer.mobile {
@@ -936,6 +941,11 @@
     .labelPillBinder {
         display: flex;
         align-items: center;
+    }
+
+    .labelPillBinder > * {
+        background-color: var(--altbackground);
+        color: var(--alttext);
     }
 
     .labelPillBinder label {
@@ -972,7 +982,6 @@
     }
 
     .pillButtonContainer {
-        background-color: var(--neutralbright);
         border: 2px solid var(--divback);
         border-radius: 25px; 
         display: inline-flex;
@@ -1041,6 +1050,15 @@
         display: flex;
         justify-content: space-around;
         box-sizing: border-box;
+    }
+
+    .optionsButtonsContainer button {
+        background-color: var(--altbackground);
+        color: var(--alttext);
+    }
+
+    .optionsButtonsContainer button:hover {
+        background-color: var(--contrast);
     }
 
     #invisible {
