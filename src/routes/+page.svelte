@@ -922,8 +922,8 @@
     button.optionsButton {
         min-width: 120px;
         width: 100%;
-        margin-left: 12px;
-        margin-right: 12px;
+        margin-left: 2vw;
+        margin-right: 2vw;
     }
 
     .optionsInputsContainer {
