@@ -6,7 +6,7 @@
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgressRead, timerStateRead, timerNumberVisibility, bell } from './timer.svelte';
     import ImageSVG from './images.svelte';
-    import Themes, * as themes from './themes.svelte'
+    import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
 
     export let data: PageData
@@ -67,6 +67,7 @@
         document.body.addEventListener('mousemove', handleMouseMove);
         document.body.addEventListener('keydown', handleKeyDown);
         timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
+        themes.changeTheme(themes.Themes.Funky);
         
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
@@ -162,7 +163,7 @@
             {#if ((!mobileMode) || currentModePage === ModePage.Options)}
                 <div class="modes {mobileMode ? "span2" : ""}" style={debug ? 'background-color: #cc0000;' : ''}>
                     <button
-                    class="fade {$timerStateRead === timer.TimerStates.Pomodoro ? "selectedOption" : "unselectedOption"}"
+                    class="fade alt {$timerStateRead === timer.TimerStates.Pomodoro ? "selectedOption" : "unselectedOption"}"
                     id="Pomodoro"
                     on:click={() => {
                         timer.switchTimerMode(timer.TimerStates.Pomodoro);
@@ -171,7 +172,7 @@
                     Pomo&shy;doro
                     </button>
                     <button
-                    class="fade {$timerStateRead === timer.TimerStates.Sage ? "selectedOption" : "unselectedOption"}"
+                    class="fade alt {$timerStateRead === timer.TimerStates.Sage ? "selectedOption" : "unselectedOption"}"
                     id="Sage"
                     on:click={() => {
                         alert('This feature is not yet available.');
@@ -181,7 +182,7 @@
                     Coming Soon
                     </button>
                     <button
-                    class="fade {$timerStateRead === timer.TimerStates.Standard ? "selectedOption" : "unselectedOption"}"
+                    class="fade alt {$timerStateRead === timer.TimerStates.Standard ? "selectedOption" : "unselectedOption"}"
                     id="{!mobileMode ? "Standard" : "StandardMobile"}"
                     on:click={() => {
                         timer.switchTimerMode(timer.TimerStates.Standard);
@@ -191,7 +192,7 @@
                     </button>
                     {#if mobileMode}
                         <button
-                        class="fade unselectedOption"
+                        class="fade alt unselectedOption"
                         id="Statistics"
                         on:click={() => {
                             currentModePage = ModePage.Stats;
@@ -206,10 +207,10 @@
                 <div class="modesOptionsPadding {mobileMode ? "span2" : ""}" style={debug ? 'background-color: #cccc00;' : ''}>
                     <div class="modesOptions {mobileMode ? "mobile" : ""}">
                         {#if $timerStateRead === timer.TimerStates.Pomodoro}
-                            <div class="optionsInputsContainer span2 {mobileMode ? "mobile" : ""}">
+                            <div class="optionsInputsContainer span2 alttext {mobileMode ? "mobile" : ""}">
                                 <div class="labelPillBinder">
                                     <label for="workInput">work</label>
-                                    <div class="pillButtonContainer"> 
+                                    <div class="pillButtonContainer alt"> 
                                         <button 
                                         class="left fade"
                                         title="Decrement work time"
@@ -237,7 +238,7 @@
 
                                 <div class="labelPillBinder">
                                     <label for="shortInput">short</label>
-                                    <div class="pillButtonContainer"> 
+                                    <div class="pillButtonContainer alt"> 
                                         <button 
                                         class="left fade"
                                         title="Decrement short time"
@@ -265,7 +266,7 @@
 
                                 <div class="labelPillBinder">
                                     <label for="longInput">long</label>
-                                    <div class="pillButtonContainer"> 
+                                    <div class="pillButtonContainer alt"> 
                                         <button 
                                         class="left fade"
                                         title="Decrement long time"
@@ -292,10 +293,10 @@
                                 </div>
                             </div>
 
-                            <div class="span2 optionsInputsContainer {mobileMode ? "mobile" : ""}">
+                            <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
                                 <div class="labelPillBinder">
                                     <label for="longSession">long-short repetitions</label>
-                                    <div class="pillButtonContainer"> 
+                                    <div class="pillButtonContainer alt"> 
                                         <button 
                                         class="left fade"
                                         title="Decrement long-short repetitions"
@@ -324,7 +325,7 @@
 
                             <div class="optionsButtonsContainer span2">
                                 <button 
-                                class="optionsButton fade bounce"
+                                class="optionsButton fade bounce alt"
                                 on:click={async () => {
                                     await timer.changeLongSession(pomoLongPhase);
                                     await timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
@@ -333,7 +334,7 @@
                                     set times
                                 </button>
                                 <button 
-                                class="optionsButton fade bounce"
+                                class="optionsButton fade bounce alt"
                                 on:click={async () => {
                                     pomoLongPhase = 4;
                                     pomoWork = 25;
@@ -348,10 +349,10 @@
                             </div>
 
                         {:else if $timerStateRead === timer.TimerStates.Standard}
-                            <div class="span2 optionsInputsContainer {mobileMode ? "mobile" : ""}">
+                            <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
                                 <div class="labelPillBinder">
                                     <label for="hourInput">hours</label>
-                                    <div class="pillButtonContainer"> 
+                                    <div class="pillButtonContainer alt"> 
                                         <button 
                                         class="left fade"
                                         title="Decrement hours"
@@ -379,7 +380,7 @@
 
                                 <div class="labelPillBinder">
                                     <label for="minuteInput">minutes</label>
-                                    <div class="pillButtonContainer"> 
+                                    <div class="pillButtonContainer alt"> 
                                         <button 
                                         class="left fade"
                                         title="Decrement minutes"
@@ -408,7 +409,7 @@
 
                                 <div class="labelPillBinder">
                                     <label for="secondInput">seconds</label>
-                                    <div class="pillButtonContainer"> 
+                                    <div class="pillButtonContainer alt"> 
                                         <button 
                                         class="left fade"
                                         title="Decrement seconds"
@@ -437,7 +438,7 @@
                             </div>
                             <div class="optionsButtonsContainer span2">
                                 <button 
-                                class="optionsButton fade bounce"
+                                class="optionsButton fade bounce alt"
                                 on:click={async () => {
                                     await timer.modifyStandardTimes(hours, minutes, seconds);
                                 }}
@@ -445,7 +446,7 @@
                                     set times
                                 </button>
                                 <button 
-                                    class="optionsButton fade bounce"
+                                    class="optionsButton fade bounce alt"
                                     on:click={async () => {
                                         hours = 0;
                                         minutes = 5
@@ -471,20 +472,20 @@
                     {#if mobileMode}
                         <button
                         id="Settings"
-                        class="fade bounce"
+                        class="fade bounce alt"
                         on:click={() => {
                             currentModePage = ModePage.Options;
                         }}
                         >
-                        <ImageSVG colour="#000" type="SettingsIcon"/>
+                        <ImageSVG colour={$styles.alttext} type="SettingsIcon"/>
                         </button>
                     {/if}
                     <button
                     id="CloseMenu"
-                    class="fade bounce"
+                    class="fade bounce alt"
                     on:click={closeSettings}
                     >
-                    <ImageSVG colour="#000" type="CloseIcon"/>
+                    <ImageSVG colour={$styles.alttext} type="CloseIcon"/>
                     </button>
                 </div>
 
@@ -496,7 +497,7 @@
         
         <div class="optionsPadding">
             <button 
-            class="fade"
+            class="fade regular"
             id="hanging"
             on:click={menuVisible ? closeSettings : openSettings}
             >
@@ -505,7 +506,7 @@
         </div>
     </div>
     <div class="wrapper center">
-        <div class="timer center">
+        <div class="timer center regulartext">
             <div class="timerTitle">{($timerStateRead === timer.TimerStates.Pomodoro ? "Pomodoro Timer" : "Timer")}</div>
                 <p class="numbersTime fade" transition:fade>
                     {#each $timeElement as e (e.type)}
@@ -515,7 +516,7 @@
                     {/each}
                 </p>
                 <button
-                class="bounce fade {buttonEnabled ? '' : 'disabled'}"
+                class="bounce fade regular {buttonEnabled ? '' : 'disabled'}"
                 on:click={() => {
                     if ($timerInProgressRead) timer.stopTimer();
                     else {
@@ -541,7 +542,7 @@
                 {!$timerInProgressRead ? 'start' : 'pause'}
                 </button>
                 <button
-                class="bounce fade"
+                class="bounce fade regular"
                 on:click={timer.clearTimer}
                 title="Clear"
                 id="Clear"
@@ -628,14 +629,30 @@
     button {
         border-radius: 25px;
         min-width: 60px;
-        color: var(--neutralheavy);
         border: 2px solid var(--divback);
-        background-color: var(--neutralbright);
         font-size: 20px;
         line-height: 24px;
         text-align: center;
         cursor: pointer;
         pointer-events: auto;
+    }
+
+    .regular, .regular > * {
+        color: var(--text);
+        background-color: var(--input);
+    }
+
+    .regulartxt, .regulartext > * {
+        color: var(--text);
+    }
+    
+    .alttext, .alttext > * {
+        color: var(--alttext);
+    }
+
+    .alt, .alt > * {
+        color: var(--alttext);
+        background-color: var(--altinput);
     }
 
     button:disabled {
@@ -644,12 +661,24 @@
 
     button:not(:focus-visible) {
         border: 2px solid var(--divback);
-        background-color: var(--neutralbright);
     }
 
-    button:hover, button:focus-visible {
+    button.regular:not(:focus-visible) {
+        background-color: var(--input);
+    }
+
+    button.alt:not(:focus-visible) {
+        background-color: var(--altinput);
+    }
+
+    button.regular:hover, button.regular:focus-visible {
         background-color: var(--accent2);
-        border: 2px solid var(--neutralbright);
+        border: 2px solid var(--input);
+    }
+    
+    button.alt:hover, button.alt:focus-visible {
+        background-color: var(--accent2);
+        border: 2px solid var(--contrast);
     }
 
     button.bounce:hover, button.bounce:focus-visible {
@@ -662,7 +691,7 @@
     
     button.disabled:hover, button.disabled:focus-visible {
         border: 2px solid var(--divback) !important;
-        background-color: var(--neutralbright) !important;
+        background-color: var(--input) !important;
         transform: none !important;
         -webkit-transform: none !important;
         -moz-transform: none !important;
@@ -826,8 +855,6 @@
 
 
     .modes button {
-        color: var(--alttext);
-        background-color: var(--altbackground);
         margin-bottom: -2px;
         border-bottom: 0px;
         border-radius: 25px 25px 0px 0px;
@@ -886,18 +913,19 @@
 
     .selectedOption, .selectedOption:hover {
         cursor: unset;
-        background-color: var(--altbackground) !important;
+        background-color: var(--altinput) !important;
+        border-color: var(--divback) !important;
+        border-bottom: 0px !important;
     }
 
     .unselectedOption:hover {
         background-color: var(--accent2) !important;
-        border: 2px solid var(--neutralbright);
-        border-bottom: 0px;
+        border: 2px solid var(--input);
+        border-bottom: 0px !important;
     }
 
-
     .selectedOption:hover {
-        background-color: var(--neutralbright);
+        background-color: var(--input);
         border: 2px solid var(--divback);
         border-bottom: 0px;
     }
@@ -908,6 +936,8 @@
     }
 
     .modesOptions {
+        background-color: var(--altinput);
+        border: 2px solid var(--divback);
         display: grid;
         grid-template: 1fr 1fr 1fr 1fr / 1fr 1fr;
         grid-auto-flow: column;
@@ -917,8 +947,6 @@
         border-radius: 0px 25px 25px 25px;
         height: 100%;
         width: 100%;
-        background-color: var(--altbackground);
-        border: 2px solid var(--divback);
     }
 
     .modesOptions.mobile {
@@ -940,8 +968,6 @@
         display: flex;
         align-items: center;
         justify-content: space-around;
-        background-color: var(--altbackground);
-        color: var(--alttext);
     }
 
     .optionsInputsContainer.mobile {
@@ -951,11 +977,6 @@
     .labelPillBinder {
         display: flex;
         align-items: center;
-    }
-
-    .labelPillBinder > * {
-        background-color: var(--altbackground);
-        color: var(--alttext);
     }
 
     .labelPillBinder label {
@@ -1060,15 +1081,6 @@
         display: flex;
         justify-content: space-around;
         box-sizing: border-box;
-    }
-
-    .optionsButtonsContainer button {
-        background-color: var(--altbackground);
-        color: var(--alttext);
-    }
-
-    .optionsButtonsContainer button:hover {
-        background-color: var(--contrast);
     }
 
     #invisible {

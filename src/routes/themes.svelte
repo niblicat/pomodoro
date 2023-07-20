@@ -12,7 +12,8 @@
         neutralbright: string,
         text: string,
         neutral: string,
-        altbackground: string,
+        input: string,
+        altinput: string,
         alttext: string
     }
 
@@ -37,7 +38,8 @@
         neutralbright: '#feffff',
         text: '#000',
         neutral: '#e3eaea',
-        altbackground: '#feffff',
+        input: '#feffff',
+        altinput: '#feffff',
         alttext: '#000'
     })
 
@@ -55,7 +57,8 @@
                     neutralbright: '#feffff',
                     text: '#000',
                     neutral: '#e3eaea',
-                    altbackground: '#feffff',
+                    input: '#feffff',
+                    altinput: '#feffff',
                     alttext: '#000'
                 })
                 break;  
@@ -65,13 +68,14 @@
                     divback: '#f0f879',
                     accent1: '#870f0f',
                     accent2: '#e05ec6',
-                    contrast: '#e05ec6',
+                    contrast: '#a8287e',
                     complement: '#219E00',
                     neutraldark: '#222',
                     neutralbright: '#fff',
                     text: '#1A0415',
                     neutral: '#555',
-                    altbackground: '#870f0f',
+                    input: '#fff',
+                    altinput: '#870f0f',
                     alttext: '#fff'
                 })
                 break;  
