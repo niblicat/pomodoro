@@ -130,6 +130,18 @@
         return time;
 	}
 
+    export let bell: Writable<boolean> = writable(false);
+
+    // plays sound and is called when timer reaches 0
+    export async function ringBell() {
+        bell.set(true);
+    }
+
+    // called by main to end bell ring
+    export async function muteBell() {
+        bell.set(false);
+    }
+
     // modifies pomodoro state to next state based on current
     async function modifyPomodoroState() {
         switch (pomodoroState) {
@@ -156,11 +168,15 @@
             timeDifference = endTime - currentTime;
             interval = setInterval(async () => {
                 if (timeDifference <= 0 || timerProgressState === false) {
-                    if ((timerProgressState === true) && (timerState === TimerStates.Pomodoro)) await modifyPomodoroState();
+                    if (timerProgressState === true) {
+                        await ringBell();
+                        if (timerState === TimerStates.Pomodoro) await modifyPomodoroState();
+                    }
                     await TimerProgress.updateTimerInProgressToFalse();
                     clearInterval(interval);
                     resolve();
                 }
+                console.log((timeDifference / 100) + ' time2set:' + timeToSet);
                 timeToSet = await formatTime(timeToSet <= 0 ? 0 : (timeDifference / 100));
                 timerProgressState = await TimerProgress.getTimerInProgress();
                 currentTime = Date.now();
@@ -290,7 +306,8 @@
     }
 
     export async function standardStartTimer() {
-        if (goalTime <= 0) await setTime(standardTime);
+        if (timeToSet <= 0) await setTime(standardTime);
+        console.log(goalTime);
         await startTimer();
     }
 

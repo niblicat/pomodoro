@@ -4,7 +4,7 @@
     import { fade, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
-    import { timeElement, timerInProgressRead, timerStateRead, timerNumberVisibility } from './timer.svelte';
+    import { timeElement, timerInProgressRead, timerStateRead, timerNumberVisibility, bell } from './timer.svelte';
     import ImageSVG from './images.svelte';
     import Themes, * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
@@ -12,7 +12,7 @@
     export let data: PageData
     export let form: ActionData
 
-    const debug: boolean = false;
+    const debug: boolean = true;
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -141,7 +141,6 @@
             buttonEnabled = true;
         }, 250);
     }
-
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
@@ -149,7 +148,11 @@
 <body style={cssVarStyles}>
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
 <div class="background">
-    <audio controls autoplay><source src="./squeaky.mp3" type="audio/mp3"></audio>
+    {#if $bell}
+        <audio on:ended={async () => {
+            await timer.muteBell();
+        }} autoplay><source src="/sounds/squeaky.mp3" type="audio/mp3"></audio>
+    {/if}
     <div class="menuWrapper" bind:this={menu} transition:slide|global>
         <div 
         class="menu {mobileMode ? "mobile" : ""}"
@@ -524,7 +527,7 @@
                             // call Sage mode
                             alert('No implementation');
                             break;
-                        case timer.TimerStates.Sage: 
+                        case timer.TimerStates.Standard: 
                             timer.standardStartTimer()
                             break;
                         }
@@ -589,6 +592,12 @@
                     themes.changeTheme(themes.Themes.Funky)
                 }}>
                     funkytime
+                </button>
+                <button
+                on:click={() => {
+                    alert($bell);
+                }}>
+                    bell: {$bell}
                 </button>
             </div>
         {/if}
