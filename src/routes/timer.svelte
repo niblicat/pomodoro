@@ -112,6 +112,7 @@
             ]);
         }
         else {
+            // if times are less than 0 just set everything to be 0
             timeElement.set([
                 {
                     type: 'hours',
@@ -161,26 +162,26 @@
 	// modifies the change in time between now and the end time every decisecond
 	async function timerActiveCount(): Promise<void> {
 		return new Promise(async (resolve) => {
-			let timeDifference: number = 0;
-			currentTime = Date.now();
-			endTime = currentTime + 100 * goalTime;
-            let timerProgressState: boolean = await TimerProgress.getTimerInProgress();
+			let timeDifference: number = 0; // initialise difference between time of completion and current time
+			currentTime = Date.now(); // current UNIX time
+			endTime = currentTime + 100 * goalTime; // add goal difference btwn current and end time in deciseconds
+            let timerProgressState: boolean = await TimerProgress.getTimerInProgress(); // get initial bool for if timer should be running
             timeDifference = endTime - currentTime;
             interval = setInterval(async () => {
+                // if there is no time left or the timer should not be running, kill timer momentum
                 if (timeDifference <= 0 || timerProgressState === false) {
                     if (timerProgressState === true) {
                         await ringBell();
                         if (timerState === TimerStates.Pomodoro) await modifyPomodoroState();
                     }
-                    await TimerProgress.updateTimerInProgressToFalse();
+                    await TimerProgress.updateTimerInProgressToFalse(); // make sure we say the timer is no longer running
                     clearInterval(interval);
                     resolve();
                 }
-                console.log((timeDifference / 100) + ' time2set:' + timeToSet);
-                timeToSet = await formatTime(timeToSet <= 0 ? 0 : (timeDifference / 100));
-                timerProgressState = await TimerProgress.getTimerInProgress();
-                currentTime = Date.now();
-                timeDifference = endTime - currentTime;
+                timeToSet = await formatTime(timeToSet <= 0 ? 0 : (timeDifference / 100)); // update onscreen value
+                timerProgressState = await TimerProgress.getTimerInProgress(); // reevaluate if timer should be running
+                currentTime = Date.now(); // gets current unix time
+                timeDifference = endTime - currentTime; // now we are closer to completion
             }, 100)        
 		});
 	}
@@ -190,6 +191,7 @@
 	export async function startTimer(): Promise<void> {
         const timerProgressState: boolean = await TimerProgress.getTimerInProgress();
 		if (timerProgressState) {
+            // this branch shouldn't run but just in case
             await TimerProgress.updateTimerInProgressToFalse();
             alert('Timer is already in progress...');
 		} else {
@@ -219,7 +221,7 @@
 
 	// sets the time based on deciseconds
 	export async function setTime(newTime: number) {
-        sessionNumber = 1;
+        sessionNumber = 1; // for pomodoro
 		await TimerProgress.updateTimerInProgressToFalse();
 		goalTime = newTime;
 		currentTime = Date.now();
@@ -307,7 +309,7 @@
 
     export async function standardStartTimer() {
         if (timeToSet <= 0) await setTime(standardTime);
-        console.log(goalTime);
+
         await startTimer();
     }
 
