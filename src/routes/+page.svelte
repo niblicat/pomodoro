@@ -12,7 +12,7 @@
     export let data: PageData
     export let form: ActionData
 
-    const debug: boolean = true;
+    const debug: boolean = false;
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;

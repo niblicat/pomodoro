@@ -168,6 +168,7 @@
             let timerProgressState: boolean = await TimerProgress.getTimerInProgress(); // get initial bool for if timer should be running
             timeDifference = endTime - currentTime;
             interval = setInterval(async () => {
+                // console.log('TD: ' + (timeDifference / 100) + ' TTS: ' + timeToSet);
                 // if there is no time left or the timer should not be running, kill timer momentum
                 if (timeDifference <= 0 || timerProgressState === false) {
                     if (timerProgressState === true) {
@@ -178,7 +179,7 @@
                     clearInterval(interval);
                     resolve();
                 }
-                timeToSet = await formatTime(timeToSet <= 0 ? 0 : (timeDifference / 100)); // update onscreen value
+                timeToSet = await formatTime(timeDifference <= 0 ? 0 : (timeDifference / 100)); // update onscreen value
                 timerProgressState = await TimerProgress.getTimerInProgress(); // reevaluate if timer should be running
                 currentTime = Date.now(); // gets current unix time
                 timeDifference = endTime - currentTime; // now we are closer to completion
