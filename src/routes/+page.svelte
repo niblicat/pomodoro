@@ -15,7 +15,7 @@
     const debug: boolean = false;
 
     let mouseHasMoved: number = 0;
-    let loading: boolean = false;
+    let loading: boolean = true;
     let loadingDelayIsActive: boolean = true;
     let loadingIcon: HTMLElement;
     let menu: HTMLElement;
@@ -1100,6 +1100,8 @@
         width: 30px;
         height: 30px;
         animation: spin 0.5s linear infinite;
+        pointer-events: none;
+        cursor: unset;
     }
 
     @keyframes spin {
