@@ -128,6 +128,7 @@
     let pomoLongPhase: number = 4;
     
     $: mobileMode = innerWidth <= 720;
+    $: landscapeMode = innerHeight <= 500;
 
     $: cssVarStyles = Object.entries($styles)
 		.map(([key, value]) => `--${key}:${value}`)
@@ -509,7 +510,7 @@
             </button>
         </div>
     </div>
-    <div class="wrapper center">
+    <div class="wrapper center {landscapeMode ? "landscape" : ""}">
         <div class="timer center regulartext">
             <div class="timerTitle">{($timerStateRead === timer.TimerStates.Pomodoro ? "Pomodoro Timer" : "Timer")}</div>
                 <p class="numbersTime fade" transition:fade>
@@ -725,15 +726,21 @@
     .background {
         height: 100%;
         width: 100%;
+        position: relative;
+        overflow: hidden;
     }
 
     .wrapper {
         display: grid;
-        grid-template: 30% 30% 10% 20% / 1fr;
+        grid-template: 30% 30% 10% 30% / 1fr;
         vertical-align: middle;
         text-align: center;
         height: 100%;
         width: 100%;
+    }
+
+    .wrapper.landscape {
+        grid-template: 25% 50% 10% 25% / 1fr;
     }
 
     
@@ -1102,6 +1109,7 @@
         animation: spin 0.5s linear infinite;
         pointer-events: none;
         cursor: unset;
+        z-index: 9;
     }
 
     @keyframes spin {
