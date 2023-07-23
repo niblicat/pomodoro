@@ -20,11 +20,7 @@
     export const Themes = {
         Classic: Symbol('Classic'),
         Funky: Symbol('Funky'),
-        Spooky: Symbol('Spooky'),
-        Night: Symbol('Night'),
-        White: Symbol('White'),
-        Muffin: Symbol('Muffin'),
-        Mitten: Symbol('Mitten'),
+        Aurora: Symbol('Aurora')
     }
 
     export let styles: Writable<Theme> = writable({
@@ -77,6 +73,23 @@
                     input: '#fff',
                     altinput: '#870f0f',
                     alttext: '#fff'
+                })
+                break;  
+            case Themes.Aurora:
+                styles.set({
+                    background: '#6E37A6',
+                    divback: '#038C8C',
+                    accent1: '#04BF9D',
+                    accent2: '#F277A4',
+                    contrast: '#a8287e',
+                    complement: '#77F280',
+                    neutraldark: '#9372B5',
+                    neutralbright: '#022859',
+                    text: '#fff',
+                    neutral: '#C599F2',
+                    input: '#022859',
+                    altinput: '#04BF9D',
+                    alttext: '#F7EAEF'
                 })
                 break;  
         }

@@ -12,7 +12,7 @@
     export let data: PageData
     export let form: ActionData
 
-    const debug: boolean = true;
+    const debug: boolean = false;
 
     let mouseHasMoved: number = 0;
     let loading: boolean = false;
@@ -67,7 +67,7 @@
         document.body.addEventListener('mousemove', handleMouseMove);
         document.body.addEventListener('keydown', handleKeyDown);
         timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
-        // themes.changeTheme(themes.Themes.Funky);
+        themes.changeTheme(themes.Themes.Aurora);
         
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
