@@ -15,13 +15,15 @@
     const debug: boolean = false;
 
     let mouseHasMoved: number = 0;
-    let loading: boolean = true;
+    let loading: boolean = false;
     let loadingDelayIsActive: boolean = true;
     let loadingIcon: HTMLElement;
     let menu: HTMLElement;
     let menuVisible: boolean = false;
     let m = { x: 0, y: 0};
     let loadingStatus: boolean;
+
+    // TODO: fix this hover
     let allowHover: boolean = true; // to prevent settings button from having hover effect after click
 
     let innerWidth: number = 0;
