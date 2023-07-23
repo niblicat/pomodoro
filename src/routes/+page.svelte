@@ -150,9 +150,13 @@
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
 <div class="background">
     {#if $bell}
-        <audio on:ended={async () => {
+        <audio 
+        on:ended={async () => {
             await timer.muteBell();
-        }} autoplay><source src="/sounds/squeaky.mp3" type="audio/mp3"></audio>
+        }} 
+        autoplay>
+            <source src="/sounds/squeaky.mp3" type="audio/mp3">
+        </audio>
     {/if}
     <div class="menuWrapper" bind:this={menu} transition:slide|global>
         <div 
