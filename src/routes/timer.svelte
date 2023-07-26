@@ -145,7 +145,6 @@
 
     // modifies pomodoro state to next state based on current
     async function modifyPomodoroState() {
-        console.log(pomodoroState.toString());
         switch (pomodoroState) {
             case PomodoroStates.Work:
                 pomodoroState = PomodoroStates.Short;
@@ -157,7 +156,6 @@
                 pomodoroState = PomodoroStates.Work;
                 break;
         }
-        console.log('after' + pomodoroState.toString());
         if (!(sessionNumber % longSession)) pomodoroState = PomodoroStates.Long; // forcefully modify state to long if we are on a long session number
         goalTime = 0;
     }
@@ -171,7 +169,6 @@
             let timerProgressState: boolean = await TimerProgress.getTimerInProgress(); // get initial bool for if timer should be running
             timeDifference = endTime - currentTime;
             interval = setInterval(async () => {
-                console.log('TD: ' + (timeDifference / 100) + ' TTS: ' + timeToSet);
                 // if there is no time left or the timer should not be running, kill timer momentum
                 if (timeDifference <= 0 || timerProgressState === false) {
                     if (timerProgressState === true) {
@@ -225,7 +222,6 @@
 
 	// sets the time based on deciseconds
 	export async function setTime(newTime: number) {
-        console.log('settime newtime: ' + newTime);
         sessionNumber = 1; // for pomodoro
 		await TimerProgress.updateTimerInProgressToFalse();
 		goalTime = newTime;
@@ -257,22 +253,18 @@
 	export async function pomodoroActive() {
 		pomodoroCounting = true;
 		while (pomodoroCounting) {
-            console.log('pomo active while: ' + pomodoroState.toString());
 			switch (pomodoroState) {
 				case PomodoroStates.Work:
                     // look out for this goalTime less than zero if problems come up in the future
                     if (goalTime <= 0) await setTime(await convertTimeToDeciseconds(0, pomodoroTimes.work, 0));
-                    console.log('work ' + goalTime);
 					await startTimer();
 					break;
 				case PomodoroStates.Short:
                     if (goalTime <= 0) await setTime(await convertTimeToDeciseconds(0, pomodoroTimes.short, 0));
-                    console.log('short ' + goalTime);
 					await startTimer();
 					break;
 				case PomodoroStates.Long:
                     if (goalTime <= 0) await setTime(await convertTimeToDeciseconds(0, pomodoroTimes.long, 0));
-                    console.log('long ' + goalTime);
 					await startTimer();
 					break;
 			}
