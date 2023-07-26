@@ -69,7 +69,7 @@
         document.body.addEventListener('mousemove', handleMouseMove);
         document.body.addEventListener('keydown', handleKeyDown);
         timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
-        themes.changeTheme(themes.Themes.Aurora);
+        // themes.changeTheme(themes.Themes.Aurora); // change theme using this
         
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
