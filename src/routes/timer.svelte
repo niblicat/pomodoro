@@ -61,8 +61,6 @@
 	let endTime: number = currentTime + 100 * goalTime;
     let timeToSet: number = 0;
 
-    export let timerNumberVisibility: Writable<boolean> = writable(true);
-
 	export let timeElement: Writable<TimeElement[]> = writable([
         {
             type: 'hours',

@@ -4,7 +4,7 @@
     import { fade, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
-    import { timeElement, timerInProgress, timerState, timerNumberVisibility, bell } from './timer.svelte';
+    import { timeElement, timerInProgress, timerState, bell } from './timer.svelte';
     import ImageSVG from './images.svelte';
     import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
