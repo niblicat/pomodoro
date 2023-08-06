@@ -1,4 +1,9 @@
 <script lang="ts" context="module">
+    import { createEventDispatcher } from "svelte";
+
+    const dispatch: any = createEventDispatcher();
+    
+    
     export let bellSound: string | null;
     export const Sounds = {
         Squeaky: '/sounds/squeaky.mp3'
@@ -19,3 +24,11 @@
     }
 
 </script>
+
+<audio 
+    on:ended={async () => {
+        dispatch('signal'); // call appropriate function in parent when audio ends
+    }}
+    autoplay>
+        <source src={bellSound} type="audio/mp3">
+</audio>

@@ -8,7 +8,7 @@
     import ImageSVG from './images.svelte';
     import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
-    import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
+    import Bell, { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
 
     export let data: PageData
     export let form: ActionData
@@ -158,13 +158,7 @@
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
 <div class="background">
     {#if $bell}
-        <audio 
-        on:ended={async () => {
-            await timer.muteBell();
-        }} 
-        autoplay>
-            <source src={bellSound} type="audio/mp3">
-        </audio>
+        <Bell on:signal={async () => {await timer.muteBell();}}/>
     {/if}
     <div class="menuWrapper" bind:this={menu} transition:slide|global>
         <div 
