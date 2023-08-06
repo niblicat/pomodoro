@@ -224,7 +224,7 @@
                                 <div class="labelPillBinder">
                                     <label for="workInput">work</label>
                                     <div class="pillButtonContainer alt"> 
-                                        <button 
+                                        <button
                                             class="left fade"
                                             title="Decrement work time"
                                             on:click={() => {
@@ -692,32 +692,40 @@
         background-color: var(--altinput);
     }
 
-    button.regular:hover, button.regular:focus-visible {
-        background-color: var(--accent2);
-        border: 2px solid var(--input);
+    @media(hover: hover) {
+        button.regular:hover, button.regular:focus-visible {
+            background-color: var(--accent2);
+            border: 2px solid var(--input);
+        }
     }
     
-    button.alt:hover, button.alt:focus-visible {
-        background-color: var(--accent2);
-        border: 2px solid var(--contrast);
-    }
-
-    button.bounce:hover, button.bounce:focus-visible {
-        transform: scale(1.1);
-        -webkit-transform: scale(1.1);
-        -moz-transform: scale(1.1);
-        -o-transform: scale(1.1);
-        -ms-transform: scale(1.1);
+    @media(hover: hover) {
+        button.alt:hover, button.alt:focus-visible {
+            background-color: var(--accent2);
+            border: 2px solid var(--contrast);
+        }
     }
     
-    button.disabled:hover, button.disabled:focus-visible {
-        border: 2px solid var(--divback) !important;
-        background-color: var(--input) !important;
-        transform: none !important;
-        -webkit-transform: none !important;
-        -moz-transform: none !important;
-        -o-transform: none !important;
-        -ms-transform: none !important;
+    @media(hover: hover) {
+        button.bounce:hover, button.bounce:focus-visible {
+            transform: scale(1.1);
+            -webkit-transform: scale(1.1);
+            -moz-transform: scale(1.1);
+            -o-transform: scale(1.1);
+            -ms-transform: scale(1.1);
+        }
+    }
+    
+    @media(hover: hover) {
+        button.disabled:hover, button.disabled:focus-visible {
+            border: 2px solid var(--divback) !important;
+            background-color: var(--input) !important;
+            transform: none !important;
+            -webkit-transform: none !important;
+            -moz-transform: none !important;
+            -o-transform: none !important;
+            -ms-transform: none !important;
+        }
     }
 
     button.bounce:active {
@@ -811,8 +819,10 @@
         grid-column: 1;
     }
     
-    .timer button#Pause:hover {
-        background-color: var(--complement);
+    @media(hover: hover)  {
+        .timer button#Pause:hover {
+            background-color: var(--complement);
+        }
     }
 
     .timer button#Clear {
@@ -870,8 +880,10 @@
         z-index: 2;
     }
 
-    button#hanging:hover {
-        border-top: 0px;
+    @media(hover: hover) {
+        button#hanging:hover {
+            border-top: 0px;
+        }
     }
     
     .modes {
@@ -939,23 +951,29 @@
         background-color: var(--neutral) !important;
     }
 
-    .selectedOption, .selectedOption:hover {
-        cursor: unset;
-        background-color: var(--altinput) !important;
-        border-color: var(--divback) !important;
-        border-bottom: 0px !important;
+    @media(hover: hover) {
+        .selectedOption, .selectedOption:hover {
+            cursor: unset;
+            background-color: var(--altinput) !important;
+            border-color: var(--divback) !important;
+            border-bottom: 0px !important;
+        }
     }
 
-    .unselectedOption:hover {
-        background-color: var(--accent2) !important;
-        border: 2px solid var(--input);
-        border-bottom: 0px !important;
+    @media(hover: hover) {
+        .unselectedOption:hover {
+            background-color: var(--accent2) !important;
+            border: 2px solid var(--input);
+            border-bottom: 0px !important;
+        }
     }
 
-    .selectedOption:hover {
-        background-color: var(--input);
-        border: 2px solid var(--divback);
-        border-bottom: 0px;
+    @media(hover: hover) {
+        .selectedOption:hover {
+            background-color: var(--input);
+            border: 2px solid var(--divback);
+            border-bottom: 0px;
+        }
     }
 
     .modesOptionsPadding {
@@ -998,10 +1016,6 @@
         justify-content: space-around;
     }
 
-    .optionsInputsContainer.mobile {
-        justify-content: left;
-    }
-
     .labelPillBinder {
         display: flex;
         align-items: center;
@@ -1009,17 +1023,20 @@
 
     .labelPillBinder label {
         margin-right:  4px;
+        font-size: min(16px, 3.54vw);
     }
 
     .pillButtonContainer input[type="number"] {
         background-color: transparent;
         height: 24px;
-        width: 26px;
+        width: 33.33%;
+        width: calc(100%/3);
         border: solid var(--divback);
         border-width: 0 2px;
         padding: 2px;
         text-align: center;
         appearance: textfield;
+        font-size: min(16px, 3.15vw);
         -webkit-appearance: textfield;
         -moz-appearance: textfield;
     }
@@ -1044,7 +1061,7 @@
         border: 2px solid var(--divback);
         border-radius: 25px; 
         display: inline-flex;
-        width: 81px;
+        width: min(81px, 20vw);
     }
     .pillButtonContainer,
     .pillButtonContainer * {
@@ -1054,8 +1071,10 @@
 
     .pillButtonContainer button {
         background-color: transparent;
-        width: 26px;
-        min-width: 26px;
+        width: 33.33%;
+        width: calc(100%/3);
+        min-width: 33.33%;
+        min-width: calc(100%/3);
         outline: none;
         border: none;
         appearance: none;
@@ -1066,20 +1085,31 @@
         margin: 0px;
         position: relative;
     }
-    .pillButtonContainer button:hover {
-        background-color: var(--accent2);
-        border: 0px;
+    @media(hover: hover) {
+        .pillButtonContainer button:hover {
+            background-color: var(--accent2);
+            border: 0px;
+        }
     }
 
     .pillButtonContainer button:after {
         display: inline-block;
         position: absolute;
-        content: '-';
+        font-size: min(16px, 4vw);
+        transition: all .2s ease-in-out;
         transform: translate(-50%, -50%);
         -webkit-transform: translate(-50%, -50%);
         -moz-transform: translate(-50%, -50%);
         -o-transform: translate(-50%, -50%);
         -ms-transform: translate(-50%, -50%);
+    }
+    .pillButtonContainer button:active:after {
+        transition: all .2s ease-in-out;
+        transform: translate(-50%, -50%) scale(0.5);
+        -webkit-transform: translate(-50%, -50%) scale(0.5);
+        -moz-transform: translate(-50%, -50%) scale(0.5);
+        -o-transform: translate(-50%, -50%) scale(0.5);
+        -ms-transform: translate(-50%, -50%) scale(0.5);
     }
 
     .pillButtonContainer button.left {
