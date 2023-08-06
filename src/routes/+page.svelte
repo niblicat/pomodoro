@@ -22,6 +22,7 @@
     let menuVisible: boolean = false;
     let m = { x: 0, y: 0};
     let loadingStatus: boolean;
+    let bellSound: string | null;
 
     // TODO: fix this hover
     let allowHover: boolean = true; // to prevent settings button from having hover effect after click
@@ -71,6 +72,8 @@
         timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
         timer.changeLongSession(pomoLongPhase);
         themes.changeTheme(themes.Themes.Aurora); // change theme using this
+
+        storeLocalAudio();
         
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
@@ -146,6 +149,20 @@
             buttonEnabled = true;
         }, 250);
     }
+
+    async function storeLocalAudio() {
+        const response: Response = await fetch('/sounds/squeaky.mp3');
+        const audioBlob: Blob = await response.blob();
+        const reader: FileReader = new FileReader();
+        reader.onloadend = () => {
+            if (typeof reader.result === 'string') {
+                localStorage.setItem('bellSound', reader.result);
+                bellSound = reader.result;
+            }
+            else console.log('There was a problem loading the bell sound to local storage.')
+        };
+        reader.readAsDataURL(audioBlob);
+    }
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
@@ -159,7 +176,7 @@
             await timer.muteBell();
         }} 
         autoplay>
-            <source src="/sounds/squeaky.mp3" type="audio/mp3">
+            <source src={bellSound} type="audio/mp3">
         </audio>
     {/if}
     <div class="menuWrapper" bind:this={menu} transition:slide|global>
