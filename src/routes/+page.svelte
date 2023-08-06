@@ -8,7 +8,7 @@
     import ImageSVG from './images.svelte';
     import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
-    import Bell, { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
+    import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
 
     export let data: PageData
     export let form: ActionData
@@ -158,51 +158,58 @@
 <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
 <div class="background">
     {#if $bell}
-        <Bell on:signal={async () => {await timer.muteBell();}}/>
+        <audio 
+            on:ended={async () => {
+                timer.muteBell();
+            }}
+            autoplay
+        >
+            <source src={bellSound} type="audio/mp3">
+        </audio>
     {/if}
     <div class="menuWrapper" bind:this={menu} transition:slide|global>
         <div 
-        class="menu {mobileMode ? "mobile" : ""}"
-        id={menuVisible ? "visible" : "invisible"}
+            class="menu {mobileMode ? "mobile" : ""}"
+            id={menuVisible ? "visible" : "invisible"}
         >
-        <!-- TODO: move or delete debug style tags -->
+            <!-- TODO: move or delete debug style tags -->
             {#if ((!mobileMode) || currentModePage === ModePage.Options)}
                 <div class="modes {mobileMode ? "span2" : ""}" style={debug ? 'background-color: #cc0000;' : ''}>
                     <button
-                    class="fade alt {$timerState === timer.TimerStates.Pomodoro ? "selectedOption" : "unselectedOption"}"
-                    id="Pomodoro"
-                    on:click={() => {
-                        timer.switchTimerMode(timer.TimerStates.Pomodoro);
-                    }}
+                        class="fade alt {$timerState === timer.TimerStates.Pomodoro ? "selectedOption" : "unselectedOption"}"
+                        id="Pomodoro"
+                        on:click={() => {
+                            timer.switchTimerMode(timer.TimerStates.Pomodoro);
+                        }}
                     >
-                    Pomo&shy;doro
+                        Pomo&shy;doro
                     </button>
                     <button
-                    class="fade alt {$timerState === timer.TimerStates.Sage ? "selectedOption" : "unselectedOption"}"
-                    id="Sage"
-                    on:click={() => {
-                        alert('This feature is not yet available.');
-                        // timer.switchTimerMode(timer.TimerStates.Sage);
-                    }}
+                        class="fade alt {$timerState === timer.TimerStates.Sage ? "selectedOption" : "unselectedOption"}"
+                        id="Sage"
+                        on:click={() => {
+                            alert('This feature is not yet available.');
+                            // timer.switchTimerMode(timer.TimerStates.Sage);
+                        }}
                     >
-                    Coming Soon
+                        Coming Soon
                     </button>
                     <button
-                    class="fade alt {$timerState === timer.TimerStates.Standard ? "selectedOption" : "unselectedOption"}"
-                    id="{!mobileMode ? "Standard" : "StandardMobile"}"
-                    on:click={() => {
-                        timer.switchTimerMode(timer.TimerStates.Standard);
-                    }}
+                        class="fade alt {$timerState === timer.TimerStates.Standard ? "selectedOption" : "unselectedOption"}"
+                        id="{!mobileMode ? "Standard" : "StandardMobile"}"
+                        on:click={() => {
+                            timer.switchTimerMode(timer.TimerStates.Standard);
+                        }}
                     >
-                    Stan&shy;dard
+                        Stan&shy;dard
                     </button>
                     {#if mobileMode}
                         <button
-                        class="fade alt unselectedOption"
-                        id="Statistics"
-                        on:click={() => {
-                            currentModePage = ModePage.Stats;
-                        }}
+                            class="fade alt unselectedOption"
+                            id="Statistics"
+                            on:click={() => {
+                                currentModePage = ModePage.Stats;
+                            }}
                         >
                             Stat&shy;istics
                         </button>
