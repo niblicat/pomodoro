@@ -14,6 +14,10 @@
 		short: number;
 		long: number;
 	};
+	interface SageTimes {
+		work: number;
+		break: number;
+	};
 	export const PomodoroStates = {
 		Work: Symbol('Work'),
 		Short: Symbol('Short'),
@@ -24,6 +28,10 @@
 		Standard: Symbol('Standard'),
 		Sage: Symbol('Sage')
 	};
+    export const SageStates = {
+        Work: Symbol('Work'),
+        Break: Symbol('Break')
+    }
     
     export let timerInProgress: Writable<boolean> = writable(false);
 
@@ -51,7 +59,9 @@
 
     export let timerState: Writable<Symbol> = writable(TimerStates.Pomodoro);
 	let pomodoroCounting: boolean = false;
+	let sageCounting: boolean = false;
 	let pomodoroState = PomodoroStates.Work;
+	let sageState = SageStates.Work;
 	let sessionNumber: number = 1;
 	let longSession: number = 9;
     let standardTime: number = 3000;
@@ -80,6 +90,10 @@
 		short: 5,
 		long: 15
 	};
+    let sageTimes: SageTimes = {
+        work: 50,
+        break: 10
+    }
 	// by default 25 minutes, 5 minutes, 15 minutes
 
 	let interval: number = 0;
@@ -324,5 +338,27 @@
     async function modifyTimerState(newTimerState: Symbol) {
         timerState.update(() => newTimerState);
     }
+
+    export async function sageActive() {
+		sageCounting = true;
+		while (sageCounting) {
+			switch (sageState) {
+				case SageStates.Work:
+                    // look out for this goalTime less than zero if problems come up in the future
+                    if (goalTime <= 0) await setTime(await convertTimeToDeciseconds(0, sageTimes.work, 0));
+					await startTimer();
+					break;
+				case SageStates.Break:
+                    if (goalTime <= 0) await setTime(await convertTimeToDeciseconds(0, sageTimes.break, 0));
+					await startTimer();
+					break;
+			}
+			sessionNumber++; // increase session number so we can properly update state to long when needed
+			if (sessionNumber > 10000) {
+				alert("You've worked for too long"); // in case timer is left running for an excessive amount of time
+				sageCounting = false;
+			}
+		}
+	}
 
 </script>
