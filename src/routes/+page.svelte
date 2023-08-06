@@ -8,6 +8,7 @@
     import ImageSVG from './images.svelte';
     import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
+    import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
 
     export let data: PageData
     export let form: ActionData
@@ -22,7 +23,7 @@
     let menuVisible: boolean = false;
     let m = { x: 0, y: 0};
     let loadingStatus: boolean;
-    let bellSound: string | null;
+    
 
     // TODO: fix this hover
     let allowHover: boolean = true; // to prevent settings button from having hover effect after click
@@ -73,7 +74,7 @@
         timer.changeLongSession(pomoLongPhase);
         themes.changeTheme(themes.Themes.Aurora); // change theme using this
 
-        storeLocalAudio();
+        storeLocalAudio(Sounds.Squeaky);
         
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
@@ -148,20 +149,6 @@
         setTimeout(() => {
             buttonEnabled = true;
         }, 250);
-    }
-
-    async function storeLocalAudio() {
-        const response: Response = await fetch('/sounds/squeaky.mp3');
-        const audioBlob: Blob = await response.blob();
-        const reader: FileReader = new FileReader();
-        reader.onloadend = () => {
-            if (typeof reader.result === 'string') {
-                localStorage.setItem('bellSound', reader.result);
-                bellSound = reader.result;
-            }
-            else console.log('There was a problem loading the bell sound to local storage.')
-        };
-        reader.readAsDataURL(audioBlob);
     }
 </script>
 
