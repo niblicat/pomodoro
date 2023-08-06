@@ -4,7 +4,7 @@
     import { fade, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
-    import { timeElement, timerInProgressRead, timerState, timerNumberVisibility, bell } from './timer.svelte';
+    import { timeElement, timerInProgress, timerState, timerNumberVisibility, bell } from './timer.svelte';
     import ImageSVG from './images.svelte';
     import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
@@ -526,7 +526,7 @@
                 <button
                 class="bounce fade regular {buttonEnabled ? '' : 'disabled'}"
                 on:click={() => {
-                    if ($timerInProgressRead) timer.stopTimer();
+                    if ($timerInProgress) timer.stopTimer();
                     else {
                         switch ($timerState) {
                         case timer.TimerStates.Pomodoro: 
@@ -543,11 +543,11 @@
                     }
                     disableButtons();
                 }}
-                title={!$timerInProgressRead ? 'Start' : 'Pause'}
-                id={!$timerInProgressRead ? 'Start' : 'Pause'}
+                title={!$timerInProgress ? 'Start' : 'Pause'}
+                id={!$timerInProgress ? 'Start' : 'Pause'}
                 disabled={!buttonEnabled}
                 >
-                {!$timerInProgressRead ? 'start' : 'pause'}
+                {!$timerInProgress ? 'start' : 'pause'}
                 </button>
                 <button
                 class="bounce fade regular"
@@ -568,9 +568,9 @@
                 <p>{m.x}, {m.y}</p>
                 <button
                 on:click={() => {
-                    alert($timerInProgressRead);
+                    alert($timerInProgress);
                 }}>
-                    timer in progress: {$timerInProgressRead}
+                    timer in progress: {$timerInProgress}
                 </button>
                 <button
                 on:click={() => {

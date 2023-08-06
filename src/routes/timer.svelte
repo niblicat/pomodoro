@@ -25,30 +25,28 @@
 		Sage: Symbol('Sage')
 	};
     
-    export let timerInProgressRead: Writable<boolean> = writable(false);
-    let TimerProgress = new class TimerProgress {
-        #timerInProgress: boolean;
-        
-        constructor() {
-            this.#timerInProgress = false;
-        }
-        public async updateTimerInProgress() {
-            this.#timerInProgress = !this.#timerInProgress; // flips value
-            timerInProgressRead.set(this.#timerInProgress);
-        }
-        public async updateTimerInProgressToTrue() {
-            this.#timerInProgress = true;
-            timerInProgressRead.set(true);
-        }
-        public async updateTimerInProgressToFalse() {
-            this.#timerInProgress = false;
-            timerInProgressRead.set(false);
-        }
-        public async getTimerInProgress(): Promise<boolean> {
-            return new Promise((resolve) => {
-                return resolve(this.#timerInProgress);
-            });
-        }
+    export let timerInProgress: Writable<boolean> = writable(false);
+
+    // flip value of timerInProgress
+    async function updateTimerInProgress() {
+        timerInProgress.set(!get(timerInProgress)); // flips value
+    }
+    
+    // updates timerInProgress to true
+    async function updateTimerInProgressToTrue() {
+        timerInProgress.set(true);
+    }
+
+    // updates timerInProgress to false
+    async function updateTimerInProgressToFalse() {
+        timerInProgress.set(false);
+    }
+
+    // returns boolean value of timerInProgress
+    async function getTimerInProgress(): Promise<boolean> {
+        return new Promise((resolve) => {
+            return resolve(get(timerInProgress));
+        });
     }
 
     export let timerState: Writable<Symbol> = writable(TimerStates.Pomodoro);
@@ -157,9 +155,6 @@
         }
         if (((sessionNumber + 1) % longSession) == 0) pomodoroState = PomodoroStates.Long; // forcefully modify state to long if we are on a long session number
         goalTime = 0;
-
-        console.log('pomostate: ' + pomodoroState.toString());
-        console.log('session#: ' + sessionNumber + ' longsess: ' + longSession);
     }
 
 	// modifies the change in time between now and the end time every decisecond
@@ -168,7 +163,7 @@
 			let timeDifference: number = 0; // initialise difference between time of completion and current time
 			currentTime = Date.now(); // current UNIX time
 			endTime = currentTime + 100 * goalTime; // add goal difference btwn current and end time in deciseconds
-            let timerProgressState: boolean = await TimerProgress.getTimerInProgress(); // get initial bool for if timer should be running
+            let timerProgressState: boolean = await getTimerInProgress(); // get initial bool for if timer should be running
             timeDifference = endTime - currentTime;
             interval = setInterval(async () => {
                 // if there is no time left or the timer should not be running, kill timer momentum
@@ -177,12 +172,12 @@
                         await ringBell();
                         if (get(timerState) === TimerStates.Pomodoro) await modifyPomodoroState();
                     }
-                    await TimerProgress.updateTimerInProgressToFalse(); // make sure we say the timer is no longer running
+                    await updateTimerInProgressToFalse(); // make sure we say the timer is no longer running
                     clearInterval(interval);
                     resolve();
                 }
                 timeToSet = await formatTime(timeDifference <= 0 ? 0 : (timeDifference / 100)); // update onscreen value
-                timerProgressState = await TimerProgress.getTimerInProgress(); // reevaluate if timer should be running
+                timerProgressState = await getTimerInProgress(); // reevaluate if timer should be running
                 currentTime = Date.now(); // gets current unix time
                 timeDifference = endTime - currentTime; // now we are closer to completion
             }, 100)        
@@ -192,13 +187,13 @@
 
 	// called when the start button is pressed
 	export async function startTimer(): Promise<void> {
-        const timerProgressState: boolean = await TimerProgress.getTimerInProgress();
+        const timerProgressState: boolean = await getTimerInProgress();
 		if (timerProgressState) {
             // this branch shouldn't run but just in case
-            await TimerProgress.updateTimerInProgressToFalse();
+            await updateTimerInProgressToFalse();
             alert('Timer is already in progress...');
 		} else {
-			await TimerProgress.updateTimerInProgressToTrue();
+			await updateTimerInProgressToTrue();
 			await timerActiveCount();
 		}
 		return;
@@ -217,14 +212,14 @@
 
 	// pauses the timer and stops the time updater from looping
 	export async function stopTimer() {
-		await TimerProgress.updateTimerInProgressToFalse();
+		await updateTimerInProgressToFalse();
 		pomodoroCounting = false;
 		await updateGoalTime();
 	}
 
 	// sets the time based on deciseconds
 	export async function setTime(newTime: number) {
-		await TimerProgress.updateTimerInProgressToFalse();
+		await updateTimerInProgressToFalse();
 		goalTime = newTime;
 		currentTime = Date.now();
 		endTime = currentTime + 100 * goalTime;
