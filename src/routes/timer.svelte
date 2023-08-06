@@ -3,7 +3,7 @@
 	// Counts down each time segment
 	// Processes a length of time in deciseconds (10^-1 seconds)
 
-	import { writable, type Writable} from 'svelte/store';
+	import { get, writable, type Writable} from 'svelte/store';
 
 	export interface TimeElement {
 		type: string;
@@ -50,8 +50,8 @@
             });
         }
     }
-	export let timerState: Symbol = TimerStates.Pomodoro;
-    export let timerStateRead: Writable<Symbol> = writable(timerState);
+
+    export let timerState: Writable<Symbol> = writable(TimerStates.Pomodoro);
 	let pomodoroCounting: boolean = false;
 	let pomodoroState = PomodoroStates.Work;
 	let sessionNumber: number = 1;
@@ -87,7 +87,6 @@
 	// by default 25 minutes, 5 minutes, 15 minutes
 
 	let interval: number = 0;
-
 
 	// formats the time that is displayed on screen
 	async function formatTime(time: number): Promise<number> {
@@ -156,8 +155,11 @@
                 pomodoroState = PomodoroStates.Work;
                 break;
         }
-        if (!(sessionNumber % longSession)) pomodoroState = PomodoroStates.Long; // forcefully modify state to long if we are on a long session number
+        if (((sessionNumber + 1) % longSession) == 0) pomodoroState = PomodoroStates.Long; // forcefully modify state to long if we are on a long session number
         goalTime = 0;
+
+        console.log('pomostate: ' + pomodoroState.toString());
+        console.log('session#: ' + sessionNumber + ' longsess: ' + longSession);
     }
 
 	// modifies the change in time between now and the end time every decisecond
@@ -173,7 +175,7 @@
                 if (timeDifference <= 0 || timerProgressState === false) {
                     if (timerProgressState === true) {
                         await ringBell();
-                        if (timerState === TimerStates.Pomodoro) await modifyPomodoroState();
+                        if (get(timerState) === TimerStates.Pomodoro) await modifyPomodoroState();
                     }
                     await TimerProgress.updateTimerInProgressToFalse(); // make sure we say the timer is no longer running
                     clearInterval(interval);
@@ -222,7 +224,6 @@
 
 	// sets the time based on deciseconds
 	export async function setTime(newTime: number) {
-        sessionNumber = 1; // for pomodoro
 		await TimerProgress.updateTimerInProgressToFalse();
 		goalTime = newTime;
 		currentTime = Date.now();
@@ -238,6 +239,7 @@
 
 	// completely resets the timer to 0 deciseconds
 	export async function clearTimer() {
+        sessionNumber = 1; // for pomodoro
         await stopTimer();
         await resetPomodoroState();
         clearInterval(interval);
@@ -278,22 +280,22 @@
 
     // switches timer mode between pomodoro, standard, and descending
     export async function switchTimerMode(newTimerState: Symbol) {
-        if (timerState !== newTimerState) {
+        if (get(timerState) !== newTimerState) {
             await clearTimer();
             switch (newTimerState) {
                 case TimerStates.Pomodoro:
-                    timerState = TimerStates.Pomodoro;
+                    await modifyTimerState(TimerStates.Pomodoro);
                     await setTime(await convertTimeToDeciseconds(0, pomodoroTimes.work, 0));
                     break;
                 case TimerStates.Standard:
-                    timerState = TimerStates.Standard;
+                    await modifyTimerState(TimerStates.Standard);
                     await setTime(standardTime);
                     break;
                 case TimerStates.Sage:
-                    timerState = TimerStates.Sage;
+                    await modifyTimerState(TimerStates.Sage);
                     break;
             }
-            timerStateRead.set(timerState);
+            modifyTimerState(newTimerState);
         }
     }
 
@@ -323,6 +325,11 @@
 
     export async function changeLongSession(num: number) {
         longSession = 2 * num + 1;
+    }
+
+    // compartimentalises the writable update for timerState
+    async function modifyTimerState(newTimerState: Symbol) {
+        timerState.update(() => newTimerState);
     }
 
 </script>

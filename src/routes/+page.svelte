@@ -4,7 +4,7 @@
     import { fade, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
-    import { timeElement, timerInProgressRead, timerStateRead, timerNumberVisibility, bell } from './timer.svelte';
+    import { timeElement, timerInProgressRead, timerState, timerNumberVisibility, bell } from './timer.svelte';
     import ImageSVG from './images.svelte';
     import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
@@ -69,7 +69,8 @@
         document.body.addEventListener('mousemove', handleMouseMove);
         document.body.addEventListener('keydown', handleKeyDown);
         timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
-        // themes.changeTheme(themes.Themes.Aurora); // change theme using this
+        timer.changeLongSession(pomoLongPhase);
+        themes.changeTheme(themes.Themes.Aurora); // change theme using this
         
         return () => {
             document.body.removeEventListener('mousemove', handleMouseMove);
@@ -170,7 +171,7 @@
             {#if ((!mobileMode) || currentModePage === ModePage.Options)}
                 <div class="modes {mobileMode ? "span2" : ""}" style={debug ? 'background-color: #cc0000;' : ''}>
                     <button
-                    class="fade alt {$timerStateRead === timer.TimerStates.Pomodoro ? "selectedOption" : "unselectedOption"}"
+                    class="fade alt {$timerState === timer.TimerStates.Pomodoro ? "selectedOption" : "unselectedOption"}"
                     id="Pomodoro"
                     on:click={() => {
                         timer.switchTimerMode(timer.TimerStates.Pomodoro);
@@ -179,7 +180,7 @@
                     Pomo&shy;doro
                     </button>
                     <button
-                    class="fade alt {$timerStateRead === timer.TimerStates.Sage ? "selectedOption" : "unselectedOption"}"
+                    class="fade alt {$timerState === timer.TimerStates.Sage ? "selectedOption" : "unselectedOption"}"
                     id="Sage"
                     on:click={() => {
                         alert('This feature is not yet available.');
@@ -189,7 +190,7 @@
                     Coming Soon
                     </button>
                     <button
-                    class="fade alt {$timerStateRead === timer.TimerStates.Standard ? "selectedOption" : "unselectedOption"}"
+                    class="fade alt {$timerState === timer.TimerStates.Standard ? "selectedOption" : "unselectedOption"}"
                     id="{!mobileMode ? "Standard" : "StandardMobile"}"
                     on:click={() => {
                         timer.switchTimerMode(timer.TimerStates.Standard);
@@ -213,7 +214,7 @@
                 </div>
                 <div class="modesOptionsPadding {mobileMode ? "span2" : ""}" style={debug ? 'background-color: #cccc00;' : ''}>
                     <div class="modesOptions {mobileMode ? "mobile" : ""}">
-                        {#if $timerStateRead === timer.TimerStates.Pomodoro}
+                        {#if $timerState === timer.TimerStates.Pomodoro}
                             <div class="optionsInputsContainer span2 alttext {mobileMode ? "mobile" : ""}">
                                 <div class="labelPillBinder">
                                     <label for="workInput">work</label>
@@ -355,7 +356,7 @@
                                 </button>
                             </div>
 
-                        {:else if $timerStateRead === timer.TimerStates.Standard}
+                        {:else if $timerState === timer.TimerStates.Standard}
                             <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
                                 <div class="labelPillBinder">
                                     <label for="hourInput">hours</label>
@@ -514,7 +515,7 @@
     </div>
     <div class="wrapper center {landscapeMode ? "landscape" : ""}">
         <div class="timer center regulartext">
-            <div class="timerTitle">{($timerStateRead === timer.TimerStates.Pomodoro ? "Pomodoro Timer" : "Timer")}</div>
+            <div class="timerTitle">{($timerState === timer.TimerStates.Pomodoro ? "Pomodoro Timer" : "Timer")}</div>
                 <p class="numbersTime fade" transition:fade>
                     {#each $timeElement as e (e.type)}
                         {#if !((e.type === 'hours') && (e.value <= 0))}
@@ -527,7 +528,7 @@
                 on:click={() => {
                     if ($timerInProgressRead) timer.stopTimer();
                     else {
-                        switch ($timerStateRead) {
+                        switch ($timerState) {
                         case timer.TimerStates.Pomodoro: 
                             timer.pomodoroActive();
                             break;
@@ -573,9 +574,9 @@
                 </button>
                 <button
                 on:click={() => {
-                    alert($timerStateRead.toString());
+                    alert($timerState.toString());
                 }}>
-                    state: {$timerStateRead.toString()}
+                    state: {$timerState.toString()}
                 </button>
                 <button
                 on:click={() => {
