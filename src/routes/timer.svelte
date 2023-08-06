@@ -31,7 +31,7 @@
     async function updateTimerInProgress() {
         timerInProgress.set(!get(timerInProgress)); // flips value
     }
-    
+
     // updates timerInProgress to true
     async function updateTimerInProgressToTrue() {
         timerInProgress.set(true);
