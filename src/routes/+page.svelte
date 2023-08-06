@@ -633,6 +633,7 @@
         background-image: linear-gradient(to bottom right, var(--background), var(--accent2));
         margin: 0px;
         padding: 0px;
+        --fontsize: 20px;
     }
 
     body {
@@ -650,7 +651,7 @@
         border-radius: 25px;
         min-width: 60px;
         border: 2px solid var(--divback);
-        font-size: 20px;
+        font-size: var(--fontsize);
         line-height: 24px;
         text-align: center;
         cursor: pointer;
@@ -931,8 +932,7 @@
 
     .selectedOption, .unselectedOption {
         align-content: space-around;
-        flex-wrap: auto;
-        hyphens: auto;
+        font-size: min(var(--fontsize), 3.54vw);
     }
 
     .unselectedOption {
