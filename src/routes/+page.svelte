@@ -513,7 +513,9 @@
             </button>
         </div>
     </div>
-    <div class="wrapper center {landscapeMode ? "landscape" : ""}">
+    <div 
+    class="wrapper center {landscapeMode ? "landscape" : ""}"
+    >
         <div class="timer center regulartext">
             <div class="timerTitle">{($timerState === timer.TimerStates.Pomodoro ? "Pomodoro Timer" : "Timer")}</div>
                 <p class="numbersTime fade" transition:fade>
@@ -736,16 +738,18 @@
     .wrapper {
         display: grid;
         grid-template: 30% 30% 10% 30% / 1fr;
+        transition: grid-template 0.5s ease;
         vertical-align: middle;
         text-align: center;
         height: 100%;
         width: 100%;
+        transition: 0.5s;
     }
 
     .wrapper.landscape {
         grid-template: 25% 50% 10% 25% / 1fr;
+        transition: 0.5s;
     }
-
     
     .timer {
         grid-row: 2;
