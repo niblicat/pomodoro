@@ -17,6 +17,7 @@
 	interface SageTimes {
 		work: number;
 		break: number;
+        decrement: number;
 	};
 	export const PomodoroStates = {
 		Work: Symbol('Work'),
@@ -60,6 +61,8 @@
     export let timerState: Writable<Symbol> = writable(TimerStates.Pomodoro);
 	let pomodoroCounting: boolean = false;
 	let sageCounting: boolean = false;
+    let mustDecrementSageRemaining: boolean = false; // if true, value of remaining time should be decreased
+    let sageRemainingTime: number = 0;
 	let pomodoroState = PomodoroStates.Work;
 	let sageState = SageStates.Work;
 	let sessionNumber: number = 1;
@@ -92,7 +95,8 @@
 	};
     let sageTimes: SageTimes = {
         work: 50,
-        break: 10
+        break: 10,
+        decrement: 10
     }
 	// by default 25 minutes, 5 minutes, 15 minutes
 
@@ -337,6 +341,13 @@
     // compartimentalises the writable update for timerState
     async function modifyTimerState(newTimerState: Symbol) {
         timerState.update(() => newTimerState);
+    }
+
+    async function computeSageWorkTime(remainingTime: number, descendingTime: number) {
+        if (remainingTime - descendingTime <= 0) return remainingTime;
+        else {
+            return remainingTime
+        }
     }
 
     export async function sageActive() {
