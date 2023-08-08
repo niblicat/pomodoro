@@ -58,7 +58,7 @@
         });
     }
 
-    export let timerSubtitle: Writable<string> = writable('Time to work!');
+    export let timerSubtitle: Writable<string> = writable('work');
     export let timerState: Writable<Symbol> = writable(TimerStates.Pomodoro);
 	let pomodoroCounting: boolean = false;
 	let sageCounting: boolean = false;
@@ -146,7 +146,30 @@
 
     async function changeSubtitle() {
         let currentTimerState = get(timerState);
-        if(currentTimerState === TimerStates.Standard) timerSubtitle.set('');
+        if (currentTimerState === TimerStates.Pomodoro) {
+            switch (pomodoroState) {
+                case PomodoroStates.Work:
+                    timerSubtitle.set('work');
+                    break;
+                case PomodoroStates.Short:
+                    timerSubtitle.set('short break');
+                    break;
+                case PomodoroStates.Long:
+                    timerSubtitle.set('long break');
+                    break;
+            }
+        }
+        else if (currentTimerState === TimerStates.Sage) {
+            switch (sageState) {
+                case SageStates.Work:
+                    timerSubtitle.set('work');
+                    break;
+                case SageStates.Work:
+                    timerSubtitle.set('break');
+                    break;
+            }
+        }
+        else timerSubtitle.set('');
     }
 
     export let bell: Writable<boolean> = writable(false);
@@ -192,7 +215,7 @@
                 sageState = SageStates.Work;
                 break;
         }
-        console.log(sessionNumber + ' ' + sageState.toString);
+        console.log(sessionNumber + ' ' + sageState.toString());
     }
 
 	// modifies the change in time between now and the end time every decisecond
@@ -285,6 +308,7 @@
         await resetSageState();
         clearInterval(interval);
         await setTime(0);
+        changeSubtitle();
 	}
 
     // converts hh:mm:ss to equivalent in deciseconds
@@ -296,6 +320,7 @@
 	export async function pomodoroActive() {
 		pomodoroCounting = true;
 		while (pomodoroCounting) {
+            changeSubtitle();
 			switch (pomodoroState) {
 				case PomodoroStates.Work:
                     // look out for this goalTime less than zero if problems come up in the future
@@ -338,6 +363,7 @@
                     break;
             }
             modifyTimerState(newTimerState);
+            changeSubtitle();
         }
     }
 
@@ -388,6 +414,7 @@
     export async function sageActive() {
 		sageCounting = true;
 		while (sageCounting) {
+            changeSubtitle();
 			switch (sageState) {
 				case SageStates.Work:
                     // look out for this goalTime less than zero if problems come up in the future
