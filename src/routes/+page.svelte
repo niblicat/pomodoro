@@ -460,9 +460,9 @@
                                 <button 
                                     class="optionsButton fade bounce alt"
                                     on:click={async () => {
-                                        sageWork = 0.10;
+                                        sageWork = 1;
                                         sageBreak = 0.05;
-                                        sageDescend = 0.01;
+                                        sageDescend = 0.25;
                                         await timer.modifySageTimes(sageWork, sageBreak, sageDescend);
                                     }}
                                 >

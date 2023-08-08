@@ -62,7 +62,7 @@
     export let timerState: Writable<Symbol> = writable(TimerStates.Pomodoro);
 	let pomodoroCounting: boolean = false;
 	let sageCounting: boolean = false;
-    let sageRemainingTime: number = 0;
+    let sageRemainingTime: number = 50;
 	let pomodoroState = PomodoroStates.Work;
 	let sageState = SageStates.Work;
 	let sessionNumber: number = 1;
@@ -164,7 +164,7 @@
                 case SageStates.Work:
                     timerSubtitle.set('work');
                     break;
-                case SageStates.Work:
+                case SageStates.Break:
                     timerSubtitle.set('break');
                     break;
             }
@@ -216,6 +216,7 @@
                 break;
         }
         console.log(sessionNumber + ' ' + sageState.toString());
+        goalTime = 0;
     }
 
 	// modifies the change in time between now and the end time every decisecond
@@ -276,6 +277,7 @@
 	export async function stopTimer() {
 		await updateTimerInProgressToFalse();
 		pomodoroCounting = false;
+        sageCounting = false;
 		await updateGoalTime();
 	}
 
@@ -386,6 +388,7 @@
             break: breakTime,
             decrement: descend
         }
+        sageRemainingTime = work;
         await setTime(await convertTimeToDeciseconds(0, work, 0));
     }
 
@@ -396,12 +399,14 @@
         await setTime(standardTime);
     }
 
+    // called by start button when timer is on standard mode
     export async function standardStartTimer() {
         if (timeToSet <= 0) await setTime(standardTime);
 
         await startTimer();
     }
 
+    // simple calculation for long session number for proper pomodoro state change
     export async function changeLongSession(num: number) {
         longSession = 2 * num + 1;
     }
@@ -411,19 +416,22 @@
         timerState.update(() => newTimerState);
     }
 
+    // cycles between sage states based off the sage method
     export async function sageActive() {
 		sageCounting = true;
 		while (sageCounting) {
+            console.log(sageState.toString())
             changeSubtitle();
 			switch (sageState) {
 				case SageStates.Work:
-                    // look out for this goalTime less than zero if problems come up in the future
                     if (goalTime <= 0) await setTime(await convertTimeToDeciseconds(0, sageRemainingTime, 0));
+                    console.log('A');
 					await startTimer();
 					break;
 				case SageStates.Break:
                     if (goalTime <= 0) await setTime(await convertTimeToDeciseconds(0, sageTimes.break, 0));
 					await startTimer();
+                    console.log('B');
 					break;
 			}
 			sessionNumber++; // increase session number so we can properly update state to long when needed
