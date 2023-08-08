@@ -4,11 +4,12 @@
     import { fade, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
-    import { timeElement, timerInProgress, timerState, bell, timerSubtitle } from './timer.svelte';
+    import { timeElement, timerInProgress, timerState, bell, timerTitle, timerSubtitle } from './timer.svelte';
     import ImageSVG from './images.svelte';
     import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
     import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
+	import { assets } from '$app/paths';
 
     export let data: PageData
     export let form: ActionData
@@ -154,9 +155,14 @@
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
+<svelte:head>
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
+    <title>
+        {$timerTitle}
+    </title>
+</svelte:head>
 <html lang="en">
 <body style={cssVarStyles}>
-<link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
 <div class="background">
     {#if $bell}
         <audio 
@@ -664,13 +670,7 @@
         <div class="timer center regulartext">
             <div class="em1"/>
             <div class="timerTitle">
-                {#if $timerState === timer.TimerStates.Pomodoro}
-                    Pomodoro Timer
-                {:else if $timerState === timer.TimerStates.Sage}
-                    Descend Timer
-                {:else}
-                    Timer
-                {/if}
+                {$timerTitle}
             </div>
             <div class="timerSubtitle">
                 {$timerSubtitle}
@@ -1288,10 +1288,6 @@
 
     .span2 {
         grid-column: span 2;
-    }
-
-    .span3 {
-        grid-column: span 3;
     }
 
     .optionsButtonsContainer {

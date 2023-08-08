@@ -58,6 +58,7 @@
     }
 
     export let timerSubtitle: Writable<string> = writable('work');
+    export let timerTitle: Writable<string> = writable('Pomodoro Timer');
     export let timerState: Writable<Symbol> = writable(TimerStates.Pomodoro);
 	let pomodoroCounting: boolean = false;
 	let sageCounting: boolean = false;
@@ -143,7 +144,7 @@
         return time;
 	}
 
-    async function changeSubtitle() {
+    async function changeTitles() {
         let currentTimerState = get(timerState);
         if (currentTimerState === TimerStates.Pomodoro) {
             switch (pomodoroState) {
@@ -157,6 +158,7 @@
                     timerSubtitle.set('long break');
                     break;
             }
+            timerTitle.set('Pomodoro Timer');
         }
         else if (currentTimerState === TimerStates.Sage) {
             switch (sageState) {
@@ -167,8 +169,12 @@
                     timerSubtitle.set('break');
                     break;
             }
+            timerTitle.set('Descend Timer');
         }
-        else timerSubtitle.set('');
+        else {
+            timerSubtitle.set('');
+            timerTitle.set('Timer');
+        }
     }
 
     export let bell: Writable<boolean> = writable(false);
@@ -310,7 +316,7 @@
         await resetSageState();
         clearInterval(interval);
         await setTime(0);
-        changeSubtitle();
+        changeTitles();
 	}
 
     // converts hh:mm:ss to equivalent in deciseconds
@@ -325,7 +331,7 @@
 	export async function pomodoroActive() {
 		pomodoroCounting = true;
 		while (pomodoroCounting) {
-            changeSubtitle();
+            changeTitles();
 			switch (pomodoroState) {
 				case PomodoroStates.Work:
                     // look out for this goalTime less than zero if problems come up in the future
@@ -368,7 +374,7 @@
                     break;
             }
             modifyTimerState(newTimerState);
-            changeSubtitle();
+            changeTitles();
         }
     }
 
@@ -424,7 +430,7 @@
 		sageCounting = true;
 		while (sageCounting) {
             console.log(sageState.toString())
-            changeSubtitle();
+            changeTitles();
 			switch (sageState) {
 				case SageStates.Work:
                     if (goalTime <= 0) await setTime(await convertTimeToDeciseconds(0, sageRemainingTime, 0));
