@@ -173,6 +173,22 @@
         goalTime = 0;
     }
 
+    async function modifySageState() {
+        switch (sageState) {
+            case SageStates.Work:
+                sageState = SageStates.Break;
+                break;
+            case SageStates.Break:
+                let nextSessionTime = sageRemainingTime - sageTimes.decrement;
+
+                if (nextSessionTime <= 0) sageRemainingTime = sageTimes.work; // reset time back to full amount if negative time
+                else sageRemainingTime = nextSessionTime;
+
+                sageState = SageStates.Work;
+                break;
+        }
+    }
+
 	// modifies the change in time between now and the end time every decisecond
 	async function timerActiveCount(): Promise<void> {
 		return new Promise(async (resolve) => {
@@ -187,6 +203,7 @@
                     if (timerProgressState === true) {
                         await ringBell();
                         if (get(timerState) === TimerStates.Pomodoro) await modifyPomodoroState();
+                        else if (get(timerState) === TimerStates.Sage) await modifySageState();
                     }
                     await updateTimerInProgressToFalse(); // make sure we say the timer is no longer running
                     clearInterval(interval);
@@ -343,20 +360,13 @@
         timerState.update(() => newTimerState);
     }
 
-    async function computeSageWorkTime(remainingTime: number, descendingTime: number) {
-        if (remainingTime - descendingTime <= 0) return remainingTime;
-        else {
-            return remainingTime
-        }
-    }
-
     export async function sageActive() {
 		sageCounting = true;
 		while (sageCounting) {
 			switch (sageState) {
 				case SageStates.Work:
                     // look out for this goalTime less than zero if problems come up in the future
-                    if (goalTime <= 0) await setTime(await convertTimeToDeciseconds(0, sageTimes.work, 0));
+                    if (goalTime <= 0) await setTime(await convertTimeToDeciseconds(0, sageRemainingTime, 0));
 					await startTimer();
 					break;
 				case SageStates.Break:

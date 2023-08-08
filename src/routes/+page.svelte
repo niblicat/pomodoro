@@ -520,48 +520,60 @@
     </div>
     <div class="wrapper center {landscapeMode ? "landscape" : ""}">
         <div class="timer center regulartext">
-            <div class="timerTitle">{($timerState === timer.TimerStates.Pomodoro ? "Pomodoro Timer" : "Timer")}</div>
-                <p class="numbersTime fade" transition:fade>
-                    {#each $timeElement as e (e.type)}
-                        {#if !((e.type === 'hours') && (e.value <= 0))}
-                            {#if ((e.type !== 'hours') && (e.value < 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
-                        {/if}
-                    {/each}
-                </p>
-                <button
-                class="bounce fade regular {buttonEnabled ? '' : 'disabled'}"
-                    on:click={() => {
-                        if ($timerInProgress) timer.stopTimer();
-                        else {
-                            switch ($timerState) {
-                            case timer.TimerStates.Pomodoro: 
-                                timer.pomodoroActive();
-                                break;
-                            case timer.TimerStates.Sage: 
-                                // call Sage mode
-                                alert('No implementation');
-                                break;
-                            case timer.TimerStates.Standard: 
-                                timer.standardStartTimer()
-                                break;
-                            }
+            <div class="em1"/>
+            <div class="timerTitle">
+                {#if $timerState === timer.TimerStates.Pomodoro}
+                    Pomodoro Timer
+                {:else if $timerState === timer.TimerStates.Sage}
+                    Sage Timer
+                {:else}
+                    Timer
+                {/if}
+            </div>
+            <div class="timerSubtitle">
+                test
+            </div>
+            <p class="numbersTime fade" transition:fade>
+                {#each $timeElement as e (e.type)}
+                    {#if !((e.type === 'hours') && (e.value <= 0))}
+                        {#if ((e.type !== 'hours') && (e.value < 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
+                    {/if}
+                {/each}
+            </p>
+            <button
+            class="bounce fade regular {buttonEnabled ? '' : 'disabled'}"
+                on:click={() => {
+                    if ($timerInProgress) timer.stopTimer();
+                    else {
+                        switch ($timerState) {
+                        case timer.TimerStates.Pomodoro: 
+                            timer.pomodoroActive();
+                            break;
+                        case timer.TimerStates.Sage: 
+                            timer.sageActive();
+                            break;
+                        case timer.TimerStates.Standard: 
+                            timer.standardStartTimer()
+                            break;
                         }
-                        disableButtons();
-                    }}
-                    title={!$timerInProgress ? 'Start' : 'Pause'}
-                    id={!$timerInProgress ? 'Start' : 'Pause'}
-                    disabled={!buttonEnabled}
-                >
-                    {!$timerInProgress ? 'start' : 'pause'}
-                </button>
-                <button
-                    class="bounce fade regular"
-                    on:click={timer.clearTimer}
-                    title="Clear"
-                    id="Clear"
-                >
-                    clear
-                </button>
+                    }
+                    disableButtons();
+                }}
+                title={!$timerInProgress ? 'Start' : 'Pause'}
+                id={!$timerInProgress ? 'Start' : 'Pause'}
+                disabled={!buttonEnabled}
+            >
+                {!$timerInProgress ? 'start' : 'pause'}
+            </button>
+            <button
+                class="bounce fade regular"
+                on:click={timer.clearTimer}
+                title="Clear"
+                id="Clear"
+            >
+                clear
+            </button>
+            <div class="em2"/>
         </div>
         <div 
             id={loading === true ? "loadingIcon" : "noID"}
@@ -756,7 +768,7 @@
 
     .wrapper {
         display: grid;
-        grid-template: 30% 30% 10% 30% / 1fr;
+        grid-template: 25% 40% 10% 25% / 1fr;
         transition: grid-template 0.5s ease;
         vertical-align: middle;
         text-align: center;
@@ -766,7 +778,7 @@
     }
 
     .wrapper.landscape {
-        grid-template: 25% 50% 10% 25% / 1fr;
+        grid-template: 20% 60% 10% 10% / 1fr;
         transition: 0.5s;
     }
     
@@ -778,8 +790,8 @@
         max-height: 235px;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: 30% 30% 30% 10%;
-        grid-gap: 10px;
+        grid-template-rows: 5% 15% 5% 50% 20% 5%;
+        grid-gap: 0px;
         border-radius: 25px;
         background-color: var(--divback);
         border: 2px solid var(--neutralbright);
@@ -797,19 +809,27 @@
 
     .timer .timerTitle {
         font-size: 25px;
-        grid-row: 1;
+        grid-row: 2;
+        grid-column: span 2;
+    }
+
+    .timer .timerSubtitle {
+        align-self: baseline;
+        font-size: 16px;
+        grid-row: 3;
         grid-column: span 2;
     }
 
     .timer .numbersTime {
         font-size: 48px;
-        grid-row: 2;
+        grid-row: 4;
         grid-column: span 2;
         font-family: ExoExtraLight, Arial, Helvetica, sans-serif;
     }
 
     .timer button {
-        grid-row: 3;
+        align-self: baseline;
+        grid-row: 5;
         display: grid;
         min-width: 60px;
         width: 80%;
