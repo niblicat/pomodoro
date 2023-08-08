@@ -179,6 +179,7 @@
                     <button
                         class="fade alt {$timerState === timer.TimerStates.Pomodoro ? "selectedOption" : "unselectedOption"}"
                         id="Pomodoro"
+                        title="Pomodoro Timer"
                         on:click={() => {
                             timer.switchTimerMode(timer.TimerStates.Pomodoro);
                         }}
@@ -188,15 +189,17 @@
                     <button
                         class="fade alt {$timerState === timer.TimerStates.Sage ? "selectedOption" : "unselectedOption"}"
                         id="Sage"
+                        title="Descend Timer"
                         on:click={() => {
                             timer.switchTimerMode(timer.TimerStates.Sage)
                         }}
                     >
-                        Descend
+                        De&shy;scend
                     </button>
                     <button
                         class="fade alt {$timerState === timer.TimerStates.Standard ? "selectedOption" : "unselectedOption"}"
                         id="{!mobileMode ? "Standard" : "StandardMobile"}"
+                        title="Standard Timer"
                         on:click={() => {
                             timer.switchTimerMode(timer.TimerStates.Standard);
                         }}
@@ -254,7 +257,7 @@
                                     <div class="pillButtonContainer alt"> 
                                         <button 
                                             class="left fade"
-                                            title="Decrement short time"
+                                            title="Decrement short break time"
                                             on:click={() => {
                                                 if (pomoShort > 0) pomoShort--;
                                             }}
@@ -262,14 +265,14 @@
                                         <input
                                             type="number"
                                             id="shortInput"
-                                            title="Set short time"
+                                            title="Set short break time"
                                             bind:value={pomoShort}
                                             min="1"
                                             step="1"
                                         />
                                         <button 
                                             class="right fade"
-                                            title="Increment short time"
+                                            title="Increment short break time"
                                             on:click={() => {
                                                 pomoShort++;
                                             }}
@@ -282,7 +285,7 @@
                                     <div class="pillButtonContainer alt"> 
                                         <button 
                                             class="left fade"
-                                            title="Decrement long time"
+                                            title="Decrement long break time"
                                             on:click={() => {
                                                 if (pomoLong > 0) pomoLong--;
                                             }}
@@ -290,14 +293,14 @@
                                         <input
                                             type="number"
                                             id="longInput"
-                                            title="Set long time"
+                                            title="Set long break time"
                                             bind:value={pomoLong}
                                             min="0"
                                             step="1"
                                         />
                                         <button 
                                             class="right fade"
-                                            title="Increment long time"
+                                            title="Increment long break time"
                                             on:click={() => {
                                                 pomoLong++;
                                             }}
@@ -457,9 +460,9 @@
                                 <button 
                                     class="optionsButton fade bounce alt"
                                     on:click={async () => {
-                                        sageWork = 1;
-                                        sageBreak = 0.05;
-                                        sageDescend = 0.25;
+                                        sageWork = 50;
+                                        sageBreak = 10;
+                                        sageDescend = 10;
                                         await timer.modifySageTimes(sageWork, sageBreak, sageDescend);
                                     }}
                                 >
