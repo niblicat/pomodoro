@@ -13,7 +13,7 @@
                 localStorage.setItem('bellSound', reader.result);
                 bellSound = reader.result;
             }
-            else console.log('There was a problem loading the bell sound to local storage.')
+            else console.log('There was a problem loading the bell sound to Local Storage.')
         };
         reader.readAsDataURL(audioBlob);
     }

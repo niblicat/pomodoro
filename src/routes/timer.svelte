@@ -1,5 +1,4 @@
 <script lang="ts" context="module">
-    
 	// Counts down each time segment
 	// Processes a length of time in deciseconds (10^-1 seconds)
 
@@ -290,12 +289,13 @@
 		timeToSet = await formatTime(newTime);
 	}
 
-    // sets back to first work session
+    // sets back to first work session regarding pomodoro timer
     async function resetPomodoroState() {
         pomodoroState = PomodoroStates.Work;
         sessionNumber = 1;
     }
 
+    // sets back to first work session regarding sage timer
     async function resetSageState() {
         sageState = SageStates.Work;
         sessionNumber = 1;
@@ -315,6 +315,9 @@
 
     // converts hh:mm:ss to equivalent in deciseconds
 	export async function convertTimeToDeciseconds(hours: number, minutes: number, seconds: number): Promise<number> {
+		return 36000 * hours + 600 * minutes + 10 * seconds;
+	}
+	export function convertTimeToDecisecondsSync(hours: number, minutes: number, seconds: number): number {
 		return 36000 * hours + 600 * minutes + 10 * seconds;
 	}
 

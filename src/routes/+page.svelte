@@ -67,12 +67,9 @@
 
     onMount(() => {
         currentModePage = ModePage.Options;
-        if (debug) openSettings(); //temporary 
         document.body.addEventListener('mousemove', handleMouseMove);
         document.body.addEventListener('keydown', handleKeyDown);
-        timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
-        timer.changeLongSession(pomoLongPhase);
-        themes.changeTheme(themes.Themes.Aurora); // change theme using this
+        timer.setTime(timer.convertTimeToDecisecondsSync(0, pomoWork, 0));
 
         storeLocalAudio(Sounds.Squeaky);
         
