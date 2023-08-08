@@ -4,7 +4,7 @@
     import { fade, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
-    import { timeElement, timerInProgress, timerState, bell } from './timer.svelte';
+    import { timeElement, timerInProgress, timerState, bell, timerSubtitle } from './timer.svelte';
     import ImageSVG from './images.svelte';
     import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
@@ -133,8 +133,12 @@
     let pomoShort: number = 5;
     let pomoLong: number = 15;
     let pomoLongPhase: number = 4;
+    let sageWork: number = 50;
+    let sageBreak: number = 10;
+    let sageDescend: number = 10;
     
     $: mobileMode = innerWidth <= 720;
+    $: extraThin = innerWidth <= 415;
     $: landscapeMode = innerHeight <= 500;
 
     $: cssVarStyles = Object.entries($styles)
@@ -188,11 +192,10 @@
                         class="fade alt {$timerState === timer.TimerStates.Sage ? "selectedOption" : "unselectedOption"}"
                         id="Sage"
                         on:click={() => {
-                            alert('This feature is not yet available.');
-                            // timer.switchTimerMode(timer.TimerStates.Sage);
+                            timer.switchTimerMode(timer.TimerStates.Sage)
                         }}
                     >
-                        Coming Soon
+                        Descend
                     </button>
                     <button
                         class="fade alt {$timerState === timer.TimerStates.Standard ? "selectedOption" : "unselectedOption"}"
@@ -361,6 +364,111 @@
                                 </button>
                             </div>
 
+                        {:else if $timerState === timer.TimerStates.Sage}
+                            <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
+                                <div class="labelPillBinder">
+                                    <label for="workInput">work</label>
+                                    <div class="pillButtonContainer alt"> 
+                                        <button
+                                            class="left fade"
+                                            title="Decrement work time"
+                                            on:click={() => {
+                                                if (sageWork > 1) sageWork--;
+                                            }}
+                                        />
+                                        <input
+                                            type="number"
+                                            id="workInput"
+                                            title="Set work time"
+                                            bind:value={sageWork}
+                                            min="1"
+                                            step="1"
+                                        />
+                                        <button 
+                                            class="right fade"
+                                            title="Increment work time"
+                                            on:click={() => {
+                                                sageWork++;
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                                <div class="labelPillBinder">
+                                    <label for="breakInput">break</label>
+                                    <div class="pillButtonContainer alt"> 
+                                        <button
+                                            class="left fade"
+                                            title="Decrement break time"
+                                            on:click={() => {
+                                                if (sageBreak > 1) sageBreak--;
+                                            }}
+                                        />
+                                        <input
+                                            type="number"
+                                            id="breakInput"
+                                            title="Set break time"
+                                            bind:value={sageBreak}
+                                            min="1"
+                                            step="1"
+                                        />
+                                        <button 
+                                            class="right fade"
+                                            title="Increment break time"
+                                            on:click={() => {
+                                                sageBreak++;
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                                <div class="labelPillBinder">
+                                    <label for="descendInput">descend</label>
+                                    <div class="pillButtonContainer alt"> 
+                                        <button
+                                            class="left fade"
+                                            title="Decrement descend time"
+                                            on:click={() => {
+                                                if (sageDescend > 0) sageDescend--;
+                                            }}
+                                        />
+                                        <input
+                                            type="number"
+                                            id="descendInput"
+                                            title="Set descend time"
+                                            bind:value={sageDescend}
+                                            min="0"
+                                            step="1"
+                                        />
+                                        <button 
+                                            class="right fade"
+                                            title="Increment descend time"
+                                            on:click={() => {
+                                                sageDescend++;
+                                            }}
+                                        />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="optionsButtonsContainer span2">
+                                <button 
+                                    class="optionsButton fade bounce alt"
+                                    on:click={async () => {
+                                        await timer.modifySageTimes(sageWork, sageBreak, sageDescend);
+                                    }}
+                                >
+                                    set times
+                                </button>
+                                <button 
+                                    class="optionsButton fade bounce alt"
+                                    on:click={async () => {
+                                        sageWork = 0.10;
+                                        sageBreak = 0.05;
+                                        sageDescend = 0.01;
+                                        await timer.modifySageTimes(sageWork, sageBreak, sageDescend);
+                                    }}
+                                >
+                                    reset values
+                                </button>
+                            </div>
                         {:else if $timerState === timer.TimerStates.Standard}
                             <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
                                 <div class="labelPillBinder">
@@ -419,36 +527,70 @@
                                         />
                                     </div>
                                 </div>
-
-                                <div class="labelPillBinder">
-                                    <label for="secondInput">seconds</label>
-                                    <div class="pillButtonContainer alt"> 
-                                        <button 
-                                            class="left fade"
-                                            title="Decrement seconds"
-                                            on:click={() => {
-                                                if (seconds > 0) seconds--;
-                                            }}
-                                        />
-                                        <input
-                                            type="number"
-                                            id="secondInput"
-                                            title="Set seconds"
-                                            bind:value={seconds}
-                                            min="0"
-                                            max="59"
-                                            step="1"
-                                        />
-                                        <button 
-                                            class="right fade"
-                                            title="Increment seconds"
-                                            on:click={() => {
-                                                if (seconds < 59) seconds++;
-                                            }}
-                                        />
+                                
+                                {#if !extraThin}
+                                    <div class="labelPillBinder">
+                                        <label for="secondInput">seconds</label>
+                                        <div class="pillButtonContainer alt"> 
+                                            <button 
+                                                class="left fade"
+                                                title="Decrement seconds"
+                                                on:click={() => {
+                                                    if (seconds > 0) seconds--;
+                                                }}
+                                            />
+                                            <input
+                                                type="number"
+                                                id="secondInput"
+                                                title="Set seconds"
+                                                bind:value={seconds}
+                                                min="0"
+                                                max="59"
+                                                step="1"
+                                            />
+                                            <button 
+                                                class="right fade"
+                                                title="Increment seconds"
+                                                on:click={() => {
+                                                    if (seconds < 59) seconds++;
+                                                }}
+                                            />
+                                        </div>
+                                    </div>
+                                {/if}
+                            </div>
+                            {#if extraThin}
+                                <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
+                                    <div class="labelPillBinder">
+                                        <label for="secondInput">seconds</label>
+                                        <div class="pillButtonContainer alt"> 
+                                            <button 
+                                                class="left fade"
+                                                title="Decrement seconds"
+                                                on:click={() => {
+                                                    if (seconds > 0) seconds--;
+                                                }}
+                                            />
+                                            <input
+                                                type="number"
+                                                id="secondInput"
+                                                title="Set seconds"
+                                                bind:value={seconds}
+                                                min="0"
+                                                max="59"
+                                                step="1"
+                                            />
+                                            <button 
+                                                class="right fade"
+                                                title="Increment seconds"
+                                                on:click={() => {
+                                                    if (seconds < 59) seconds++;
+                                                }}
+                                            />
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            {/if}
                             <div class="optionsButtonsContainer span2">
                                 <button 
                                     class="optionsButton fade bounce alt"
@@ -525,13 +667,13 @@
                 {#if $timerState === timer.TimerStates.Pomodoro}
                     Pomodoro Timer
                 {:else if $timerState === timer.TimerStates.Sage}
-                    Sage Timer
+                    Descend Timer
                 {:else}
                     Timer
                 {/if}
             </div>
             <div class="timerSubtitle">
-                test
+                {$timerSubtitle}
             </div>
             <p class="numbersTime fade" transition:fade>
                 {#each $timeElement as e (e.type)}
@@ -930,12 +1072,9 @@
     }
 
     .modes button#Sage {
-        border-color: var(--divback);
-        background-color: var(--neutraldark) !important;
         border-radius: 0px 0px 0px 0px;
         border-left: 0px;
         border-right: 0px;
-        pointer-events: none;
     }
 
     .modes button#Standard {
@@ -1056,7 +1195,7 @@
         padding: 2px;
         text-align: center;
         appearance: textfield;
-        font-size: min(16px, 3.15vw);
+        font-size: min(14px, 3.15vw);
         -webkit-appearance: textfield;
         -moz-appearance: textfield;
     }

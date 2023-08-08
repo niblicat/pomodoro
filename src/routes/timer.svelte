@@ -58,10 +58,10 @@
         });
     }
 
+    export let timerSubtitle: Writable<string> = writable('Time to work!');
     export let timerState: Writable<Symbol> = writable(TimerStates.Pomodoro);
 	let pomodoroCounting: boolean = false;
 	let sageCounting: boolean = false;
-    let mustDecrementSageRemaining: boolean = false; // if true, value of remaining time should be decreased
     let sageRemainingTime: number = 0;
 	let pomodoroState = PomodoroStates.Work;
 	let sageState = SageStates.Work;
@@ -144,6 +144,11 @@
         return time;
 	}
 
+    async function changeSubtitle() {
+        let currentTimerState = get(timerState);
+        if(currentTimerState === TimerStates.Standard) timerSubtitle.set('');
+    }
+
     export let bell: Writable<boolean> = writable(false);
 
     // plays sound and is called when timer reaches 0
@@ -187,6 +192,7 @@
                 sageState = SageStates.Work;
                 break;
         }
+        console.log(sessionNumber + ' ' + sageState.toString);
     }
 
 	// modifies the change in time between now and the end time every decisecond
@@ -265,11 +271,18 @@
         sessionNumber = 1;
     }
 
+    async function resetSageState() {
+        sageState = SageStates.Work;
+        sessionNumber = 1;
+        sageRemainingTime = sageTimes.work;
+    }
+
 	// completely resets the timer to 0 deciseconds
 	export async function clearTimer() {
         sessionNumber = 1; // for pomodoro
         await stopTimer();
         await resetPomodoroState();
+        await resetSageState();
         clearInterval(interval);
         await setTime(0);
 	}
@@ -321,6 +334,7 @@
                     break;
                 case TimerStates.Sage:
                     await modifyTimerState(TimerStates.Sage);
+                    await setTime(await convertTimeToDeciseconds(0, sageTimes.work, 0));
                     break;
             }
             modifyTimerState(newTimerState);
@@ -334,6 +348,17 @@
             work: work,
             short: short,
             long: long
+        }
+        await setTime(await convertTimeToDeciseconds(0, work, 0));
+    }
+
+    // changes the sage stored time values and calls function to update value for onscreen counter
+    export async function modifySageTimes(work: number, breakTime: number, descend: number) {
+        await clearTimer();
+        sageTimes = {
+            work: work,
+            break: breakTime,
+            decrement: descend
         }
         await setTime(await convertTimeToDeciseconds(0, work, 0));
     }
