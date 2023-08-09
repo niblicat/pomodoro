@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { ActionData, PageData, SubmitFunction } from './$types';
-    import { enhance } from '$app/forms';
     import { fade, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
@@ -9,10 +8,6 @@
     import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
     import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
-	import { assets } from '$app/paths';
-
-    export let data: PageData
-    export let form: ActionData
 
     const debug: boolean = false;
 
