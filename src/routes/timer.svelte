@@ -443,7 +443,7 @@
                     console.log('B');
 					break;
 			}
-			sessionNumber++; // increase session number so we can properly update state to long when needed
+			sessionNumber++;
 			if (sessionNumber > 10000) {
 				alert("You've worked for too long"); // in case timer is left running for an excessive amount of time
 				sageCounting = false;
