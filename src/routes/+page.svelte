@@ -733,6 +733,11 @@
         --fontsize: 20px;
     }
 
+    global(html) {
+        margin: 0px;
+        padding: 0px;
+    }
+
     body {
         color: var(--neutralheavy);
         height: 100vh;
