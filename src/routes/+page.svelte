@@ -193,7 +193,7 @@
                     </button>
                     <button
                         class="fade alt {$timerState === timer.TimerStates.Standard ? "selectedOption" : "unselectedOption"}"
-                        id="{!mobileMode ? "Standard" : "StandardMobile"}"
+                        id="{(!mobileMode || !debug) ? "Standard" : "StandardMobile"}"
                         title="Standard Timer"
                         on:click={() => {
                             timer.switchTimerMode(timer.TimerStates.Standard);
@@ -201,7 +201,7 @@
                     >
                         Stan&shy;dard
                     </button>
-                    {#if mobileMode}
+                    {#if (mobileMode && debug)}
                         <button
                             class="fade alt unselectedOption"
                             id="Statistics"
