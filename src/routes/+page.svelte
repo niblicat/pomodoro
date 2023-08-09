@@ -1,5 +1,4 @@
 <script lang="ts">
-    import type { ActionData, PageData, SubmitFunction } from './$types';
     import { fade, slide } from 'svelte/transition';
     import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
     import * as timer from './timer.svelte';
@@ -13,7 +12,6 @@
 
     let mouseHasMoved: number = 0; // used for positioning loading icon
     let loading: boolean = false;
-    let loadingDelayIsActive: boolean = true;
     let loadingIcon: HTMLElement;
     let menu: HTMLElement;
     let menuVisible: boolean = false;
@@ -30,66 +28,23 @@
 
     let currentModePage: Symbol;
 
-    // updates the internal cursor position based off the actual cursor
-    // changes loading icon's position to relative if user is using mouse
-    function handleMouseMove(event: MouseEvent) {
-        m.x = event.clientX;
-        m.y = event.clientY;
-    }
-
     let escapeButtonHeld: boolean = false;
     function handleKeyDown(event: KeyboardEvent) {
         if (menuVisible) 
             if (event.key === "Escape") closeSettings();
     }
 
-    // used to show loading spinner if it takes more than 150 ms for update
-    const actionLoad: SubmitFunction = (input) => {
-        loadingDelayIsActive = true;
-        setTimeout(() => {
-            if (loadingDelayIsActive) loading = true;
-        }, 150)
-
-        return async ({ update }) => {
-            await update();
-            loadingDelayIsActive = false;
-            loading = false;
-        }
-    }
-
     onMount(() => {
         currentModePage = ModePage.Options;
-        document.body.addEventListener('mousemove', handleMouseMove);
         document.body.addEventListener('keydown', handleKeyDown);
         timer.setTime(timer.convertTimeToDecisecondsSync(0, pomoWork, 0));
 
         storeLocalAudio(Sounds.Squeaky);
         
         return () => {
-            document.body.removeEventListener('mousemove', handleMouseMove);
             document.body.removeEventListener('keydown', handleKeyDown);
         };
     });
-    
-    beforeUpdate(() => {
-        loadingStatus = loadingIcon !== null; // make sure loadingIcon exists on the page before changing it
-    })
-
-    // moves loading spinner to cursor's position
-    function loadingElementToCursor() {
-        if (mouseHasMoved > 3) {
-            // move loadingIcon to mouse cursor plus some offset so it's centered
-            loadingIcon.style.top = m.y - 15 + 'px';
-            loadingIcon.style.left = m.x - 15 + 'px';
-            loadingIcon.style.position = 'absolute';  
-            loadingIcon.style.margin = '0px';
-        }
-        mouseHasMoved++;
-    }
-
-    afterUpdate(() => {
-        if (loadingStatus === true) loadingElementToCursor();
-    })
 
     onDestroy(() => {
         timer.clearTimer();
