@@ -16,7 +16,7 @@
 
     const debug: boolean = false;
 
-    let mouseHasMoved: number = 0;
+    let mouseHasMoved: number = 0; // used for positioning loading icon
     let loading: boolean = false;
     let loadingDelayIsActive: boolean = true;
     let loadingIcon: HTMLElement;
@@ -24,13 +24,9 @@
     let menuVisible: boolean = false;
     let m = { x: 0, y: 0};
     let loadingStatus: boolean;
-    
 
-    // TODO: fix this hover
-    let allowHover: boolean = true; // to prevent settings button from having hover effect after click
-
-    let innerWidth: number = 0;
-    let innerHeight: number = 0;
+    let innerWidth: number;
+    let innerHeight: number;
 
     const ModePage = {
         Options: Symbol('Options'),
@@ -106,22 +102,16 @@
 
     // closes preference menu
     function closeSettings() {
-        allowHover = false;
         menu.style.top = -260 + 'px';
         setTimeout(() => {
             menuVisible = false;
-            allowHover = true;
         }, 200);
     }
 
     // opens preference menu
     function openSettings() {
-        allowHover = false;
         menuVisible = true;
         menu.style.top = 0 + 'px';
-        setTimeout(() => {
-            allowHover = true;
-        }, 200);
     }
 
     let hours: number = 0;
@@ -179,9 +169,8 @@
             class="menu {mobileMode ? "mobile" : ""}"
             id={menuVisible ? "visible" : "invisible"}
         >
-            <!-- TODO: move or delete debug style tags -->
             {#if ((!mobileMode) || currentModePage === ModePage.Options)}
-                <div class="modes {mobileMode ? "span2" : ""}" style={debug ? 'background-color: #cc0000;' : ''}>
+                <div class="modes {mobileMode ? "span2" : ""} {debug ? "db1" : ""}">
                     <button
                         class="fade alt {$timerState === timer.TimerStates.Pomodoro ? "selectedOption" : "unselectedOption"}"
                         id="Pomodoro"
@@ -226,7 +215,7 @@
 
                 
                 </div>
-                <div class="modesOptionsPadding {mobileMode ? "span2" : ""}" style={debug ? 'background-color: #cccc00;' : ''}>
+                <div class="modesOptionsPadding {mobileMode ? "span2" : ""} {debug ? "db2" : ""}">
                     <div class="modesOptions {mobileMode ? "mobile" : ""}">
                         {#if $timerState === timer.TimerStates.Pomodoro}
                             <div class="optionsInputsContainer span2 alttext {mobileMode ? "mobile" : ""}">
@@ -623,13 +612,13 @@
                 </div>
             {/if}
             {#if ((!mobileMode) || currentModePage === ModePage.Stats)}
-                <div class="statsHead" style={debug ? 'background-color: #00cc00;' : ''}>
+                <div class="statsHead {debug ? "db3" : ""}">
 
                 </div>
-                <div class="stats" style={debug ? 'background-color: #00cccc;' : ''}>
+                <div class="stats {debug ? "db4" : ""}">
 
                 </div>
-                <div class="close" style={debug ? 'background-color: #0000cc;' : ''}>
+                <div class="close {debug ? "db5" : ""}">
                     {#if mobileMode}
                         <button
                             id="Settings"
@@ -650,7 +639,7 @@
                     </button>
                 </div>
 
-                <div class="profile" style={debug ? 'background-color: #cc00cc;' : ''}>
+                <div class="profile {debug ? "db6" : ""}">
 
                 </div>
             {/if}
@@ -658,9 +647,13 @@
         
         <div class="optionsPadding">
             <button 
-                class="fade regular"
+                class="fade regular {buttonEnabled ? '' : 'disabled'}"
                 id="hanging"
-                on:click={menuVisible ? closeSettings : openSettings}
+                on:click={() => {
+                    if (menuVisible) closeSettings();
+                    else openSettings();
+                    disableButtons();
+                }}
             >
                 settings
             </button>
@@ -1326,5 +1319,24 @@
         -moz-animation: fadeIn .5s;
         -o-animation: fadeIn .5s;
         -ms-animation: fadeIn .5s;
+    }
+
+    .db1 {
+        background-color: #dd0000;
+    }
+    .db2 {
+        background-color: #00dd00;
+    }
+    .db3 {
+        background-color: #0000dd;
+    }
+    .db4 {
+        background-color: #dddd00;
+    }
+    .db5 {
+        background-color: #00dddd;
+    }
+    .db6 {
+        background-color: #dd00dd;
     }
 </style>
