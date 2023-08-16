@@ -1,6 +1,6 @@
 <script lang="ts">
     import { fade, slide } from 'svelte/transition';
-    import { onMount, onDestroy, beforeUpdate, afterUpdate } from 'svelte';
+    import { onMount } from 'svelte';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgress, timerState, bell, timerTitle, timerSubtitle } from './timer.svelte';
     import ImageSVG from './images.svelte';
@@ -9,7 +9,7 @@
     import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
     import * as Vibrate from './vibrate';
 
-    const debug: boolean = false;
+    const debug: boolean = true;
 
     let loading: boolean = false;
     let loadingIcon: HTMLElement;
@@ -43,11 +43,8 @@
 
         return () => {
             document.body.removeEventListener('keydown', handleKeyDown);
+            timer.clearTimer();
         };
-    });
-
-    onDestroy(() => {
-        timer.clearTimer();
     });
 
     // closes preference menu
