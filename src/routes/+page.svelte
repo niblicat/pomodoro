@@ -7,6 +7,7 @@
     import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
     import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
+    import * as Vibrate from './vibrate';
 
     const debug: boolean = false;
 
@@ -38,6 +39,8 @@
 
         storeLocalAudio(Sounds.Squeaky);
         
+        Vibrate.checkVibrate();
+
         return () => {
             document.body.removeEventListener('keydown', handleKeyDown);
         };
@@ -714,6 +717,19 @@
                 >
                     bell: {$bell}
                 </button>
+                <button
+                    on:click={() => {
+                        Vibrate.vibrateAction(Vibrate.VibrateType.Standard);
+                    }}
+                >
+                    Vibrate
+                </button>
+                <button
+                    on:click={() => {
+                        Vibrate.alertCanVibrate();
+                    }}>
+                    canVibrate
+                </button>
             </div>
         {/if}
     </div>
@@ -976,6 +992,10 @@
 
     .debug {
         grid-row: 4;
+    }
+
+    .debug button {
+        font-size: 8px;
     }
 
     button#hanging {
