@@ -733,7 +733,7 @@
         --fontsize: 20px;
     }
 
-    global(html) {
+    :global(html) {
         margin: 0px;
         padding: 0px;
     }
@@ -760,12 +760,12 @@
         pointer-events: auto;
     }
 
-    .regular, .regular > * {
+    .regular/*, .regular > * */ {
         color: var(--text);
         background-color: var(--input);
     }
 
-    .regulartxt, .regulartext > * {
+    /*.regulartxt, */.regulartext > * {
         color: var(--text);
     }
     
