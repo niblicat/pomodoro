@@ -10,14 +10,12 @@
 
     const debug: boolean = false;
 
-    let mouseHasMoved: number = 0; // used for positioning loading icon
     let loading: boolean = false;
     let loadingIcon: HTMLElement;
     let menu: HTMLElement;
     let menuVisible: boolean = false;
     let m = { x: 0, y: 0};
-    let loadingStatus: boolean;
-
+    
     let innerWidth: number;
     let innerHeight: number;
 
