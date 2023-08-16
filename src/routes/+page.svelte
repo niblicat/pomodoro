@@ -26,7 +26,6 @@
 
     let currentModePage: Symbol;
 
-    let escapeButtonHeld: boolean = false;
     function handleKeyDown(event: KeyboardEvent) {
         if (menuVisible) 
             if (event.key === "Escape") closeSettings();
