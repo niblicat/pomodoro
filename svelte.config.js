@@ -8,12 +8,13 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		pages: 'build',
-		assets: 'build',
-		fallback: undefined,
-		precompress: false,
-		strict: true,
-		adapter: adapter()
+		adapter: adapter({
+			pages: 'build',
+			assets: 'build',
+			fallback: 'index.html',
+			precompress: false,
+			strict: true
+		})
 	}
 };
 
