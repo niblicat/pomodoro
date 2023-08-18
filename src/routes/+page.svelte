@@ -7,7 +7,7 @@
     import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
     import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
-    import * as Vibrate from './vibrate';
+    import * as vibrate from './vibrate';
 
     const debug: boolean = true;
 
@@ -38,8 +38,6 @@
         timer.setTime(timer.convertTimeToDecisecondsSync(0, pomoWork, 0));
 
         storeLocalAudio(Sounds.Squeaky);
-        
-        Vibrate.checkVibrate();
 
         return () => {
             document.body.removeEventListener('keydown', handleKeyDown);
@@ -124,6 +122,7 @@
                         title="Pomodoro Timer"
                         on:click={() => {
                             timer.switchTimerMode(timer.TimerStates.Pomodoro);
+                            vibrate.vibrateAction(vibrate.VibrateType.Standard);
                         }}
                     >
                         Pomo&shy;doro
@@ -133,7 +132,8 @@
                         id="Sage"
                         title="Descend Timer"
                         on:click={() => {
-                            timer.switchTimerMode(timer.TimerStates.Sage)
+                            timer.switchTimerMode(timer.TimerStates.Sage);
+                            vibrate.vibrateAction(vibrate.VibrateType.Standard);
                         }}
                     >
                         De&shy;scend
@@ -144,6 +144,7 @@
                         title="Standard Timer"
                         on:click={() => {
                             timer.switchTimerMode(timer.TimerStates.Standard);
+                            vibrate.vibrateAction(vibrate.VibrateType.Standard);
                         }}
                     >
                         Stan&shy;dard
@@ -154,6 +155,7 @@
                             id="Statistics"
                             on:click={() => {
                                 currentModePage = ModePage.Stats;
+                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                             }}
                         >
                             Stat&shy;istics
@@ -174,6 +176,7 @@
                                             title="Decrement work time"
                                             on:click={() => {
                                                 if (pomoWork > 1) pomoWork--;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                         <input
@@ -189,6 +192,7 @@
                                             title="Increment work time"
                                             on:click={() => {
                                                 pomoWork++;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                     </div>
@@ -202,6 +206,7 @@
                                             title="Decrement short break time"
                                             on:click={() => {
                                                 if (pomoShort > 0) pomoShort--;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                         <input
@@ -217,6 +222,7 @@
                                             title="Increment short break time"
                                             on:click={() => {
                                                 pomoShort++;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                     </div>
@@ -230,6 +236,7 @@
                                             title="Decrement long break time"
                                             on:click={() => {
                                                 if (pomoLong > 0) pomoLong--;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                         <input
@@ -245,6 +252,7 @@
                                             title="Increment long break time"
                                             on:click={() => {
                                                 pomoLong++;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                     </div>
@@ -260,6 +268,7 @@
                                             title="Decrement long-short repetitions"
                                             on:click={() => {
                                                 if (pomoLongPhase > 0) pomoLongPhase--;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                         <input
@@ -275,6 +284,7 @@
                                             title="long-short repetitions"
                                             on:click={() => {
                                                 pomoLongPhase++;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                     </div>
@@ -287,6 +297,7 @@
                                     on:click={async () => {
                                         await timer.changeLongSession(pomoLongPhase);
                                         await timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                     }}
                                 >
                                     set times
@@ -300,6 +311,7 @@
                                         pomoLong = 15;
                                         await timer.changeLongSession(pomoLongPhase);
                                         await timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                     }}
                                 >
                                     reset values
@@ -316,6 +328,7 @@
                                             title="Decrement work time"
                                             on:click={() => {
                                                 if (sageWork > 1) sageWork--;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                         <input
@@ -331,6 +344,7 @@
                                             title="Increment work time"
                                             on:click={() => {
                                                 sageWork++;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                     </div>
@@ -343,6 +357,7 @@
                                             title="Decrement break time"
                                             on:click={() => {
                                                 if (sageBreak > 1) sageBreak--;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                         <input
@@ -358,6 +373,7 @@
                                             title="Increment break time"
                                             on:click={() => {
                                                 sageBreak++;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                     </div>
@@ -370,6 +386,7 @@
                                             title="Decrement descend time"
                                             on:click={() => {
                                                 if (sageDescend > 0) sageDescend--;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                         <input
@@ -385,6 +402,7 @@
                                             title="Increment descend time"
                                             on:click={() => {
                                                 sageDescend++;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                     </div>
@@ -395,6 +413,7 @@
                                     class="optionsButton fade bounce alt"
                                     on:click={async () => {
                                         await timer.modifySageTimes(sageWork, sageBreak, sageDescend);
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                     }}
                                 >
                                     set times
@@ -406,6 +425,7 @@
                                         sageBreak = 10;
                                         sageDescend = 10;
                                         await timer.modifySageTimes(sageWork, sageBreak, sageDescend);
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                     }}
                                 >
                                     reset values
@@ -421,6 +441,7 @@
                                             title="Decrement hours"
                                             on:click={() => {
                                                 if (hours > 0) hours--;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                         <input
@@ -436,6 +457,7 @@
                                             title="Increment hours"
                                             on:click={() => {
                                                 hours++;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                     </div>
@@ -449,6 +471,7 @@
                                             title="Decrement minutes"
                                             on:click={() => {
                                                 if (minutes > 0) minutes--;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                         <input
@@ -465,6 +488,7 @@
                                             title="Increment minutes"
                                             on:click={() => {
                                                 if (minutes < 59) minutes++;
+                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                             }}
                                         />
                                     </div>
@@ -479,6 +503,7 @@
                                                 title="Decrement seconds"
                                                 on:click={() => {
                                                     if (seconds > 0) seconds--;
+                                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                                 }}
                                             />
                                             <input
@@ -495,6 +520,7 @@
                                                 title="Increment seconds"
                                                 on:click={() => {
                                                     if (seconds < 59) seconds++;
+                                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                                 }}
                                             />
                                         </div>
@@ -511,6 +537,7 @@
                                                 title="Decrement seconds"
                                                 on:click={() => {
                                                     if (seconds > 0) seconds--;
+                                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                                 }}
                                             />
                                             <input
@@ -527,6 +554,7 @@
                                                 title="Increment seconds"
                                                 on:click={() => {
                                                     if (seconds < 59) seconds++;
+                                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                                 }}
                                             />
                                         </div>
@@ -538,6 +566,7 @@
                                     class="optionsButton fade bounce alt"
                                     on:click={async () => {
                                         await timer.modifyStandardTimes(hours, minutes, seconds);
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                     }}
                                 >
                                     set times
@@ -549,6 +578,7 @@
                                         minutes = 5
                                         seconds = 0;
                                         await timer.modifyStandardTimes(hours, minutes, seconds);
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                                     }}
                                 >
                                     reset values
@@ -572,6 +602,7 @@
                             class="fade bounce alt"
                             on:click={() => {
                                 currentModePage = ModePage.Options;
+                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
                             }}
                         >
                             <ImageSVG colour={$styles.alttext} type="SettingsIcon"/>
@@ -580,7 +611,10 @@
                     <button
                         id="CloseMenu"
                         class="fade bounce alt"
-                        on:click={closeSettings}
+                        on:click={() => {
+                            closeSettings();
+                            vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                        }}
                     >
                         <ImageSVG colour={$styles.alttext} type="CloseIcon"/>
                     </button>
@@ -600,6 +634,7 @@
                     if (menuVisible) closeSettings();
                     else openSettings();
                     disableButtons();
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
                 }}
             >
                 settings
@@ -640,6 +675,7 @@
                         }
                     }
                     disableButtons();
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
                 }}
                 title={!$timerInProgress ? 'Start' : 'Pause'}
                 id={!$timerInProgress ? 'Start' : 'Pause'}
@@ -649,7 +685,10 @@
             </button>
             <button
                 class="bounce fade regular"
-                on:click={timer.clearTimer}
+                on:click={() => {
+                    timer.clearTimer();
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                }}
                 title="Clear"
                 id="Clear"
             >
@@ -668,6 +707,7 @@
                 <button
                     on:click={() => {
                         alert($timerInProgress);
+                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                     }}
                 >
                     timer in progress: {$timerInProgress}
@@ -675,6 +715,7 @@
                 <button
                     on:click={() => {
                         alert($timerState.toString());
+                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                     }}
                 >
                     state: {$timerState.toString()}
@@ -682,6 +723,7 @@
                 <button
                     on:click={() => {
                         alert(innerWidth + 'x' + innerHeight);
+                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                     }}
                 >
                     dim: {innerWidth + 'x' + innerHeight}
@@ -689,6 +731,7 @@
                 <button
                     on:click={() => {
                         alert(mobileMode);
+                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                     }}
                 >
                     mobileMode: {mobileMode}
@@ -696,13 +739,15 @@
                 <button
                     on:click={() => {
                         alert(buttonEnabled);
+                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                     }}
                 >
                     buttonEnabled: {buttonEnabled}
                 </button>
                 <button
                     on:click={() => {
-                        themes.changeTheme(themes.Themes.Funky)
+                        themes.changeTheme(themes.Themes.Funky);
+                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                     }}
                 >
                     funkytime
@@ -710,20 +755,22 @@
                 <button
                     on:click={() => {
                         alert($bell);
+                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                     }}
                 >
                     bell: {$bell}
                 </button>
                 <button
                     on:click={() => {
-                        Vibrate.vibrateAction(Vibrate.VibrateType.Standard);
+                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                     }}
                 >
                     Vibrate
                 </button>
                 <button
                     on:click={() => {
-                        Vibrate.alertCanVibrate();
+                        vibrate.alertCanVibrate();
+                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
                     }}>
                     canVibrate
                 </button>
