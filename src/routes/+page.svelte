@@ -172,115 +172,81 @@
                         {#if $timerState === timer.TimerStates.Pomodoro}
                             <div class="optionsInputsContainer span2 alttext {mobileMode ? "mobile" : ""}">
                                 <PillButton
-                                bind={pomoWork}
-                                label="work"
-                                titleDescription="test time"
-                                labelFor="workInput"
-                                --divback={$styles.divback}
-                                --accent={$styles.accent2}
-                                --background="{$styles.altinput}"
-                                --text={$styles.alttext}
-                                on:decrement={() => {
-                                    if (pomoWork > 1) pomoWork--;
-                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                }}
-                                on:increment={() => {
-                                    pomoWork++;
-                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                }}
+                                    bind={pomoWork}
+                                    label="work"
+                                    titleDescription="work time"
+                                    labelFor="workInput"
+                                    --divback={$styles.divback}
+                                    --accent={$styles.accent2}
+                                    --background="{$styles.altinput}"
+                                    --text={$styles.alttext}
+                                    on:decrement={() => {
+                                        if (pomoWork > 1) pomoWork--;
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                    }}
+                                    on:increment={() => {
+                                        pomoWork++;
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                    }}
                                 />
 
-                                <div class="labelPillBinder">
-                                    <label for="shortInput">short</label>
-                                    <div class="pillButtonContainer alt"> 
-                                        <button 
-                                            class="left fade"
-                                            title="Decrement short break time"
-                                            on:click={() => {
-                                                if (pomoShort > 0) pomoShort--;
-                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                            }}
-                                        />
-                                        <input
-                                            type="number"
-                                            id="shortInput"
-                                            title="Set short break time"
-                                            bind:value={pomoShort}
-                                            min="1"
-                                            step="1"
-                                        />
-                                        <button 
-                                            class="right fade"
-                                            title="Increment short break time"
-                                            on:click={() => {
-                                                pomoShort++;
-                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                            }}
-                                        />
-                                    </div>
-                                </div>
+                                <PillButton
+                                    bind={pomoShort}
+                                    label="short"
+                                    titleDescription="short break time"
+                                    labelFor="shortInput"
+                                    --divback={$styles.divback}
+                                    --accent={$styles.accent2}
+                                    --background="{$styles.altinput}"
+                                    --text={$styles.alttext}
+                                    on:decrement={() => {
+                                        if (pomoShort > 0) pomoShort--;
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                    }}
+                                    on:increment={() => {
+                                        pomoShort++;
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                    }}
+                                />
 
-                                <div class="labelPillBinder">
-                                    <label for="longInput">long</label>
-                                    <div class="pillButtonContainer alt"> 
-                                        <button 
-                                            class="left fade"
-                                            title="Decrement long break time"
-                                            on:click={() => {
-                                                if (pomoLong > 0) pomoLong--;
-                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                            }}
-                                        />
-                                        <input
-                                            type="number"
-                                            id="longInput"
-                                            title="Set long break time"
-                                            bind:value={pomoLong}
-                                            min="0"
-                                            step="1"
-                                        />
-                                        <button 
-                                            class="right fade"
-                                            title="Increment long break time"
-                                            on:click={() => {
-                                                pomoLong++;
-                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                            }}
-                                        />
-                                    </div>
-                                </div>
+                                <PillButton
+                                    bind={pomoLong}
+                                    label="short"
+                                    titleDescription="long break time"
+                                    labelFor="longInput"
+                                    --divback={$styles.divback}
+                                    --accent={$styles.accent2}
+                                    --background="{$styles.altinput}"
+                                    --text={$styles.alttext}
+                                    on:decrement={() => {
+                                        if (pomoLong > 0) pomoLong--;
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                    }}
+                                    on:increment={() => {
+                                        pomoLong++;
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                    }}
+                                />
                             </div>
-
                             <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
-                                <div class="labelPillBinder">
-                                    <label for="longSession">long-short repetitions</label>
-                                    <div class="pillButtonContainer alt"> 
-                                        <button 
-                                            class="left fade"
-                                            title="Decrement long-short repetitions"
-                                            on:click={() => {
-                                                if (pomoLongPhase > 0) pomoLongPhase--;
-                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                            }}
-                                        />
-                                        <input
-                                            type="number"
-                                            id="longInput"
-                                            title="Set long-short repetitions"
-                                            bind:value={pomoLongPhase}
-                                            min="0"
-                                            step="1"
-                                        />
-                                        <button 
-                                            class="right fade"
-                                            title="long-short repetitions"
-                                            on:click={() => {
-                                                pomoLongPhase++;
-                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                            }}
-                                        />
-                                    </div>
-                                </div>
+                                <PillButton
+                                    bind={pomoLongPhase}
+                                    label="long-short repetitions"
+                                    titleDescription="long-short repetitions"
+                                    labelFor="longSession"
+                                    --divback={$styles.divback}
+                                    --accent={$styles.accent2}
+                                    --background="{$styles.altinput}"
+                                    --text={$styles.alttext}
+                                    on:decrement={() => {
+                                        if (pomoLongPhase > 0) pomoLongPhase--;
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                    }}
+                                    on:increment={() => {
+                                        pomoLongPhase++;
+                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                    }}
+                                />
                             </div>
 
                             <div class="optionsButtonsContainer span2">
