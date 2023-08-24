@@ -171,35 +171,24 @@
                     <div class="modesOptions {mobileMode ? "mobile" : ""}">
                         {#if $timerState === timer.TimerStates.Pomodoro}
                             <div class="optionsInputsContainer span2 alttext {mobileMode ? "mobile" : ""}">
-                                <div class="labelPillBinder">
-                                    <label for="workInput">work</label>
-                                    <div class="pillButtonContainer alt"> 
-                                        <button
-                                            class="left fade"
-                                            title="Decrement work time"
-                                            on:click={() => {
-                                                if (pomoWork > 1) pomoWork--;
-                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                            }}
-                                        />
-                                        <input
-                                            type="number"
-                                            id="workInput"
-                                            title="Set work time"
-                                            bind:value={pomoWork}
-                                            min="1"
-                                            step="1"
-                                        />
-                                        <button 
-                                            class="right fade"
-                                            title="Increment work time"
-                                            on:click={() => {
-                                                pomoWork++;
-                                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                            }}
-                                        />
-                                    </div>
-                                </div>
+                                <PillButton
+                                bind={pomoWork}
+                                label="work"
+                                titleDescription="test time"
+                                labelFor="workInput"
+                                --divback={$styles.divback}
+                                --accent={$styles.accent2}
+                                --background="{$styles.altinput}"
+                                --text={$styles.alttext}
+                                on:decrement={() => {
+                                    if (pomoWork > 1) pomoWork--;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                                on:increment={() => {
+                                    pomoWork++;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                                />
 
                                 <div class="labelPillBinder">
                                     <label for="shortInput">short</label>

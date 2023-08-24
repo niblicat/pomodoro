@@ -4,12 +4,13 @@
     export let bind: number;
     export let label: string = "default";
     export let titleDescription: string = "default";
+    export let labelFor: string = "";
 
     const dispatch = createEventDispatcher();
 </script>
 
 <div class="labelPillBinder">
-    <label for="workInput">{label}</label>
+    <label for={labelFor}>{label}</label>
     <div class="pillButtonContainer"> 
         <button
             class="left fade"
