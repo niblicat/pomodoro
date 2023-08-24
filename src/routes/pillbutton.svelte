@@ -20,6 +20,7 @@
             }}
         />
         <input
+            class="fade"
             type="number"
             id="workInput"
             title="Set {titleDescription}"
