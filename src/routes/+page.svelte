@@ -8,6 +8,7 @@
     import { styles } from './themes.svelte';
     import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
     import * as vibrate from './vibrate';
+    import PillButton from './pillbutton.svelte'
 
     const debug: boolean = true;
 
@@ -87,6 +88,8 @@
             buttonEnabled = true;
         }, 250);
     }
+
+    let boundValue = 3;
 </script>
 
 <svelte:window bind:innerWidth bind:innerHeight />
@@ -767,13 +770,14 @@
                 >
                     Vibrate
                 </button>
-                <button
-                    on:click={() => {
-                        vibrate.alertCanVibrate();
-                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                    }}>
-                    canVibrate
-                </button>
+                <PillButton bind={boundValue} label="testing" --border-radius="25px" --divback={$styles.divback} --accent={$styles.accent2} --background="{$styles.altinput}" --text={$styles.alttext}
+                on:decrement={() => {
+                    alert('minus minus!');
+                }}
+                on:increment={() => {
+                    alert('plus plus!');
+                }}
+                />
             </div>
         {/if}
     </div>
@@ -1190,7 +1194,7 @@
     }
 
     .labelPillBinder label {
-        margin-right:  4px;
+        margin-right: 4px;
         font-size: min(16px, 3.54vw);
     }
 
