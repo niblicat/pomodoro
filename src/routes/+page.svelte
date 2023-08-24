@@ -770,7 +770,14 @@
                 >
                     Vibrate
                 </button>
-                <PillButton bind={boundValue} label="testing" --border-radius="25px" --divback={$styles.divback} --accent={$styles.accent2} --background="{$styles.altinput}" --text={$styles.alttext}
+                <PillButton
+                bind={boundValue}
+                label="testing"
+                titleDescription="test time"
+                --divback={$styles.divback}
+                --accent={$styles.accent2}
+                --background="{$styles.altinput}"
+                --text={$styles.alttext}
                 on:decrement={() => {
                     alert('minus minus!');
                 }}

@@ -3,6 +3,7 @@
 
     export let bind: number;
     export let label: string = "default";
+    export let titleDescription: string = "default";
 
     const dispatch = createEventDispatcher();
 </script>
@@ -12,7 +13,7 @@
     <div class="pillButtonContainer"> 
         <button
             class="left fade"
-            title="Decrement work time"
+            title="Decrement {titleDescription}"
             on:click={() => {
                 dispatch('decrement');
             }}
@@ -20,14 +21,14 @@
         <input
             type="number"
             id="workInput"
-            title="Set work time"
+            title="Set {titleDescription}"
             bind:value={bind}
             min="1"
             step="1"
         />
         <button 
             class="right fade"
-            title="Increment work time"
+            title="Increment {titleDescription}"
             on:click={() => {
                 dispatch('increment');
             }}
