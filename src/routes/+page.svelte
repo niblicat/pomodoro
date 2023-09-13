@@ -10,7 +10,7 @@
     import * as vibrate from './vibrate';
     import PillButton from './pillbutton.svelte'
 
-    const debug: boolean = true;
+    const debug: boolean = false;
 
     let loading: boolean = false;
     let loadingIcon: HTMLElement;
@@ -123,6 +123,7 @@
                         class="fade alt {$timerState === timer.TimerStates.Pomodoro ? "selectedOption" : "unselectedOption"}"
                         id="Pomodoro"
                         title="Pomodoro Timer"
+                        type="button"
                         on:click={() => {
                             timer.switchTimerMode(timer.TimerStates.Pomodoro);
                             vibrate.vibrateAction(vibrate.VibrateType.Standard);
@@ -134,6 +135,7 @@
                         class="fade alt {$timerState === timer.TimerStates.Sage ? "selectedOption" : "unselectedOption"}"
                         id="Sage"
                         title="Descend Timer"
+                        type="button"
                         on:click={() => {
                             timer.switchTimerMode(timer.TimerStates.Sage);
                             vibrate.vibrateAction(vibrate.VibrateType.Standard);
@@ -145,6 +147,7 @@
                         class="fade alt {$timerState === timer.TimerStates.Standard ? "selectedOption" : "unselectedOption"}"
                         id="{(!mobileMode || !debug) ? "Standard" : "StandardMobile"}"
                         title="Standard Timer"
+                        type="button"
                         on:click={() => {
                             timer.switchTimerMode(timer.TimerStates.Standard);
                             vibrate.vibrateAction(vibrate.VibrateType.Standard);
@@ -156,6 +159,7 @@
                         <button
                             class="fade alt unselectedOption"
                             id="Statistics"
+                            type="button"
                             on:click={() => {
                                 currentModePage = ModePage.Stats;
                                 vibrate.vibrateAction(vibrate.VibrateType.Standard);
@@ -252,6 +256,7 @@
                             <div class="optionsButtonsContainer span2">
                                 <button 
                                     class="optionsButton fade bounce alt"
+                                    type="button"
                                     on:click={async () => {
                                         await timer.changeLongSession(pomoLongPhase);
                                         await timer.modifyPomodoroTimes(pomoWork, pomoShort, pomoLong);
@@ -262,6 +267,7 @@
                                 </button>
                                 <button 
                                     class="optionsButton fade bounce alt"
+                                    type="button"
                                     on:click={async () => {
                                         pomoLongPhase = 4;
                                         pomoWork = 25;
@@ -336,6 +342,7 @@
                             <div class="optionsButtonsContainer span2">
                                 <button 
                                     class="optionsButton fade bounce alt"
+                                    type="button"
                                     on:click={async () => {
                                         await timer.modifySageTimes(sageWork, sageBreak, sageDescend);
                                         vibrate.vibrateAction(vibrate.VibrateType.Standard);
@@ -345,6 +352,7 @@
                                 </button>
                                 <button 
                                     class="optionsButton fade bounce alt"
+                                    type="button"
                                     on:click={async () => {
                                         sageWork = 50;
                                         sageBreak = 10;
@@ -441,6 +449,7 @@
                             <div class="optionsButtonsContainer span2">
                                 <button 
                                     class="optionsButton fade bounce alt"
+                                    type="button"
                                     on:click={async () => {
                                         await timer.modifyStandardTimes(hours, minutes, seconds);
                                         vibrate.vibrateAction(vibrate.VibrateType.Standard);
@@ -450,6 +459,7 @@
                                 </button>
                                 <button 
                                     class="optionsButton fade bounce alt"
+                                    type="button"
                                     on:click={async () => {
                                         hours = 0;
                                         minutes = 5
@@ -477,6 +487,7 @@
                         <button
                             id="Settings"
                             class="fade bounce alt"
+                            type="button"
                             on:click={() => {
                                 currentModePage = ModePage.Options;
                                 vibrate.vibrateAction(vibrate.VibrateType.Standard);
@@ -488,6 +499,7 @@
                     <button
                         id="CloseMenu"
                         class="fade bounce alt"
+                        type="button"
                         on:click={() => {
                             closeSettings();
                             vibrate.vibrateAction(vibrate.VibrateType.Standard);
@@ -507,6 +519,7 @@
             <button 
                 class="fade regular {buttonEnabled ? '' : 'disabled'}"
                 id="hanging"
+                type="button"
                 on:click={() => {
                     if (menuVisible) closeSettings();
                     else openSettings();
@@ -536,6 +549,7 @@
             </p>
             <button
             class="bounce fade regular {buttonEnabled ? '' : 'disabled'}"
+            type="button"
                 on:click={() => {
                     if ($timerInProgress) timer.stopTimer();
                     else {
@@ -561,13 +575,14 @@
                 {!$timerInProgress ? 'start' : 'pause'}
             </button>
             <button
-                class="bounce fade regular"
-                on:click={() => {
-                    timer.clearTimer();
-                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                }}
-                title="Clear"
-                id="Clear"
+            class="bounce fade regular"
+            type="button"
+            on:click={() => {
+                timer.clearTimer();
+                vibrate.vibrateAction(vibrate.VibrateType.Standard);
+            }}
+            title="Clear"
+            id="Clear"
             >
                 clear
             </button>
@@ -582,65 +597,73 @@
             <div class="debug">
                 <p>{m.x}, {m.y}</p>
                 <button
-                    on:click={() => {
-                        alert($timerInProgress);
-                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                    }}
+                type="button"
+                on:click={() => {
+                    alert($timerInProgress);
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                }}
                 >
-                    timer in progress: {$timerInProgress}
+                timer in progress: {$timerInProgress}
                 </button>
                 <button
-                    on:click={() => {
-                        alert($timerState.toString());
-                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                    }}
+                type="button"
+                on:click={() => {
+                    alert($timerState.toString());
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                }}
                 >
                     state: {$timerState.toString()}
                 </button>
                 <button
-                    on:click={() => {
-                        alert(innerWidth + 'x' + innerHeight);
-                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                    }}
+                type="button"
+                on:click={() => {
+                    alert(innerWidth + 'x' + innerHeight);
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                }}
                 >
                     dim: {innerWidth + 'x' + innerHeight}
                 </button>
                 <button
-                    on:click={() => {
-                        alert(mobileMode);
-                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                    }}
+                type="button"
+                on:click={() => {
+                    alert(mobileMode);
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                }}
                 >
                     mobileMode: {mobileMode}
                 </button>
                 <button
-                    on:click={() => {
-                        alert(buttonEnabled);
-                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                    }}
+                type="button"
+                on:click={() => {
+                    alert(buttonEnabled);
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                }}
                 >
                     buttonEnabled: {buttonEnabled}
                 </button>
                 <button
-                    on:click={() => {
-                        themes.changeTheme(themes.Themes.Funky);
-                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                    }}
+                type="button"
+                on:click={() => {
+                    themes.changeTheme(themes.Themes.Funky);
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                }}
                 >
                     funkytime
                 </button>
                 <button
-                    on:click={() => {
-                        alert($bell);
-                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                    }}
+                type="button"
+                on:click={() => {
+                    alert($bell);
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                }}
                 >
                     bell: {$bell}
                 </button>
                 <button
-                    on:click={() => {
-                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                    }}
+                type="button"
+                on:click={() => {
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                }}
                 >
                     Vibrate
                 </button>

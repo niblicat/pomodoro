@@ -31,6 +31,7 @@
         <button 
             class="right fade"
             title="Increment {titleDescription}"
+            type="button"
             on:click={() => {
                 dispatch('increment');
             }}
