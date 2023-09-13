@@ -4,37 +4,37 @@
     export let bind: number;
     export let label: string = "default";
     export let titleDescription: string = "default";
-    export let labelFor: string = "";
+    export let id: string = "";
 
     const dispatch = createEventDispatcher();
 </script>
 
 <div class="labelPillBinder">
-    <label for={labelFor}>{label}</label>
+    <label for={id}>{label}</label>
     <div class="pillButtonContainer"> 
         <button
-            class="left fade"
-            title="Decrement {titleDescription}"
-            on:click={() => {
-                dispatch('decrement');
-            }}
+        class="left fade"
+        title="Decrement {titleDescription}"
+        on:click={() => {
+            dispatch('decrement');
+        }}
         />
         <input
-            class="fade"
-            type="number"
-            id="workInput"
-            title="Set {titleDescription}"
-            bind:value={bind}
-            min="1"
-            step="1"
+        class="fade"
+        type="number"
+        id={id}
+        title="Set {titleDescription}"
+        bind:value={bind}
+        min="1"
+        step="1"
         />
         <button 
-            class="right fade"
-            title="Increment {titleDescription}"
-            type="button"
-            on:click={() => {
-                dispatch('increment');
-            }}
+        class="right fade"
+        title="Increment {titleDescription}"
+        type="button"
+        on:click={() => {
+            dispatch('increment');
+        }}
         />
     </div>
 </div>

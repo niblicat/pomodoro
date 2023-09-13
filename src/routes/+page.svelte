@@ -179,7 +179,7 @@
                                     bind={pomoWork}
                                     label="work"
                                     titleDescription="work time"
-                                    labelFor="workInput"
+                                    id="workInput"
                                     --divback={$styles.divback}
                                     --accent={$styles.accent2}
                                     --background="{$styles.altinput}"
@@ -198,7 +198,7 @@
                                     bind={pomoShort}
                                     label="short"
                                     titleDescription="short break time"
-                                    labelFor="shortInput"
+                                    id="shortInput"
                                     --divback={$styles.divback}
                                     --accent={$styles.accent2}
                                     --background="{$styles.altinput}"
@@ -217,7 +217,7 @@
                                     bind={pomoLong}
                                     label="short"
                                     titleDescription="long break time"
-                                    labelFor="longInput"
+                                    id="longInput"
                                     --divback={$styles.divback}
                                     --accent={$styles.accent2}
                                     --background="{$styles.altinput}"
@@ -237,7 +237,7 @@
                                     bind={pomoLongPhase}
                                     label="long-short repetitions"
                                     titleDescription="long-short repetitions"
-                                    labelFor="longSession"
+                                    id="longSession"
                                     --divback={$styles.divback}
                                     --accent={$styles.accent2}
                                     --background="{$styles.altinput}"
@@ -288,7 +288,7 @@
                                     bind={sageWork}
                                     label="work"
                                     titleDescription="work time"
-                                    labelFor="workInput"
+                                    id="workInput"
                                     --divback={$styles.divback}
                                     --accent={$styles.accent2}
                                     --background="{$styles.altinput}"
@@ -306,7 +306,7 @@
                                     bind={sageBreak}
                                     label="break"
                                     titleDescription="break time"
-                                    labelFor="breakInput"
+                                    id="breakInput"
                                     --divback={$styles.divback}
                                     --accent={$styles.accent2}
                                     --background="{$styles.altinput}"
@@ -324,7 +324,7 @@
                                     bind={sageDescend}
                                     label="descend"
                                     titleDescription="descend time"
-                                    labelFor="descendInput"
+                                    id="descendInput"
                                     --divback={$styles.divback}
                                     --accent={$styles.accent2}
                                     --background="{$styles.altinput}"
@@ -370,7 +370,7 @@
                                     bind={hours}
                                     label="hours"
                                     titleDescription="hours"
-                                    labelFor="hourInput"
+                                    id="hourInput"
                                     --divback={$styles.divback}
                                     --accent={$styles.accent2}
                                     --background="{$styles.altinput}"
@@ -388,7 +388,7 @@
                                     bind={minutes}
                                     label="minutes"
                                     titleDescription="minutes"
-                                    labelFor="minuteInput"
+                                    id="minuteInput"
                                     --divback={$styles.divback}
                                     --accent={$styles.accent2}
                                     --background="{$styles.altinput}"
@@ -408,7 +408,7 @@
                                         bind={seconds}
                                         label="seconds"
                                         titleDescription="seconds"
-                                        labelFor="secondInput"
+                                        id="secondInput"
                                         --divback={$styles.divback}
                                         --accent={$styles.accent2}
                                         --background="{$styles.altinput}"
@@ -430,7 +430,7 @@
                                         bind={seconds}
                                         label="seconds"
                                         titleDescription="seconds"
-                                        labelFor="secondInput"
+                                        id="secondInput"
                                         --divback={$styles.divback}
                                         --accent={$styles.accent2}
                                         --background="{$styles.altinput}"
