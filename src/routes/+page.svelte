@@ -37,6 +37,7 @@
         currentModePage = ModePage.Options;
         document.body.addEventListener('keydown', handleKeyDown);
         timer.setTime(timer.convertTimeToDecisecondsSync(0, pomoWork, 0));
+        openSettings();
 
         storeLocalAudio(Sounds.Squeaky);
 
@@ -99,7 +100,7 @@
         {$timerTitle}
     </title>
 </svelte:head>
-<html lang="en">
+<html class="{$styles.hasgradient === false ? "nogradient" : "gradient"}" lang="en">
 <body style={cssVarStyles}>
 <div class="background">
     {#if $bell}
@@ -112,7 +113,11 @@
             <source src={bellSound} type="audio/mp3">
         </audio>
     {/if}
-    <div class="menuWrapper" bind:this={menu} transition:slide|global>
+    <div
+    class="menuWrapper"
+    bind:this={menu}
+    transition:slide|global
+    >
         <div 
             class="menu {mobileMode ? "mobile" : ""}"
             id={menuVisible ? "visible" : "invisible"}
@@ -692,10 +697,15 @@
 
 <style>
     html, body {
-        background-image: linear-gradient(to bottom right, var(--background), var(--accent2));
         margin: 0px;
         padding: 0px;
         --fontsize: 20px;
+    }
+    .gradient {
+        background-image: linear-gradient(var(--gradientdirection), var(--background), var(--accent2));
+    }
+    .nogradient {
+        background-color: var(--background);
     }
 
     :global(html) {
@@ -850,6 +860,7 @@
         border-radius: 25px;
         background-color: var(--divback);
         border: 2px solid var(--neutralbright);
+        
         margin: auto;
         font-size: 20px;
     }
@@ -866,6 +877,7 @@
         font-size: 25px;
         grid-row: 2;
         grid-column: span 2;
+        color: var(--title, #000)
     }
 
     .timer .timerSubtitle {
@@ -873,6 +885,7 @@
         font-size: 16px;
         grid-row: 3;
         grid-column: span 2;
+        color: var(--title, #000)
     }
 
     .timer .numbersTime {
@@ -880,6 +893,7 @@
         grid-row: 4;
         grid-column: span 2;
         font-family: ExoExtraLight, Arial, Helvetica, sans-serif;
+        color: var(--title, #000)
     }
 
     .timer button {

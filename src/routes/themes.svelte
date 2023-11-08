@@ -10,18 +10,22 @@
         complement: string,
         neutraldark: string,
         neutralbright: string,
+        title?: string,
         text: string,
         neutral: string,
         input: string,
         altinput: string,
-        alttext: string
-    }
+        alttext: string,
+        hasgradient?: boolean,
+        gradientdirection?: string
+    };
 
     export const Themes = {
         Classic: Symbol('Classic'),
         Funky: Symbol('Funky'),
-        Aurora: Symbol('Aurora')
-    }
+        Aurora: Symbol('Aurora'),
+        Terminal: Symbol('Terminal')
+    };
 
     export let styles: Writable<Theme> = writable({
         background: '#6E37A6',
@@ -32,12 +36,14 @@
         complement: '#77F280',
         neutraldark: '#9372B5',
         neutralbright: '#022859',
+        title: '#fff',
         text: '#fff',
         neutral: '#C599F2',
         input: '#022859',
         altinput: '#04BF9D',
-        alttext: '#F7EAEF'
-    })
+        alttext: '#000',
+        gradientdirection: 'to bottom right'
+    });
 
     export function changeTheme(newTheme: Symbol) {
         switch(newTheme) {
@@ -55,9 +61,10 @@
                     neutral: '#e3eaea',
                     input: '#feffff',
                     altinput: '#feffff',
-                    alttext: '#000'
-                })
-                break;  
+                    alttext: '#000',
+                    gradientdirection: 'to bottom right'
+                });
+                break;
             case Themes.Funky:
                 styles.set({
                     background: '#510d43',
@@ -72,9 +79,10 @@
                     neutral: '#555',
                     input: '#fff',
                     altinput: '#870f0f',
-                    alttext: '#fff'
-                })
-                break;  
+                    alttext: '#fff',
+                    gradientdirection: 'to bottom right'
+                });
+                break;
             case Themes.Aurora:
                 styles.set({
                     background: '#6E37A6',
@@ -89,10 +97,30 @@
                     neutral: '#C599F2',
                     input: '#022859',
                     altinput: '#04BF9D',
-                    alttext: '#F7EAEF'
-                })
-                break;  
+                    alttext: '#000',
+                    gradientdirection: 'to bottom right'
+                });
+                break;
+            case Themes.Terminal:
+                styles.set({
+                    background: '#000',
+                    divback: '#000',
+                    accent1: '#00ff00',
+                    accent2: '#00ff00',
+                    contrast: '#000',
+                    complement: '#00ff00',
+                    neutraldark: '#000',
+                    neutralbright: '#00ff00',
+                    title: '#00ff00',
+                    text: '#000',
+                    neutral: '#00ff00',
+                    input: '#00ff00',
+                    altinput: '#00ff00',
+                    alttext: '#000',
+                    hasgradient: false,
+                });
+                break;
         }
-    }
+    };
 
 </script>
