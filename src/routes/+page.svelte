@@ -721,9 +721,11 @@
                 --text={$styles.alttext}
                 on:decrement={() => {
                     alert('minus minus!');
+                    boundValue--;
                 }}
                 on:increment={() => {
                     alert('plus plus!');
+                    boundValue++;
                 }}
                 />
             </div>
