@@ -738,19 +738,16 @@
     html, body {
         margin: 0px;
         padding: 0px;
-        
-        --fontsize: 20px;
-    }
-    body {
         background-color: var(--background);
         background-image: linear-gradient(var(--gradientdirection, 'to bottom right'), var(--background), var(--accent2));
+        --fontsize: 20px;
     }
 
     .nogradient {
         background-image: none;
     }
 
-    :global(html) {
+    :global(html), :global(body) {
         margin: 0px;
         padding: 0px;
     }
