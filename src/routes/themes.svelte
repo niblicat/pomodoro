@@ -57,6 +57,7 @@
                     complement: '#FF14B0',
                     neutraldark: '#bcc6c0',
                     neutralbright: '#feffff',
+                    title: '#000',
                     text: '#000',
                     neutral: '#e3eaea',
                     input: '#feffff',
@@ -75,6 +76,7 @@
                     complement: '#219E00',
                     neutraldark: '#222',
                     neutralbright: '#fff',
+                    title: '#000',
                     text: '#1A0415',
                     neutral: '#555',
                     input: '#fff',
@@ -117,7 +119,7 @@
                     input: '#00ff00',
                     altinput: '#00ff00',
                     alttext: '#000',
-                    hasgradient: false,
+                    hasgradient: false
                 });
                 break;
         }

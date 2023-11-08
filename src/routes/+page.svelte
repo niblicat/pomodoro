@@ -10,7 +10,7 @@
     import * as vibrate from './vibrate';
     import PillButton from './pillbutton.svelte'
 
-    const debug: boolean = false;
+    let debug: boolean = false;
 
     let loading: boolean = false;
     let loadingIcon: HTMLElement;
@@ -37,7 +37,6 @@
         currentModePage = ModePage.Options;
         document.body.addEventListener('keydown', handleKeyDown);
         timer.setTime(timer.convertTimeToDecisecondsSync(0, pomoWork, 0));
-        openSettings();
 
         storeLocalAudio(Sounds.Squeaky);
 
@@ -90,6 +89,19 @@
         }, 250);
     }
 
+    let debugCount = 0;
+    function triggerDebug() {
+        debugCount++;
+        if (debugCount > 7) {
+            debug = true;
+        }
+        if (debugCount <= 0) {
+            setTimeout(() => {
+                debugCount = 0;
+            }, 1000);
+        }
+    }
+
     let boundValue = 3;
 </script>
 
@@ -100,8 +112,8 @@
         {$timerTitle}
     </title>
 </svelte:head>
-<html class="{$styles.hasgradient === false ? "nogradient" : "gradient"}" lang="en">
-<body style={cssVarStyles}>
+<html lang="en">
+<body class={$styles.hasgradient === false ? "nogradient" : ""} style={cssVarStyles}>
 <div class="background">
     {#if $bell}
         <audio 
@@ -585,6 +597,7 @@
             on:click={() => {
                 timer.clearTimer();
                 vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                triggerDebug();
             }}
             title="Clear"
             id="Clear"
@@ -658,6 +671,24 @@
                 <button
                 type="button"
                 on:click={() => {
+                    themes.changeTheme(themes.Themes.Terminal);
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                }}
+                >
+                    digital
+                </button>
+                <button
+                type="button"
+                on:click={() => {
+                    themes.changeTheme(themes.Themes.Classic);
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                }}
+                >
+                    classic
+                </button>
+                <button
+                type="button"
+                on:click={() => {
                     alert($bell);
                     vibrate.vibrateAction(vibrate.VibrateType.Standard);
                 }}
@@ -671,6 +702,14 @@
                 }}
                 >
                     Vibrate
+                </button>
+                <button
+                type="button"
+                on:click={() => {
+                    debug = false;
+                }}
+                >
+                    Disable Debug
                 </button>
                 <PillButton
                 bind={boundValue}
@@ -699,13 +738,16 @@
     html, body {
         margin: 0px;
         padding: 0px;
+        
         --fontsize: 20px;
     }
-    .gradient {
-        background-image: linear-gradient(var(--gradientdirection), var(--background), var(--accent2));
-    }
-    .nogradient {
+    body {
         background-color: var(--background);
+        background-image: linear-gradient(var(--gradientdirection, 'to bottom right'), var(--background), var(--accent2));
+    }
+
+    .nogradient {
+        background-image: none;
     }
 
     :global(html) {
