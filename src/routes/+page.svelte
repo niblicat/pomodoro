@@ -92,13 +92,13 @@
     let debugCount = 0;
     function triggerDebug() {
         debugCount++;
-        if (debugCount > 7) {
-            debug = true;
-        }
-        if (debugCount <= 0) {
+        if (debugCount <= 1) {
             setTimeout(() => {
                 debugCount = 0;
             }, 1000);
+        }
+        if (debugCount > 7) {
+            debug = true;
         }
     }
 
