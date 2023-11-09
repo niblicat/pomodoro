@@ -707,6 +707,7 @@
                 type="button"
                 on:click={() => {
                     debug = false;
+                    debugCount = 0;
                 }}
                 >
                     Disable Debug
