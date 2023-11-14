@@ -193,7 +193,7 @@
                         {#if $timerState === timer.TimerStates.Pomodoro}
                             <div class="optionsInputsContainer span2 alttext {mobileMode ? "mobile" : ""}">
                                 <PillButton
-                                    bind={pomoWork}
+                                    bind:bound={pomoWork}
                                     label="work"
                                     titleDescription="work time"
                                     id="workInput"
@@ -212,7 +212,7 @@
                                 />
 
                                 <PillButton
-                                    bind={pomoShort}
+                                    bind:bound={pomoShort}
                                     label="short"
                                     titleDescription="short break time"
                                     id="shortInput"
@@ -231,7 +231,7 @@
                                 />
 
                                 <PillButton
-                                    bind={pomoLong}
+                                    bind:bound={pomoLong}
                                     label="short"
                                     titleDescription="long break time"
                                     id="longInput"
@@ -251,7 +251,7 @@
                             </div>
                             <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
                                 <PillButton
-                                    bind={pomoLongPhase}
+                                    bind:bound={pomoLongPhase}
                                     label="long-short repetitions"
                                     titleDescription="long-short repetitions"
                                     id="longSession"
@@ -302,7 +302,7 @@
                         {:else if $timerState === timer.TimerStates.Sage}
                             <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
                                 <PillButton
-                                    bind={sageWork}
+                                    bind:bound={sageWork}
                                     label="work"
                                     titleDescription="work time"
                                     id="workInput"
@@ -320,7 +320,7 @@
                                     }}
                                 />
                                 <PillButton
-                                    bind={sageBreak}
+                                    bind:bound={sageBreak}
                                     label="break"
                                     titleDescription="break time"
                                     id="breakInput"
@@ -338,7 +338,7 @@
                                     }}
                                 />
                                 <PillButton
-                                    bind={sageDescend}
+                                    bind:bound={sageDescend}
                                     label="descend"
                                     titleDescription="descend time"
                                     id="descendInput"
@@ -384,7 +384,7 @@
                         {:else if $timerState === timer.TimerStates.Standard}
                             <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
                                 <PillButton
-                                    bind={hours}
+                                    bind:bound={hours}
                                     label="hours"
                                     titleDescription="hours"
                                     id="hourInput"
@@ -402,7 +402,7 @@
                                     }}
                                 />
                                 <PillButton
-                                    bind={minutes}
+                                    bind:bound={minutes}
                                     label="minutes"
                                     titleDescription="minutes"
                                     id="minuteInput"
@@ -422,7 +422,7 @@
                                 
                                 {#if !extraThin}
                                     <PillButton
-                                        bind={seconds}
+                                        bind:bound={seconds}
                                         label="seconds"
                                         titleDescription="seconds"
                                         id="secondInput"
@@ -444,7 +444,7 @@
                             {#if extraThin}
                                 <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
                                     <PillButton
-                                        bind={seconds}
+                                        bind:bound={seconds}
                                         label="seconds"
                                         titleDescription="seconds"
                                         id="secondInput"
@@ -713,7 +713,7 @@
                     Disable Debug
                 </button>
                 <PillButton
-                bind={boundValue}
+                bind:bound={boundValue}
                 label="testing"
                 titleDescription="test time"
                 --divback={$styles.divback}
@@ -729,6 +729,7 @@
                     boundValue++;
                 }}
                 />
+                {boundValue}
             </div>
         {/if}
     </div>

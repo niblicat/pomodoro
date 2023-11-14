@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { createEventDispatcher } from "svelte";
 
-    export let bind: number;
+    export let bound: number;
     export let label: string = "default";
     export let titleDescription: string = "default";
     export let id: string = "";
@@ -27,7 +27,7 @@
         type="number"
         id={id}
         title="Set {titleDescription}"
-        bind:value={bind}
+        bind:value={bound}
         min={min}
         max={max}
         step={step}
