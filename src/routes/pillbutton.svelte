@@ -5,6 +5,9 @@
     export let label: string = "default";
     export let titleDescription: string = "default";
     export let id: string = "";
+    export let min: number = 0;
+    export let max: number = Infinity;
+    export let step: number = 1;
 
     const dispatch = createEventDispatcher();
 </script>
@@ -25,8 +28,9 @@
         id={id}
         title="Set {titleDescription}"
         bind:value={bind}
-        min="1"
-        step="1"
+        min={min}
+        max={max}
+        step={step}
         />
         <button 
         class="right fade"
