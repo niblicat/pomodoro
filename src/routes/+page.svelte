@@ -9,6 +9,7 @@
     import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
     import * as vibrate from './vibrate';
     import PillButton from './pillbutton.svelte'
+    import { ModePage } from './modepage';
 
     let debug: boolean = false;
 
@@ -20,11 +21,6 @@
     
     let innerWidth: number;
     let innerHeight: number;
-
-    const ModePage = {
-        Options: Symbol('Options'),
-        Stats: Symbol('Stats'),
-    }
 
     let currentModePage: Symbol;
 
