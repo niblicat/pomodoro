@@ -18,6 +18,16 @@
     export let menuVisible: boolean = false;
     export let currentModePage: Symbol = ModePage.Options;
     export let debug: boolean = false;
+    export let hours: number = 0;
+    export let minutes: number = 5;
+    export let seconds: number = 0;
+    export let pomoWork: number = 25;
+    export let pomoShort: number = 5;
+    export let pomoLong: number = 15;
+    export let pomoLongPhase: number = 4;
+    export let sageWork: number = 50;
+    export let sageBreak: number = 10;
+    export let sageDescend: number = 10;
 
     const dispatch = createEventDispatcher();
 </script>
@@ -312,26 +322,24 @@
                             }}
                         />
                         
-                        {#if !extraThin}
-                            <PillButton
-                                bind:bound={seconds}
-                                label="seconds"
-                                titleDescription="seconds"
-                                id="secondInput"
-                                --divback={$styles.divback}
-                                --accent={$styles.accent2}
-                                --background="{$styles.altinput}"
-                                --text={$styles.alttext}
-                                on:decrement={() => {
-                                    if (seconds > 0) seconds--;
-                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                }}
-                                on:increment={() => {
-                                    if (seconds < 59) seconds++;
-                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                }}
-                            />
-                        {/if}
+                        <PillButton
+                            bind:bound={seconds}
+                            label="seconds"
+                            titleDescription="seconds"
+                            id="secondInput"
+                            --divback={$styles.divback}
+                            --accent={$styles.accent2}
+                            --background="{$styles.altinput}"
+                            --text={$styles.alttext}
+                            on:decrement={() => {
+                                if (seconds > 0) seconds--;
+                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                            }}
+                            on:increment={() => {
+                                if (seconds < 59) seconds++;
+                                vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                            }}
+                        />
                     </div>
                     {#if extraThin}
                         <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">

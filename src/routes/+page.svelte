@@ -68,7 +68,6 @@
     let sageDescend: number = 10;
     
     $: mobileMode = innerWidth <= 720;
-    $: extraThin = innerWidth <= 415;
     $: landscapeMode = innerHeight <= 500;
 
     $: cssVarStyles = Object.entries($styles)
@@ -187,88 +186,84 @@
                 <div class="modesOptionsPadding {mobileMode ? "span2" : ""} {debug ? "db2" : ""}">
                     <div class="modesOptions {mobileMode ? "mobile" : ""}">
                         {#if $timerState === timer.TimerStates.Pomodoro}
-                            <div class="optionsInputsContainer span2 alttext {mobileMode ? "mobile" : ""}">
-                                <PillButton
-                                    bind:bound={pomoWork}
-                                    label="work"
-                                    titleDescription="work time"
-                                    id="workInput"
-                                    --divback={$styles.divback}
-                                    --accent={$styles.accent2}
-                                    --background="{$styles.altinput}"
-                                    --text={$styles.alttext}
-                                    on:decrement={() => {
-                                        if (pomoWork > 1) pomoWork--;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                    on:increment={() => {
-                                        pomoWork++;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                />
+                            <PillButton
+                                bind:bound={pomoWork}
+                                label="work"
+                                titleDescription="work time"
+                                id="workInput"
+                                --divback={$styles.divback}
+                                --accent={$styles.accent2}
+                                --background="{$styles.altinput}"
+                                --text={$styles.alttext}
+                                on:decrement={() => {
+                                    if (pomoWork > 1) pomoWork--;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                                on:increment={() => {
+                                    pomoWork++;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                            />
 
-                                <PillButton
-                                    bind:bound={pomoShort}
-                                    label="short"
-                                    titleDescription="short break time"
-                                    id="shortInput"
-                                    --divback={$styles.divback}
-                                    --accent={$styles.accent2}
-                                    --background="{$styles.altinput}"
-                                    --text={$styles.alttext}
-                                    on:decrement={() => {
-                                        if (pomoShort > 0) pomoShort--;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                    on:increment={() => {
-                                        pomoShort++;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                />
+                            <PillButton
+                                bind:bound={pomoShort}
+                                label="short"
+                                titleDescription="short break time"
+                                id="shortInput"
+                                --divback={$styles.divback}
+                                --accent={$styles.accent2}
+                                --background="{$styles.altinput}"
+                                --text={$styles.alttext}
+                                on:decrement={() => {
+                                    if (pomoShort > 0) pomoShort--;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                                on:increment={() => {
+                                    pomoShort++;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                            />
 
-                                <PillButton
-                                    bind:bound={pomoLong}
-                                    label="short"
-                                    titleDescription="long break time"
-                                    id="longInput"
-                                    --divback={$styles.divback}
-                                    --accent={$styles.accent2}
-                                    --background="{$styles.altinput}"
-                                    --text={$styles.alttext}
-                                    on:decrement={() => {
-                                        if (pomoLong > 0) pomoLong--;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                    on:increment={() => {
-                                        pomoLong++;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                />
-                            </div>
-                            <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
-                                <PillButton
-                                    bind:bound={pomoLongPhase}
-                                    label="long-short repetitions"
-                                    titleDescription="long-short repetitions"
-                                    id="longSession"
-                                    --divback={$styles.divback}
-                                    --accent={$styles.accent2}
-                                    --background="{$styles.altinput}"
-                                    --text={$styles.alttext}
-                                    on:decrement={() => {
-                                        if (pomoLongPhase > 0) pomoLongPhase--;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                    on:increment={() => {
-                                        pomoLongPhase++;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                />
-                            </div>
+                            <PillButton
+                                bind:bound={pomoLong}
+                                label="short"
+                                titleDescription="long break time"
+                                id="longInput"
+                                --divback={$styles.divback}
+                                --accent={$styles.accent2}
+                                --background="{$styles.altinput}"
+                                --text={$styles.alttext}
+                                on:decrement={() => {
+                                    if (pomoLong > 0) pomoLong--;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                                on:increment={() => {
+                                    pomoLong++;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                            />
+                            <PillButton
+                                bind:bound={pomoLongPhase}
+                                label="long-short repetitions"
+                                titleDescription="long-short repetitions"
+                                id="longSession"
+                                --divback={$styles.divback}
+                                --accent={$styles.accent2}
+                                --background="{$styles.altinput}"
+                                --text={$styles.alttext}
+                                on:decrement={() => {
+                                    if (pomoLongPhase > 0) pomoLongPhase--;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                                on:increment={() => {
+                                    pomoLongPhase++;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                            />
 
                             <div class="optionsButtonsContainer span2">
                                 <button 
-                                    class="optionsButton fade bounce alt"
+                                    class="fade bounce alt"
                                     type="button"
                                     on:click={async () => {
                                         await timer.changeLongSession(pomoLongPhase);
@@ -279,7 +274,7 @@
                                     set times
                                 </button>
                                 <button 
-                                    class="optionsButton fade bounce alt"
+                                    class="fade bounce alt"
                                     type="button"
                                     on:click={async () => {
                                         pomoLongPhase = 4;
@@ -296,65 +291,64 @@
                             </div>
 
                         {:else if $timerState === timer.TimerStates.Sage}
-                            <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
-                                <PillButton
-                                    bind:bound={sageWork}
-                                    label="work"
-                                    titleDescription="work time"
-                                    id="workInput"
-                                    --divback={$styles.divback}
-                                    --accent={$styles.accent2}
-                                    --background="{$styles.altinput}"
-                                    --text={$styles.alttext}
-                                    on:decrement={() => {
-                                        if (sageWork > 1) sageWork--;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                    on:increment={() => {
-                                        sageWork++;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                />
-                                <PillButton
-                                    bind:bound={sageBreak}
-                                    label="break"
-                                    titleDescription="break time"
-                                    id="breakInput"
-                                    --divback={$styles.divback}
-                                    --accent={$styles.accent2}
-                                    --background="{$styles.altinput}"
-                                    --text={$styles.alttext}
-                                    on:decrement={() => {
-                                        if (sageBreak > 1) sageBreak--;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                    on:increment={() => {
-                                        sageBreak++;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                />
-                                <PillButton
-                                    bind:bound={sageDescend}
-                                    label="descend"
-                                    titleDescription="descend time"
-                                    id="descendInput"
-                                    --divback={$styles.divback}
-                                    --accent={$styles.accent2}
-                                    --background="{$styles.altinput}"
-                                    --text={$styles.alttext}
-                                    on:decrement={() => {
-                                        if (sageDescend > 0) sageDescend--;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                    on:increment={() => {
-                                        sageDescend++;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                />
-                            </div>
+                            <PillButton
+                                bind:bound={sageWork}
+                                label="work"
+                                titleDescription="work time"
+                                id="workInput"
+                                --divback={$styles.divback}
+                                --accent={$styles.accent2}
+                                --background="{$styles.altinput}"
+                                --text={$styles.alttext}
+                                on:decrement={() => {
+                                    if (sageWork > 1) sageWork--;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                                on:increment={() => {
+                                    sageWork++;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                            />
+                            <PillButton
+                                bind:bound={sageBreak}
+                                label="break"
+                                titleDescription="break time"
+                                id="breakInput"
+                                --divback={$styles.divback}
+                                --accent={$styles.accent2}
+                                --background="{$styles.altinput}"
+                                --text={$styles.alttext}
+                                on:decrement={() => {
+                                    if (sageBreak > 1) sageBreak--;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                                on:increment={() => {
+                                    sageBreak++;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                            />
+                            <PillButton
+                                bind:bound={sageDescend}
+                                label="descend"
+                                titleDescription="descend time"
+                                id="descendInput"
+                                --divback={$styles.divback}
+                                --accent={$styles.accent2}
+                                --background="{$styles.altinput}"
+                                --text={$styles.alttext}
+                                on:decrement={() => {
+                                    if (sageDescend > 0) sageDescend--;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                                on:increment={() => {
+                                    sageDescend++;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                            />
+
                             <div class="optionsButtonsContainer span2">
                                 <button 
-                                    class="optionsButton fade bounce alt"
+                                    class="fade bounce alt"
                                     type="button"
                                     on:click={async () => {
                                         await timer.modifySageTimes(sageWork, sageBreak, sageDescend);
@@ -364,7 +358,7 @@
                                     set times
                                 </button>
                                 <button 
-                                    class="optionsButton fade bounce alt"
+                                    class="fade bounce alt"
                                     type="button"
                                     on:click={async () => {
                                         sageWork = 50;
@@ -378,90 +372,65 @@
                                 </button>
                             </div>
                         {:else if $timerState === timer.TimerStates.Standard}
-                            <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
-                                <PillButton
-                                    bind:bound={hours}
-                                    label="hours"
-                                    titleDescription="hours"
-                                    id="hourInput"
-                                    --divback={$styles.divback}
-                                    --accent={$styles.accent2}
-                                    --background="{$styles.altinput}"
-                                    --text={$styles.alttext}
-                                    on:decrement={() => {
-                                        if (hours > 0) hours--;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                    on:increment={() => {
-                                        hours++;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                />
-                                <PillButton
-                                    bind:bound={minutes}
-                                    label="minutes"
-                                    titleDescription="minutes"
-                                    id="minuteInput"
-                                    --divback={$styles.divback}
-                                    --accent={$styles.accent2}
-                                    --background="{$styles.altinput}"
-                                    --text={$styles.alttext}
-                                    on:decrement={() => {
-                                        if (minutes > 0) minutes--;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                    on:increment={() => {
-                                        if (minutes < 59) minutes++;
-                                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                    }}
-                                />
-                                
-                                {#if !extraThin}
-                                    <PillButton
-                                        bind:bound={seconds}
-                                        label="seconds"
-                                        titleDescription="seconds"
-                                        id="secondInput"
-                                        --divback={$styles.divback}
-                                        --accent={$styles.accent2}
-                                        --background="{$styles.altinput}"
-                                        --text={$styles.alttext}
-                                        on:decrement={() => {
-                                            if (seconds > 0) seconds--;
-                                            vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                        }}
-                                        on:increment={() => {
-                                            if (seconds < 59) seconds++;
-                                            vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                        }}
-                                    />
-                                {/if}
-                            </div>
-                            {#if extraThin}
-                                <div class="span2 optionsInputsContainer alttext {mobileMode ? "mobile" : ""}">
-                                    <PillButton
-                                        bind:bound={seconds}
-                                        label="seconds"
-                                        titleDescription="seconds"
-                                        id="secondInput"
-                                        --divback={$styles.divback}
-                                        --accent={$styles.accent2}
-                                        --background="{$styles.altinput}"
-                                        --text={$styles.alttext}
-                                        on:decrement={() => {
-                                            if (seconds > 0) seconds--;
-                                            vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                        }}
-                                        on:increment={() => {
-                                            if (seconds < 59) seconds++;
-                                            vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                                        }}
-                                    />
-                                </div>
-                            {/if}
+                            <PillButton
+                                bind:bound={hours}
+                                label="hours"
+                                titleDescription="hours"
+                                id="hourInput"
+                                --divback={$styles.divback}
+                                --accent={$styles.accent2}
+                                --background="{$styles.altinput}"
+                                --text={$styles.alttext}
+                                on:decrement={() => {
+                                    if (hours > 0) hours--;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                                on:increment={() => {
+                                    hours++;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                            />
+                            <PillButton
+                                bind:bound={minutes}
+                                label="minutes"
+                                titleDescription="minutes"
+                                id="minuteInput"
+                                --divback={$styles.divback}
+                                --accent={$styles.accent2}
+                                --background="{$styles.altinput}"
+                                --text={$styles.alttext}
+                                on:decrement={() => {
+                                    if (minutes > 0) minutes--;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                                on:increment={() => {
+                                    if (minutes < 59) minutes++;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                            />
+                            
+                            <PillButton
+                                bind:bound={seconds}
+                                label="seconds"
+                                titleDescription="seconds"
+                                id="secondInput"
+                                --divback={$styles.divback}
+                                --accent={$styles.accent2}
+                                --background="{$styles.altinput}"
+                                --text={$styles.alttext}
+                                on:decrement={() => {
+                                    if (seconds > 0) seconds--;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                                on:increment={() => {
+                                    if (seconds < 59) seconds++;
+                                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                                }}
+                            />
+
                             <div class="optionsButtonsContainer span2">
                                 <button 
-                                    class="optionsButton fade bounce alt"
+                                    class="fade bounce alt"
                                     type="button"
                                     on:click={async () => {
                                         await timer.modifyStandardTimes(hours, minutes, seconds);
@@ -471,7 +440,7 @@
                                     set times
                                 </button>
                                 <button 
-                                    class="optionsButton fade bounce alt"
+                                    class="fade bounce alt"
                                     type="button"
                                     on:click={async () => {
                                         hours = 0;
@@ -783,9 +752,9 @@
         color: var(--text);
     }
     
-    .alttext/*, .alttext > **/ {
+    /* .alttext, .alttext > * {
         color: var(--alttext);
-    }
+    } */
 
     .alt/*, .alt > **/ {
         color: var(--alttext);
@@ -851,10 +820,6 @@
         -o-transform: scale(0.9);
         -ms-transform: scale(0.9);
     }
-
-    /* input {
-        color: var(--neutralheavy)
-    } */
 
     .center {
         display: flex;
@@ -961,6 +926,7 @@
         width: 100%;
         height: 100%;
         background-image: linear-gradient(to bottom, var(--accent1), var(--neutralbright));
+        color: var(--alttext);
         overflow: auto;
         display: grid;
         grid-auto-flow: column;
@@ -1113,12 +1079,9 @@
     .modesOptions {
         background-color: var(--altinput);
         border: 2px solid var(--divback);
-        display: grid;
-        grid-template: 1fr 1fr 1fr 1fr / 1fr 1fr;
-        grid-auto-flow: column;
-        justify-content: center;
-        align-items: center;
-        overflow: auto;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-around;
         border-radius: 0px 25px 25px 25px;
         height: 100%;
         width: 100%;
@@ -1132,17 +1095,15 @@
         font-size: 16px;
     }
 
-    button.optionsButton {
-        min-width: 120px;
-        width: 100%;
-        margin-left: 2vw;
-        margin-right: 2vw;
+    .optionsButtonsContainer {
+        justify-content: space-around;
+        display: flex;
+        height: 32px;
+        flex-basis: 100%;
     }
 
-    .optionsInputsContainer {
-        display: flex;
-        align-items: center;
-        justify-content: space-around;
+    .optionsButtonsContainer button {
+        width: 45%;
     }
 
     .close {
@@ -1155,12 +1116,6 @@
 
     .span2 {
         grid-column: span 2;
-    }
-
-    .optionsButtonsContainer {
-        display: flex;
-        justify-content: space-around;
-        box-sizing: border-box;
     }
 
     #invisible {
