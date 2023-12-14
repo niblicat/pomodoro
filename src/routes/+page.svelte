@@ -102,8 +102,7 @@
 
 <svelte:window bind:innerWidth bind:innerHeight />
 <svelte:head>
-    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/>
-    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/joszika" type="text/css"/>
+    <link rel="stylesheet" media="screen" href="fonts/fonts.css" type="text/css"/>
     <title>
         {$timerTitle}
     </title>
@@ -535,10 +534,10 @@
     }
 
     .timer .numbersTime {
-        font-size: 56px;
+        font-size: 64px;
         grid-row: 4;
         grid-column: span 2;
-        font-family: JozsikaRegular, Arial, Helvetica, sans-serif;
+        font-family: MonofontoRegular, Arial, Helvetica, sans-serif;
         color: var(--title, #000);
     }
 
