@@ -3,7 +3,6 @@
     import { onMount } from 'svelte';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgress, timerState, bell, timerTitle, timerSubtitle } from './timer.svelte';
-    import ImageSVG from './images.svelte';
     import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
     import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
@@ -103,7 +102,8 @@
 
 <svelte:window bind:innerWidth bind:innerHeight />
 <svelte:head>
-    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/> 
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/exo-2-new" type="text/css"/>
+    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/joszika" type="text/css"/>
     <title>
         {$timerTitle}
     </title>
@@ -164,6 +164,7 @@
             </button>
         </div>
     </div>
+
     <div class="wrapper center {landscapeMode ? "landscape" : ""}">
         <div class="timer center regulartext">
             <div class="em1"/>
@@ -227,6 +228,7 @@
             class="center"
             bind:this={loadingIcon}
         />
+
         {#if debug}
             <div class="debug">
                 <p>{m.x}, {m.y}</p>
@@ -533,11 +535,11 @@
     }
 
     .timer .numbersTime {
-        font-size: 48px;
+        font-size: 56px;
         grid-row: 4;
         grid-column: span 2;
-        font-family: ExoExtraLight, Arial, Helvetica, sans-serif;
-        color: var(--title, #000)
+        font-family: JozsikaRegular, Arial, Helvetica, sans-serif;
+        color: var(--title, #000);
     }
 
     .timer button {
