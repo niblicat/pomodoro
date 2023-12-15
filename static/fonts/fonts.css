@@ -1,0 +1,14 @@
+@font-face {
+    font-family: 'ExoRegular';
+    src: url('./ExoRegular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+@font-face {
+    font-family: 'MonofontoRegular';
+    src: url("./monofonto.otf") format("opentype");
+    font-style: bold;
+    font-weight: 600;
+}

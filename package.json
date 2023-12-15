@@ -1,6 +1,6 @@
 {
 	"name": "pomodoro",
-	"version": "0.6",
+	"version": "0.7",
 	"private": true,
 	"scripts": {
 		"dev": "vite dev --host --port 5173",
@@ -20,6 +20,7 @@
 		"eslint": "^8.28.0",
 		"eslint-config-prettier": "^8.5.0",
 		"eslint-plugin-svelte": "^2.30.0",
+		"postcss": "^8.4.32",
 		"prettier": "^2.8.0",
 		"prettier-plugin-svelte": "^2.10.1",
 		"svelte": "^4.0.0",

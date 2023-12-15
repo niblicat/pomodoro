@@ -9,3 +9,6 @@ This frontloaded in work timer pushes you to work hard at the beginning, but giv
 
 ## Standard Timer
 This timer is just a regular timer in which you can modify the hours, minutes, and seconds.
+
+## Try It Out
+[Try out the latest version of the timer](https://pomodoro-timer-72366.web.app/).

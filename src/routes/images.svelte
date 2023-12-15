@@ -1,18 +1,21 @@
 <script lang="ts">
     // types: SettingsIcon, CloseIcon
     export let type: string = 'default';
-    export let colour: string = '#000';
-
-    let styles = {
-        type: type,
-        colour: colour
-    }
+    export let colour: string = '#FF0000';
+    export let colour1: string = '#FFFF00';
+    export let colour2: string = '#00FF00';
+    export let colour3: string = '#00FFFF';
+    export let colour4: string = '#0000FF';
 
     $: cssVarStyles = '--colour:' + colour + ';'
+                    + '--colour1:' + colour1 + ';'
+                    + '--colour2:' + colour2 + ';'
+                    + '--colour3:' + colour3 + ';'
+                    + '--colour4:' + colour4 + ';';
 </script>
 
-<svg id={type} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90" style={cssVarStyles}>
-    {#if type === 'SettingsIcon'}
+{#if type === 'SettingsIcon'}
+    <svg id={type} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90" style={cssVarStyles}>
         <g id="menu">
             <line class="cls-1" x1="24" y1="24" x2="84" y2="24"/>
             <line class="cls-1" x1="24" y1="44" x2="84" y2="44"/>
@@ -20,12 +23,27 @@
             <line class="cls-1" x1="24" y1="64" x2="84" y2="64"/>
             <path class="cls-1" d="m4,4v55c0,13.81,11.19,25,25,25h55"/>
         </g>
-    {:else if type === 'CloseIcon'}
+    </svg>
+{:else if type === 'CloseIcon'}
+    <svg id={type} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90" style={cssVarStyles}>
         <g id="menu">
             <line class="cls-1" x1="4" y1="4" x2="84" y2="84"/>
             <line class="cls-1" x1="4" y1="84" x2="84" y2="4"/>
         </g>
-    {:else}
+    </svg>
+{:else if type === 'Palette'}
+    <svg id={type} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" style={cssVarStyles}>
+        <path class="st0" d="M190.7,89.9c-4.2-6.1-9.2-10.8-11.4-19.6c-1.5-5.7-0.2-11.8,3.2-16.5c5.7-8,21.5-23.2,2.1-41.2
+            C153.5-7,105.7-4,63.6,23.3C9.2,58.8-15,121.9,9.7,164.2s88.9,47.9,143.3,12.5c9.8-6.4,18.7-13.7,26.4-21.6
+            c6.8-6.9,12.7-14.3,17.7-21.9c2.1-3.5,2.8-8.2,2.9-13.1C200.1,109.2,196.8,98.7,190.7,89.9z M157.8,124.4
+            c-10.1,8.1-22.9,8.4-28.5,0.5c-5.6-7.8-2-20.7,8.1-28.9c10.1-8.1,22.9-8.4,28.5-0.5C171.5,103.4,167.9,116.3,157.8,124.4z"/>
+        <ellipse transform="matrix(0.9858 -0.1679 0.1679 0.9858 -3.8579 25.3608)" class="st1" cx="148" cy="35.5" rx="18.5" ry="19.9"/>
+        <ellipse transform="matrix(0.9858 -0.1679 0.1679 0.9858 -6.881 14.8635)" class="st2" cx="84.4" cy="48.1" rx="18.5" ry="19.9"/>
+        <ellipse transform="matrix(0.9858 -0.1679 0.1679 0.9858 -15.4348 8.2493)" class="st3" cx="41.1" cy="95.4" rx="18.5" ry="19.9"/>
+        <ellipse transform="matrix(0.9858 -0.1679 0.1679 0.9858 -25.8852 10.5302)" class="st4" cx="49.3" cy="158.3" rx="18.5" ry="19.9"/>
+    </svg>
+{:else}
+    <svg id={type} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 90 90" style={cssVarStyles}>
         <g id="menu">
             <path d="m0,55.05V.96h.95l3.66,42.55V.96h.88v54.09h-.94L.89,12.49v42.56h-.89Z"/>
             <path d="m6.79,28.7c0-9.22.32-16.31.96-21.27.64-4.96,1.43-7.43,2.38-7.43.61,0,1.17,1.11,1.68,3.32.51,2.21.91,5.43,1.2,9.65.3,4.22.44,9.24.44,15.07,0,8.02-.29,14.55-.86,19.59-.63,5.56-1.46,8.34-2.48,8.34s-1.85-2.85-2.48-8.56c-.57-5.17-.85-11.4-.85-18.71Zm.95.09c0,6.67.23,11.85.69,15.53.46,3.68,1.02,5.52,1.68,5.52s1.24-1.86,1.7-5.58.69-9.18.69-16.4c0-4.65-.12-8.81-.35-12.48-.18-2.81-.46-5.05-.82-6.74-.37-1.69-.76-2.53-1.2-2.53-.7,0-1.27,1.85-1.72,5.54-.45,3.69-.68,9.4-.68,17.13Z"/>
@@ -41,17 +59,36 @@
             <path d="m74.53,55.05V.96h5.04v6.38h-4.12v16.53h3.85v6.38h-3.85v18.41h4.28v6.38h-5.2Z"/>
             <path d="m80.98,55.05V.96h2.41c.59,0,1.05.33,1.36,1,.41.86.76,2.44,1.05,4.72.3,2.29.53,5.17.7,8.65s.25,7.61.25,12.38c0,6.12-.14,11.32-.42,15.59-.28,4.27-.64,7.29-1.09,9.08-.44,1.78-1.02,2.67-1.74,2.67h-2.52Zm.92-6.38h1.48c.6,0,1.05-.62,1.36-1.86.31-1.24.55-3.24.71-6,.22-3.66.33-8.06.33-13.17,0-5.48-.12-9.8-.35-12.93-.23-3.14-.53-5.23-.9-6.29-.25-.71-.64-1.07-1.18-1.07h-1.46v41.32Z"/>
         </g>
-    {/if}
-    
-</svg>
+    </svg>
+{/if}
+
 
 <style>
+    svg {
+        width: 100%;
+        height: 100%;
+    }
     .cls-1 {
         fill: none;
-        stroke: var(--colour);
+        stroke: var(--colour, #FF0000);
         stroke-linecap: round;
         stroke-miterlimit: 10;
         stroke-width: 8px;
+    }
+	.st0 {
+        fill: var(--colour, #FF0000);
+    }
+	.st1 {
+        fill: var(--colour1, #FFFF00);
+    }
+	.st2 {
+        fill: var(--colour2, #00FF00);
+    }
+	.st3 {
+        fill: var(--colour3, #00FFFF);
+    }
+	.st4 {
+        fill: var(--colour4, #0000FF);
     }
     svg#SettingsIcon {
         width: 14px;

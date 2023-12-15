@@ -84,7 +84,7 @@
         border: 2px solid var(--divback);
         border-radius: var(--border-radius, 25px); 
         display: inline-flex;
-        width: min(81px, 20vw);
+        width: min(81px, 25vw);
     }
     .pillButtonContainer,
     .pillButtonContainer * {

@@ -60,6 +60,7 @@
     export let timerSubtitle: Writable<string> = writable('work');
     export let timerTitle: Writable<string> = writable('Pomodoro Timer');
     export let timerState: Writable<Symbol> = writable(TimerStates.Pomodoro);
+    
 	let pomodoroCounting: boolean = false;
 	let sageCounting: boolean = false;
     let sageRemainingTime: number = 50;
@@ -86,7 +87,8 @@
         {
             type: 'seconds',
             value: 0
-        }]);
+        }
+    ]);
 
 	let pomodoroTimes: PomodoroTimes = {
 		work: 25,
