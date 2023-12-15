@@ -3,7 +3,6 @@
     import { onMount } from 'svelte';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgress, timerState, bell, timerTitle, timerSubtitle } from './timer.svelte';
-    import * as themes from './themes.svelte'
     import { styles } from './themes.svelte';
     import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
     import * as vibrate from './vibrate';
@@ -77,8 +76,9 @@
     $: landscapeMode = innerHeight <= 500;
 
     $: cssVarStyles = Object.entries($styles)
-		.map(([key, value]) => `--${key}:${value}`)
-		.join(';');
+        .filter(([key, value]) => typeof value === 'string')
+        .map(([key, value]) => `--${key}:${value}`)
+        .join(';');
 
     // handles button disable to prevent timer bug from spam
     // could better be handled with a scheduler so buttons are responsive
@@ -294,33 +294,6 @@
                 }}
                 >
                     buttonEnabled: {buttonEnabled}
-                </button>
-                <button
-                type="button"
-                on:click={() => {
-                    themes.changeTheme(themes.Themes.Funky);
-                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                }}
-                >
-                    funkytime
-                </button>
-                <button
-                type="button"
-                on:click={() => {
-                    themes.changeTheme(themes.Themes.Terminal);
-                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                }}
-                >
-                    digital
-                </button>
-                <button
-                type="button"
-                on:click={() => {
-                    themes.changeTheme(themes.Themes.Classic);
-                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                }}
-                >
-                    classic
                 </button>
                 <button
                 type="button"

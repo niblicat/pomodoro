@@ -1,13 +1,13 @@
 <script lang="ts">
-	import { createEventDispatcher } from "svelte";
+    import { createEventDispatcher } from "svelte";
     import PillButton from "./pillbutton.svelte";
     import { ModePage } from './modepage';
     import * as timer from './timer.svelte';
     import { timerState } from './timer.svelte';
     import * as vibrate from './vibrate';
-    import Themes, { styles } from './themes.svelte';
+    import { styles, changeTheme } from './themes.svelte';
+    import * as Themes from "./themes.svelte";
     import ImageSVG from './images.svelte';
-
 
     export let mobileMode: boolean = false;
     export let menuVisible: boolean = false;
@@ -28,8 +28,35 @@
 </script>
 
 {#if currentModePage === ModePage.Themes}
-    <div class="menu themes {menuVisible ? "visible" : "invisible"}">
-        meow
+    <div class="menu {menuVisible ? "visible" : "invisible"}">
+        <div class="themes">
+            {#each Themes.themeColours as theme}
+                <button
+                class="palette fade bounce alt"
+                on:click={() => {changeTheme(theme.name)}}
+                >
+                    <ImageSVG
+                    colour={theme.background}
+                    colour1={theme.accent1}
+                    colour2={theme.accent2}
+                    colour3={theme.neutralbright}
+                    colour4={theme.divback}
+                    type="Palette"/>
+                </button>
+            {/each}
+            <button
+            class="palette fade bounce alt"
+            on:click={() => {changeTheme(Themes.existingThemes.Terminal)}}
+            >
+                <ImageSVG
+                colour="#000"
+                colour1="#00ff00"
+                colour2="#00ff00"
+                colour3="#00ff00"
+                colour4="#00ff00"
+                type="Palette"/>
+            </button>
+        </div>
     </div>
 {:else}
     <div 
@@ -475,11 +502,6 @@
     }
 
     .settings {
-        width: 100%;
-        height: 100%;
-        background-image: linear-gradient(to bottom, var(--accent1), var(--neutralbright));
-        color: var(--alttext);
-        overflow: auto;
         display: grid;
         grid-auto-flow: column;
         grid-template: 25% 75% / 60% 25% 15%;
@@ -487,7 +509,15 @@
     }
 
     .themes {
-        
+        margin: 4px 4px 4px 4px;
+        display: flex;
+        flex-wrap: wrap;
+        background-color: var(--altinput);
+        border: 2px solid var(--divback);
+        justify-content: space-around;
+        border-radius: 25px 25px 25px 25px;
+        height: calc(100% - 8px);
+        width: calc(100% - 8px);
     }
 
     .menu.mobile {
@@ -545,6 +575,11 @@
 
     button#Settings {
         min-width: 30px;
+    }
+    
+    button.palette {
+        max-width: 200px;
+        max-height: 200px;
     }
 
     .selectedOption, .unselectedOption {
