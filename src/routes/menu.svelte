@@ -554,8 +554,9 @@
         flex-wrap: wrap;
         background-color: var(--altinput);
         border: 2px solid var(--divback);
-        justify-content: space-around;
-        align-items: center;
+        justify-content: left;
+        align-items: baseline;
+        overflow: scroll;
         border-radius: 0px 25px 25px 25px;
         height: calc(100% - 4px);
         width: calc(100% - 8px);
@@ -634,16 +635,16 @@
     }
     
     button.palette {
-        max-width: 10vw;
-        max-height: 10vw;
-        min-width: 10vw;
-        min-height: 10vw;
-        width: 10vw;
-        height: 10vw;
+        max-width: 80px;
+        max-height: 80px;
+        min-width: 80px;
+        min-height: 80px;
+        width: 80px;
+        height: 80px;
         overflow: visible;
         z-index: 3;
         padding: 2px;
-        flex-grow: 1;
+        margin: 4px;
     }
 
     .selectedOption, .unselectedOption {
