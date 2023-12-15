@@ -10,7 +10,7 @@
     import { ModePage } from './modepage';
     import Menu from './menu.svelte';
 
-    let debug: boolean = true;
+    let debug: boolean = false;
 
     let loading: boolean = false;
     let loadingIcon: HTMLElement;
