@@ -64,6 +64,10 @@
 
 
 <style>
+    svg {
+        width: 100%;
+        height: 100%;
+    }
     .cls-1 {
         fill: none;
         stroke: var(--colour, #FF0000);
