@@ -11,7 +11,7 @@
     import { ModePage } from './modepage';
     import Menu from './menu.svelte';
 
-    let debug: boolean = false;
+    let debug: boolean = true;
 
     let loading: boolean = false;
     let loadingIcon: HTMLElement;
@@ -54,6 +54,12 @@
     function openSettings() {
         menuVisible = true;
         menu.style.top = 0 + 'px';
+    }
+
+    function toggleMenu(buttonClick: Symbol) {
+        if (buttonClick === currentModePage && menuVisible) closeSettings();
+        else openSettings();
+        currentModePage = buttonClick;
     }
 
     let hours: number = 0;
@@ -110,6 +116,7 @@
 <html lang="en">
 <body class={$styles.hasgradient === false ? "nogradient" : ""} style={cssVarStyles}>
 <div class="background">
+
     {#if $bell}
         <audio 
             on:ended={async () => {
@@ -120,47 +127,59 @@
             <source src={bellSound} type="audio/mp3">
         </audio>
     {/if}
+
     <div
     class="menuWrapper"
     bind:this={menu}
     transition:slide|global
     >
         <Menu
-            bind:mobileMode={mobileMode}
-            bind:menuVisible={menuVisible}
-            bind:currentModePage={currentModePage}
-            bind:debug={debug}
-            bind:hours={hours}
-            bind:minutes={minutes}
-            bind:seconds={seconds}
-            bind:pomoWork={pomoWork}
-            bind:pomoShort={pomoShort}
-            bind:pomoLong={pomoLong}
-            bind:pomoLongPhase={pomoLongPhase}
-            bind:sageWork={sageWork}
-            bind:sageBreak={sageBreak}
-            bind:sageDescend={sageDescend}
+        bind:mobileMode={mobileMode}
+        bind:menuVisible={menuVisible}
+        bind:currentModePage={currentModePage}
+        bind:debug={debug}
+        bind:hours={hours}
+        bind:minutes={minutes}
+        bind:seconds={seconds}
+        bind:pomoWork={pomoWork}
+        bind:pomoShort={pomoShort}
+        bind:pomoLong={pomoLong}
+        bind:pomoLongPhase={pomoLongPhase}
+        bind:sageWork={sageWork}
+        bind:sageBreak={sageBreak}
+        bind:sageDescend={sageDescend}
 
-            on:close={() => {
-                closeSettings();
-            }}
+        on:close={() => {
+            closeSettings();
+        }}
 
         />
         
         <div class="optionsPadding">
-            <button 
-                class="fade regular {buttonEnabled ? '' : 'disabled'}"
-                id="hanging"
-                type="button"
-                on:click={() => {
-                    if (menuVisible) closeSettings();
-                    else openSettings();
-                    disableButtons();
-                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                }}
-            >
-                settings
-            </button>
+            <div class="hangingButtons">
+                <button 
+                    class="fade regular hanging {buttonEnabled ? '' : 'disabled'}"
+                    type="button"
+                    on:click={() => {
+                        toggleMenu(ModePage.Themes);
+                        disableButtons();
+                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                    }}
+                >
+                    themes
+                </button>
+                <button 
+                    class="fade regular hanging {buttonEnabled ? '' : 'disabled'}"
+                    type="button"
+                    on:click={() => {
+                        toggleMenu(ModePage.Options);
+                        disableButtons();
+                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                    }}
+                >
+                    settings
+                </button>
+            </div>
         </div>
     </div>
 
@@ -347,6 +366,7 @@
                 }}
                 />
                 {boundValue}
+
             </div>
         {/if}
     </div>
@@ -443,14 +463,14 @@
     }
     
     @media(hover: hover) {
-        button.disabled:hover, button.disabled:focus-visible {
-            border: 2px solid var(--divback) !important;
-            background-color: var(--input) !important;
-            transform: none !important;
-            -webkit-transform: none !important;
-            -moz-transform: none !important;
-            -o-transform: none !important;
-            -ms-transform: none !important;
+        button.disabled:hover:not(hanging), button.disabled:focus-visible:not(hanging) {
+            border: 2px solid var(--divback);
+            background-color: var(--input);
+            transform: none;
+            -webkit-transform: none;
+            -moz-transform: none;
+            -o-transform: none;
+            -ms-transform: none;
         }
     }
 
@@ -553,12 +573,6 @@
         grid-column: 1;
     }
     
-    @media(hover: hover)  {
-        .timer button#Pause:hover {
-            background-color: var(--complement);
-        }
-    }
-
     .timer button#Clear {
         grid-column: 2;
     }
@@ -593,17 +607,22 @@
         font-size: 8px;
     }
 
-    button#hanging {
+    .hangingButtons {
         margin-top: -2px;
+        z-index: 2;
+        height: 36px;
+    }
+
+    button.hanging, button.hanging:active {
+        height: 100%;
         min-width: 120px;
         width: 120px;
-        border-radius: 0px 0px 25px 25px;
-        border-top: 0px;
-        z-index: 2;
+        border-radius: 0px 0px 25px 25px !important;
+        border-top: 0px !important;
     }
 
     @media(hover: hover) {
-        button#hanging:hover {
+        button.hanging:hover {
             border-top: 0px;
         }
     }

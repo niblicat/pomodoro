@@ -5,7 +5,7 @@
     import * as timer from './timer.svelte';
     import { timerState } from './timer.svelte';
     import * as vibrate from './vibrate';
-    import { styles } from './themes.svelte';
+    import Themes, { styles } from './themes.svelte';
     import ImageSVG from './images.svelte';
 
 
@@ -27,9 +27,14 @@
     const dispatch = createEventDispatcher();
 </script>
 
-<div 
-    class="menu {mobileMode ? "mobile" : ""} {menuVisible ? "visible" : "invisible"}"
->
+{#if currentModePage === ModePage.Themes}
+    <div class="menu themes {menuVisible ? "visible" : "invisible"}">
+        meow
+    </div>
+{:else}
+    <div 
+    class="menu settings {mobileMode ? "mobile" : ""} {menuVisible ? "visible" : "invisible"}"
+    >
     {#if ((!mobileMode) || currentModePage === ModePage.Options)}
         <div class="modes {mobileMode ? "span2" : ""} {debug ? "db1" : ""}">
             <button
@@ -358,7 +363,7 @@
             </div>
         </div>
     {/if}
-    {#if ((!mobileMode) || currentModePage === ModePage.Stats)}
+    {#if (!mobileMode || currentModePage === ModePage.Stats)}
         <div class="statsHead {debug ? "db3" : ""}">
 
         </div>
@@ -396,7 +401,8 @@
 
         </div>
     {/if}
-</div>
+    </div>
+{/if}
 
 <style>
 
@@ -464,11 +470,24 @@
         background-image: linear-gradient(to bottom, var(--accent1), var(--neutralbright));
         color: var(--alttext);
         overflow: auto;
+        pointer-events: auto;
+        border-bottom: 2px solid var(--divback);
+    }
+
+    .settings {
+        width: 100%;
+        height: 100%;
+        background-image: linear-gradient(to bottom, var(--accent1), var(--neutralbright));
+        color: var(--alttext);
+        overflow: auto;
         display: grid;
         grid-auto-flow: column;
         grid-template: 25% 75% / 60% 25% 15%;
-        border-bottom: 2px solid var(--divback);
         pointer-events: auto;
+    }
+
+    .themes {
+        
     }
 
     .menu.mobile {
