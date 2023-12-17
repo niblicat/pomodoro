@@ -53,7 +53,6 @@
 
     button {
         border-radius: 25px;
-        min-width: 60px;
         border: 2px solid var(--divback);
         font-size: var(--fontsize);
         line-height: 24px;
@@ -88,8 +87,8 @@
 
     button.hanging, button.hanging:active {
         height: 100%;
-        min-width: 120px;
-        width: 120px;
+        min-width: min(120px, 30vw);
+        width: min(120px, 30vw);
         border-radius: 0px 0px 25px 25px !important;
         border-top: 0px !important;
     }
