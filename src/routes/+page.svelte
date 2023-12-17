@@ -1,5 +1,6 @@
 <script lang="ts">
     import { slide } from 'svelte/transition';
+	import { backIn } from 'svelte/easing';
     import { onMount } from 'svelte';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgress, timerState, bell, timerTitle, timerSubtitle } from './timer.svelte';
@@ -10,13 +11,11 @@
     import { ModePage } from './modepage';
     import Menu from './menu.svelte';
     import MenuTabs from './menutabs.svelte';
-	import { backIn } from 'svelte/easing';
 
     let debug: boolean = true;
 
     let loading: boolean = false;
     let loadingIcon: HTMLElement;
-    let menu: HTMLElement;
     let menuVisible: boolean = false;
     let m = { x: 0, y: 0};
     
@@ -144,7 +143,6 @@
     {#key menuVisible}
         <div
         class="menuWrapper"
-        bind:this={menu}
         out:slide={{ axis: 'y', easing: backIn }}
         in:slide={{ axis: 'y' }}
         >

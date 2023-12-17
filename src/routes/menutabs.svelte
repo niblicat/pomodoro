@@ -1,8 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
     import * as vibrate from './vibrate';
-    import { styles } from './themes.svelte';
-    import * as Themes from "./themes.svelte";
 	import { ModePage } from "./modepage";
 
     export let buttonEnabled = true;
