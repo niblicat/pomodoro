@@ -555,7 +555,7 @@
         height: 100%;
         background-image: linear-gradient(to bottom, var(--accent1), var(--neutralbright));
         color: var(--alttext);
-        overflow: auto;
+        overflow: none;
         pointer-events: auto;
         border-bottom: 2px solid var(--divback);
     }

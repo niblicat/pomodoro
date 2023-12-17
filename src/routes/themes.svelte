@@ -127,7 +127,7 @@
 
     let Rooster: Theme = {
         name: existingThemes.Rooster,
-        background: '#FA361E',
+        background: '#E61F05',
         divback: '#FA9061',
         accent1: '#FAC423',
         accent2: '#FAD18C',
@@ -137,9 +137,9 @@
         neutralbright: '#FA9437',
         title: '#000',
         text: '#fff',
-        neutral: '#FA361E',
-        input: '#FA361E',
-        altinput: '#FA361E',
+        neutral: '#E61F05',
+        input: '#E61F05',
+        altinput: '#E61F05',
         alttext: '#fff',
         gradientdirection: 'to bottom right'
     };
