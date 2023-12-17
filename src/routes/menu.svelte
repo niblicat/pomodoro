@@ -8,7 +8,7 @@
     import { styles, changeTheme } from './themes.svelte';
     import * as Themes from "./themes.svelte";
     import ImageSVG from './images.svelte';
-	import { Sounds, SoundArray, storeLocalAudio } from "./bell.svelte";
+	import { SoundArray, storeLocalAudio, bellSound } from "./bell.svelte";
 
     export let mobileMode: boolean = false;
     export let menuVisible: boolean = false;
@@ -25,6 +25,8 @@
     export let sageBreak: number = 10;
     export let sageDescend: number = 10;
 
+    let testBell: boolean = false;
+
     const ThemeMenu = {
         Palettes: Symbol('Palettes'),
         Sounds: Symbol('Sounds')
@@ -34,6 +36,16 @@
 
     const dispatch = createEventDispatcher();
 </script>
+{#if testBell}
+    <audio 
+        on:ended={async () => {
+            testBell = false;
+        }}
+        autoplay
+    >
+        <source src={bellSound} type="audio/mp3">
+    </audio>
+{/if}
 
 {#if currentModePage === ModePage.Themes}
     <div class="menu themes {menuVisible ? "visible" : "invisible"}">
@@ -67,47 +79,54 @@
             
         </div>
         {#if currentThemeOption === ThemeMenu.Palettes}
-        <div class="palettes">
-            {#each Themes.themeColours as theme}
-                <button
-                class="palette fade bounce alt"
-                title="{theme.name.description} Theme"
-                on:click={() => {changeTheme(theme.name)}}
-                >
-                    <ImageSVG
-                    colour={theme.background}
-                    colour1={theme.accent1}
-                    colour2={theme.accent2}
-                    colour3={theme.neutralbright}
-                    colour4={theme.divback}
-                    type="Palette"/>
-                </button>
-            {/each}
-            <button
-            class="palette fade bounce alt"
-            title="Terminal Theme"
-            on:click={() => {changeTheme(Themes.existingThemes.Terminal)}}
-            >
-                <ImageSVG
-                colour="#000"
-                colour1="#00ff00"
-                colour2="#00ff00"
-                colour3="#00ff00"
-                colour4="#00ff00"
-                type="Palette"/>
-            </button>
-        </div>
-        {:else if currentThemeOption === ThemeMenu.Sounds}
             <div class="palettes">
-                {#each SoundArray as sound}
+                {#each Themes.themeColours as theme}
                     <button
                     class="palette fade bounce alt"
-                    title="{sound} Sound"
-                    on:click={() => {storeLocalAudio(sound)}}
+                    title="{theme.name.description} Theme"
+                    on:click={() => {changeTheme(theme.name)}}
+                    >
+                        <ImageSVG
+                        colour={theme.background}
+                        colour1={theme.accent1}
+                        colour2={theme.accent2}
+                        colour3={theme.neutralbright}
+                        colour4={theme.divback}
+                        type="Palette"/>
+                    </button>
+                {/each}
+                <button
+                class="palette fade bounce alt"
+                title="Terminal Theme"
+                on:click={() => {changeTheme(Themes.existingThemes.Terminal)}}
+                >
+                    <ImageSVG
+                    colour="#000"
+                    colour1="#00ff00"
+                    colour2="#00ff00"
+                    colour3="#00ff00"
+                    colour4="#00ff00"
+                    type="Palette"/>
+                </button>
+            </div>
+        {:else if currentThemeOption === ThemeMenu.Sounds}
+            <div class="palettes">
+                {#each Object.entries(SoundArray) as [key, value]}
+                    <button
+                    class="palette fade bounce alt"
+                    title="{key} Sound"
+                    on:click={() => {
+                        testBell = false;
+                        storeLocalAudio(value);
+                        setTimeout(() => {
+                            testBell = true;
+                        }, 200);
+                    }}
                     >
                         <ImageSVG
                         colour={'#fff'}
                         type="CloseIcon"/>
+                        {key}
                     </button>
                 {/each}
             </div>

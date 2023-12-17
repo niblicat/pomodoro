@@ -5,7 +5,11 @@
         Alarm: '/sounds/alarm.mp3'
     }
 
-    export const SoundArray: string[] = Object.values(Sounds);
+    // export const SoundArray: string[] = Object.values(Sounds);
+    export const SoundArray = {
+        Squeaky: Sounds.Squeaky,
+        Alarm:  Sounds.Alarm
+    }
 
     export async function storeLocalAudio(soundLocation: string) {
         const response: Response = await fetch(soundLocation);
