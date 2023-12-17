@@ -8,7 +8,7 @@
     import { styles, changeTheme } from './themes.svelte';
     import * as Themes from "./themes.svelte";
     import ImageSVG from './images.svelte';
-	// import { Sounds } from "./bell.svelte";
+	import { Sounds, SoundArray, storeLocalAudio } from "./bell.svelte";
 
     export let mobileMode: boolean = false;
     export let menuVisible: boolean = false;
@@ -66,6 +66,7 @@
             {/if}
             
         </div>
+        {#if currentThemeOption === ThemeMenu.Palettes}
         <div class="palettes">
             {#each Themes.themeColours as theme}
                 <button
@@ -96,6 +97,21 @@
                 type="Palette"/>
             </button>
         </div>
+        {:else if currentThemeOption === ThemeMenu.Sounds}
+            <div class="palettes">
+                {#each SoundArray as sound}
+                    <button
+                    class="palette fade bounce alt"
+                    title="{sound} Sound"
+                    on:click={() => {storeLocalAudio(sound)}}
+                    >
+                        <ImageSVG
+                        colour={'#fff'}
+                        type="CloseIcon"/>
+                    </button>
+                {/each}
+            </div>
+        {/if}
     </div>
 {:else}
     <div 

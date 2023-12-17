@@ -1,8 +1,11 @@
 <script lang="ts" context="module">
     export let bellSound: string | null;
     export const Sounds = {
-        Squeaky: '/sounds/squeaky.mp3'
+        Squeaky: '/sounds/squeaky.mp3',
+        Alarm: '/sounds/alarm.mp3'
     }
+
+    export const SoundArray: string[] = Object.values(Sounds);
 
     export async function storeLocalAudio(soundLocation: string) {
         const response: Response = await fetch(soundLocation);

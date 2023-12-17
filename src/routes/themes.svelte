@@ -124,7 +124,7 @@
         gradientdirection: 'to bottom right'
     };
 
-    export let themeColours = [Aurora, Classic, Funky, Deep]
+    export const themeColours = [Aurora, Classic, Funky, Deep]
 
     export let styles: Writable<Theme> = writable(Aurora);
 
