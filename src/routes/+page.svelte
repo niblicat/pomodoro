@@ -5,7 +5,7 @@
     import { page } from '$app/stores';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgress, timerState, timerTitle, timerSubtitle } from './timer.svelte';
-    import { changeTheme, existingThemes, styles } from './themes.svelte';
+    import { styles } from './themes.svelte';
     import { changeAudio, changeVolume, playAudio, Sounds } from './bell.svelte';
     import * as vibrate from './vibrate';
     import PillButton from './pillbutton.svelte'
@@ -19,7 +19,7 @@
     let loadingIcon: HTMLElement;
     let menuVisible: boolean = false;
     let m = { x: 0, y: 0};
-    
+
     let innerWidth: number;
     let innerHeight: number;
 

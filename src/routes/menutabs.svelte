@@ -1,7 +1,7 @@
 <script lang="ts">
     import { createEventDispatcher } from "svelte";
     import * as vibrate from './vibrate';
-	import { ModePage } from "./modepage";
+    import { ModePage } from "./modepage";
 
     export let buttonEnabled = true;
 
