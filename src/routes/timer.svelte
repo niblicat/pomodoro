@@ -1,34 +1,34 @@
 <script lang="ts" context="module">
-	// Counts down each time segment
-	// Processes a length of time in deciseconds (10^-1 seconds)
+    // Counts down each time segment
+    // Processes a length of time in deciseconds (10^-1 seconds)
 
-	import { get, writable, type Writable} from 'svelte/store';
+    import { get, writable, type Writable } from 'svelte/store';
     import { playAudio } from './bell.svelte';
 
-	export interface TimeElement {
-		type: string;
-		value: number;
-	};
-	interface PomodoroTimes {
-		work: number;
-		short: number;
-		long: number;
-	};
-	interface SageTimes {
-		work: number;
-		break: number;
+    export interface TimeElement {
+        type: string;
+        value: number;
+    };
+    interface PomodoroTimes {
+        work: number;
+        short: number;
+        long: number;
+    };
+    interface SageTimes {
+        work: number;
+        break: number;
         decrement: number;
-	};
-	export const PomodoroStates = {
-		Work: Symbol('Work'),
-		Short: Symbol('Short'),
-		Long: Symbol('Long')
-	};
-	export const TimerStates = {
-		Pomodoro: Symbol('Pomodoro'),
-		Standard: Symbol('Standard'),
-		Sage: Symbol('Sage')
-	};
+    };
+    export const PomodoroStates = {
+        Work: Symbol('Work'),
+        Short: Symbol('Short'),
+        Long: Symbol('Long')
+    };
+    export const TimerStates = {
+        Pomodoro: Symbol('Pomodoro'),
+        Standard: Symbol('Standard'),
+        Sage: Symbol('Sage')
+    };
     export const SageStates = {
         Work: Symbol('Work'),
         Break: Symbol('Break')

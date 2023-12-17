@@ -1,7 +1,8 @@
 <script lang="ts">
     import { slide } from 'svelte/transition';
-	import { backIn } from 'svelte/easing';
+    import { backIn } from 'svelte/easing';
     import { onMount } from 'svelte';
+    import { page } from '$app/stores';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgress, timerState, timerTitle, timerSubtitle } from './timer.svelte';
     import { changeTheme, existingThemes, styles } from './themes.svelte';
@@ -12,7 +13,7 @@
     import Menu from './menu.svelte';
     import MenuTabs from './menutabs.svelte';
 
-    let debug: boolean = true;
+    let debug: boolean = false;
 
     let loading: boolean = false;
     let loadingIcon: HTMLElement;
@@ -37,7 +38,40 @@
         changeAudio(Sounds.Squeaky);
         changeVolume(100);
 
-        changeTheme(existingThemes.Rooster)
+        let mode = $page.url.searchParams.get('mode');
+        let hours = $page.url.searchParams.get('hours');
+        let minutes = $page.url.searchParams.get('minutes');
+        let seconds = $page.url.searchParams.get('seconds');
+        let breaktime = $page.url.searchParams.get('break');
+        let longbreak = $page.url.searchParams.get('longbreak');
+        let work = $page.url.searchParams.get('work');
+        let longphase = $page.url.searchParams.get('longphase');
+        let descend = $page.url.searchParams.get('descend');
+        switch (mode) {
+            case 'pomodoro':
+                timer.switchTimerMode(timer.TimerStates.Pomodoro);
+                if ((work != null) && (breaktime != null) && (longbreak != null))
+                    timer.modifyPomodoroTimes(parseFloat(work), parseFloat(breaktime), parseFloat(longbreak));
+                if (longphase != null)
+                    timer.changeLongSession(parseInt(longphase));
+                break;
+            case 'descend':
+            case 'sage':
+                timer.switchTimerMode(timer.TimerStates.Sage);
+                if ((work != null) && (breaktime != null) && (descend != null))
+                    timer.modifySageTimes(parseFloat(work), parseFloat(breaktime), parseFloat(descend));
+                break;
+            case 'standard':
+            case 'timer':
+                timer.switchTimerMode(timer.TimerStates.Standard);
+                if ((hours != null) && (minutes != null) && (seconds != null))
+                    timer.modifyStandardTimes(parseFloat(hours), parseFloat(minutes), parseFloat(seconds));
+                else if ((minutes != null) && (seconds != null))
+                    timer.modifyStandardTimes(0, parseFloat(minutes), parseFloat(seconds));
+                else if (seconds != null)
+                    timer.modifyStandardTimes(0, 0, parseFloat(seconds));
+                break;
+        }
 
         return () => {
             document.body.removeEventListener('keydown', handleKeyDown);
