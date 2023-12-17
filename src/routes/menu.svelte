@@ -8,7 +8,7 @@
     import { styles, changeTheme } from './themes.svelte';
     import * as Themes from "./themes.svelte";
     import ImageSVG from './images.svelte';
-	import { SoundArray, bellSound, changeAudio, playAudio } from "./bell.svelte";
+	import { SoundArray, changeAudio, playAudio } from "./bell.svelte";
 
     export let mobileMode: boolean = false;
     export let menuVisible: boolean = false;
@@ -25,8 +25,6 @@
     export let sageBreak: number = 10;
     export let sageDescend: number = 10;
 
-    let testBell: boolean = false;
-
     const ThemeMenu = {
         Palettes: Symbol('Palettes'),
         Sounds: Symbol('Sounds')
@@ -36,16 +34,6 @@
 
     const dispatch = createEventDispatcher();
 </script>
-{#if testBell}
-    <audio 
-        on:ended={async () => {
-            testBell = false;
-        }}
-        autoplay
-    >
-        <source src={bellSound} type="audio/mp3">
-    </audio>
-{/if}
 
 {#if currentModePage === ModePage.Themes}
     <div class="menu themes {menuVisible ? "visible" : "invisible"}">

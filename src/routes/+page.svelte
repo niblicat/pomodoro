@@ -4,7 +4,7 @@
     import { onMount } from 'svelte';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgress, timerState, timerTitle, timerSubtitle } from './timer.svelte';
-    import { styles } from './themes.svelte';
+    import { changeTheme, existingThemes, styles } from './themes.svelte';
     import { changeAudio, changeVolume, playAudio, Sounds } from './bell.svelte';
     import * as vibrate from './vibrate';
     import PillButton from './pillbutton.svelte'
@@ -36,6 +36,8 @@
 
         changeAudio(Sounds.Squeaky);
         changeVolume(100);
+
+        changeTheme(existingThemes.Rooster)
 
         return () => {
             document.body.removeEventListener('keydown', handleKeyDown);
@@ -239,7 +241,6 @@
 
         {#if debug}
             <div class="debug">
-                <p>{m.x}, {m.y}</p>
                 <button
                 type="button"
                 on:click={() => {
