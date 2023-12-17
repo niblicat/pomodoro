@@ -39,7 +39,7 @@
     <div class="menu themes {menuVisible ? "visible" : "invisible"}">
         <div class="modes">
             <button
-            class="fade alt {currentThemeOption === ThemeMenu.Palettes ? "selectedOption" : "unselectedOption"} {debug ? "debug" : ""}"
+            class="fade alt {currentThemeOption === ThemeMenu.Palettes ? "selectedOption" : "unselectedOption"}"
             id="Palettes"
             title="Palettes"
             type="button"
@@ -50,20 +50,18 @@
             >
                 Palettes
             </button>
-            {#if debug}
-                <button
-                class="fade alt {currentThemeOption === ThemeMenu.Sounds ? "selectedOption" : "unselectedOption"}"
-                id="Sounds"
-                title="Sounds"
-                type="button"
-                on:click={() => {
-                    currentThemeOption = ThemeMenu.Sounds;
-                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                }}
-                >
-                    Sounds
-                </button>
-            {/if}
+            <button
+            class="fade alt {currentThemeOption === ThemeMenu.Sounds ? "selectedOption" : "unselectedOption"}"
+            id="Sounds"
+            title="Sounds"
+            type="button"
+            on:click={() => {
+                currentThemeOption = ThemeMenu.Sounds;
+                vibrate.vibrateAction(vibrate.VibrateType.Standard);
+            }}
+            >
+                Sounds
+            </button>
             
         </div>
         {#if currentThemeOption === ThemeMenu.Palettes}
@@ -108,9 +106,6 @@
                         playAudio();
                     }}
                     >
-                        <!-- <ImageSVG
-                        colour={'#fff'}
-                        type="CloseIcon"/> -->
                         {key}
                     </button>
                 {/each}
@@ -628,10 +623,6 @@
     }
 
     .modes button#Palettes {
-        border-radius: 25px 25px 0px 0px;
-    }
-
-    .modes button#Palettes.debug {
         border-radius: 25px 0px 0px 0px;
         border-right: 0px;
     }
