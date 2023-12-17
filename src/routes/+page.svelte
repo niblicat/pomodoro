@@ -3,9 +3,9 @@
 	import { backIn } from 'svelte/easing';
     import { onMount } from 'svelte';
     import * as timer from './timer.svelte';
-    import { timeElement, timerInProgress, timerState, bell, timerTitle, timerSubtitle } from './timer.svelte';
+    import { timeElement, timerInProgress, timerState, timerTitle, timerSubtitle } from './timer.svelte';
     import { styles } from './themes.svelte';
-    import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
+    import { changeAudio, changeVolume, playAudio, Sounds } from './bell.svelte';
     import * as vibrate from './vibrate';
     import PillButton from './pillbutton.svelte'
     import { ModePage } from './modepage';
@@ -34,7 +34,8 @@
         document.body.addEventListener('keydown', handleKeyDown);
         timer.setTime(timer.convertTimeToDecisecondsSync(0, pomoWork, 0));
 
-        storeLocalAudio(Sounds.Squeaky);
+        changeAudio(Sounds.Squeaky);
+        changeVolume(100);
 
         return () => {
             document.body.removeEventListener('keydown', handleKeyDown);
@@ -115,17 +116,6 @@
 <html lang="en">
 <body class={$styles.hasgradient === false ? "nogradient" : ""} style={cssVarStyles}>
 <div class="background">
-
-    {#if $bell}
-        <audio 
-            on:ended={async () => {
-                timer.muteBell();
-            }}
-            autoplay
-        >
-            <source src={bellSound} type="audio/mp3">
-        </audio>
-    {/if}
     
     {#if !menuVisible}
         <div class="deadtabs">
@@ -307,11 +297,11 @@
                 <button
                 type="button"
                 on:click={() => {
-                    alert($bell);
+                    playAudio();
                     vibrate.vibrateAction(vibrate.VibrateType.Standard);
                 }}
                 >
-                    bell: {$bell}
+                    play bell
                 </button>
                 <button
                 type="button"

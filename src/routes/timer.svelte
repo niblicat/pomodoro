@@ -3,6 +3,7 @@
 	// Processes a length of time in deciseconds (10^-1 seconds)
 
 	import { get, writable, type Writable} from 'svelte/store';
+    import { playAudio } from './bell.svelte';
 
 	export interface TimeElement {
 		type: string;
@@ -180,18 +181,6 @@
         }
     }
 
-    export let bell: Writable<boolean> = writable(false);
-
-    // plays sound and is called when timer reaches 0
-    export async function ringBell() {
-        bell.set(true);
-    }
-
-    // called by main to end bell ring
-    export async function muteBell() {
-        bell.set(false);
-    }
-
     // modifies pomodoro state to next state based on current
     async function modifyPomodoroState() {
         switch (pomodoroState) {
@@ -239,7 +228,7 @@
                 // if there is no time left or the timer should not be running, kill timer momentum
                 if (timeDifference <= 0 || timerProgressState === false) {
                     if (timerProgressState === true) {
-                        await ringBell();
+                        playAudio();
                         if (get(timerState) === TimerStates.Pomodoro) await modifyPomodoroState();
                         else if (get(timerState) === TimerStates.Sage) await modifySageState();
                     }

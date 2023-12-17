@@ -8,7 +8,7 @@
     import { styles, changeTheme } from './themes.svelte';
     import * as Themes from "./themes.svelte";
     import ImageSVG from './images.svelte';
-	import { SoundArray, storeLocalAudio, bellSound } from "./bell.svelte";
+	import { SoundArray, bellSound, changeAudio, playAudio } from "./bell.svelte";
 
     export let mobileMode: boolean = false;
     export let menuVisible: boolean = false;
@@ -116,9 +116,8 @@
                     class="palette fade bounce alt"
                     title="{key} Sound"
                     on:click={async () => {
-                        testBell = false;
-                        await storeLocalAudio(value);
-                        testBell = true;
+                        changeAudio(value);
+                        playAudio();
                     }}
                     >
                         <!-- <ImageSVG
