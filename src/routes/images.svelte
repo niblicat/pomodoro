@@ -32,7 +32,7 @@
         </g>
     </svg>
 {:else if type === 'Palette'}
-    <svg id={type} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" style={cssVarStyles}>
+    <svg id={type} xmlns="http://www.w3.org/2000/svg" viewBox="-8 -8 215 215" style={cssVarStyles}>
         <path class="st0" d="M190.7,89.9c-4.2-6.1-9.2-10.8-11.4-19.6c-1.5-5.7-0.2-11.8,3.2-16.5c5.7-8,21.5-23.2,2.1-41.2
             C153.5-7,105.7-4,63.6,23.3C9.2,58.8-15,121.9,9.7,164.2s88.9,47.9,143.3,12.5c9.8-6.4,18.7-13.7,26.4-21.6
             c6.8-6.9,12.7-14.3,17.7-21.9c2.1-3.5,2.8-8.2,2.9-13.1C200.1,109.2,196.8,98.7,190.7,89.9z M157.8,124.4
@@ -77,6 +77,10 @@
     }
 	.st0 {
         fill: var(--colour, #FF0000);
+        stroke: var(--colour2, #00FF00);
+        stroke-linecap: round;
+        stroke-miterlimit: 10;
+        stroke-width: 8px;
     }
 	.st1 {
         fill: var(--colour1, #FFFF00);

@@ -1,23 +1,25 @@
 <script lang="ts">
-    import { fade, slide } from 'svelte/transition';
+    import { slide } from 'svelte/transition';
+    import { backIn } from 'svelte/easing';
     import { onMount } from 'svelte';
+    import { page } from '$app/stores';
     import * as timer from './timer.svelte';
-    import { timeElement, timerInProgress, timerState, bell, timerTitle, timerSubtitle } from './timer.svelte';
+    import { timeElement, timerInProgress, timerState, timerTitle, timerSubtitle } from './timer.svelte';
     import { styles } from './themes.svelte';
-    import { bellSound, storeLocalAudio, Sounds } from './bell.svelte';
+    import { changeAudio, changeVolume, playAudio, Sounds } from './bell.svelte';
     import * as vibrate from './vibrate';
     import PillButton from './pillbutton.svelte'
     import { ModePage } from './modepage';
     import Menu from './menu.svelte';
+    import MenuTabs from './menutabs.svelte';
 
     let debug: boolean = false;
 
     let loading: boolean = false;
     let loadingIcon: HTMLElement;
-    let menu: HTMLElement;
     let menuVisible: boolean = false;
     let m = { x: 0, y: 0};
-    
+
     let innerWidth: number;
     let innerHeight: number;
 
@@ -33,7 +35,43 @@
         document.body.addEventListener('keydown', handleKeyDown);
         timer.setTime(timer.convertTimeToDecisecondsSync(0, pomoWork, 0));
 
-        storeLocalAudio(Sounds.Squeaky);
+        changeAudio(Sounds.Squeaky);
+        changeVolume(100);
+
+        let mode = $page.url.searchParams.get('mode');
+        let hours = $page.url.searchParams.get('hours');
+        let minutes = $page.url.searchParams.get('minutes');
+        let seconds = $page.url.searchParams.get('seconds');
+        let breaktime = $page.url.searchParams.get('break');
+        let longbreak = $page.url.searchParams.get('longbreak');
+        let work = $page.url.searchParams.get('work');
+        let longphase = $page.url.searchParams.get('longphase');
+        let descend = $page.url.searchParams.get('descend');
+        switch (mode) {
+            case 'pomodoro':
+                timer.switchTimerMode(timer.TimerStates.Pomodoro);
+                if ((work != null) && (breaktime != null) && (longbreak != null))
+                    timer.modifyPomodoroTimes(parseFloat(work), parseFloat(breaktime), parseFloat(longbreak));
+                if (longphase != null)
+                    timer.changeLongSession(parseInt(longphase));
+                break;
+            case 'descend':
+            case 'sage':
+                timer.switchTimerMode(timer.TimerStates.Sage);
+                if ((work != null) && (breaktime != null) && (descend != null))
+                    timer.modifySageTimes(parseFloat(work), parseFloat(breaktime), parseFloat(descend));
+                break;
+            case 'standard':
+            case 'timer':
+                timer.switchTimerMode(timer.TimerStates.Standard);
+                if ((hours != null) && (minutes != null) && (seconds != null))
+                    timer.modifyStandardTimes(parseFloat(hours), parseFloat(minutes), parseFloat(seconds));
+                else if ((minutes != null) && (seconds != null))
+                    timer.modifyStandardTimes(0, parseFloat(minutes), parseFloat(seconds));
+                else if (seconds != null)
+                    timer.modifyStandardTimes(0, 0, parseFloat(seconds));
+                break;
+        }
 
         return () => {
             document.body.removeEventListener('keydown', handleKeyDown);
@@ -43,7 +81,6 @@
 
     // closes preference menu
     function closeSettings() {
-        menu.style.top = -260 + 'px';
         setTimeout(() => {
             menuVisible = false;
         }, 200);
@@ -52,7 +89,6 @@
     // opens preference menu
     function openSettings() {
         menuVisible = true;
-        menu.style.top = 0 + 'px';
     }
 
     function toggleMenu(buttonClick: Symbol) {
@@ -116,74 +152,62 @@
 <html lang="en">
 <body class={$styles.hasgradient === false ? "nogradient" : ""} style={cssVarStyles}>
 <div class="background">
-
-    {#if $bell}
-        <audio 
-            on:ended={async () => {
-                timer.muteBell();
+    
+    {#if !menuVisible}
+        <div class="deadtabs">
+            <MenuTabs
+            buttonEnabled={buttonEnabled}
+            on:toggleMenu={(e) => {
+                toggleMenu(e.detail);
             }}
-            autoplay
-        >
-            <source src={bellSound} type="audio/mp3">
-        </audio>
-    {/if}
-
-    <div
-    class="menuWrapper"
-    bind:this={menu}
-    transition:slide|global
-    >
-        <Menu
-        bind:mobileMode={mobileMode}
-        bind:menuVisible={menuVisible}
-        bind:currentModePage={currentModePage}
-        bind:debug={debug}
-        bind:hours={hours}
-        bind:minutes={minutes}
-        bind:seconds={seconds}
-        bind:pomoWork={pomoWork}
-        bind:pomoShort={pomoShort}
-        bind:pomoLong={pomoLong}
-        bind:pomoLongPhase={pomoLongPhase}
-        bind:sageWork={sageWork}
-        bind:sageBreak={sageBreak}
-        bind:sageDescend={sageDescend}
-
-        on:close={() => {
-            closeSettings();
-        }}
-
-        />
-        
-        <div class="optionsPadding">
-            <div class="hangingButtons">
-                <button 
-                    class="fade regular hanging {buttonEnabled ? '' : 'disabled'}"
-                    type="button"
-                    on:click={() => {
-                        toggleMenu(ModePage.Themes);
-                        disableButtons();
-                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                    }}
-                >
-                    themes
-                </button>
-                <button 
-                    class="fade regular hanging {buttonEnabled ? '' : 'disabled'}"
-                    type="button"
-                    on:click={() => {
-                        toggleMenu(ModePage.Options);
-                        disableButtons();
-                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                    }}
-                >
-                    settings
-                </button>
-            </div>
+            on:disableButtons={() => {
+                disableButtons();
+            }}
+            />
         </div>
-    </div>
+    {/if}
+    {#key menuVisible}
+        <div
+        class="menuWrapper"
+        out:slide={{ axis: 'y', easing: backIn }}
+        in:slide={{ axis: 'y' }}
+        >
+            {#if menuVisible}
+                <Menu
+                bind:mobileMode={mobileMode}
+                bind:menuVisible={menuVisible}
+                bind:currentModePage={currentModePage}
+                bind:debug={debug}
+                bind:hours={hours}
+                bind:minutes={minutes}
+                bind:seconds={seconds}
+                bind:pomoWork={pomoWork}
+                bind:pomoShort={pomoShort}
+                bind:pomoLong={pomoLong}
+                bind:pomoLongPhase={pomoLongPhase}
+                bind:sageWork={sageWork}
+                bind:sageBreak={sageBreak}
+                bind:sageDescend={sageDescend}
 
-    <div class="wrapper center {landscapeMode ? "landscape" : ""}">
+                on:close={() => {
+                    closeSettings();
+                }}
+
+                />
+                <MenuTabs
+                buttonEnabled={buttonEnabled}
+                on:toggleMenu={(e) => {
+                    toggleMenu(e.detail);
+                }}
+                on:disableButtons={() => {
+                    disableButtons();
+                }}
+                />
+            {/if}
+        </div>
+    {/key}
+
+    <main class="wrapper center {landscapeMode ? "landscape" : ""}">
         <div class="timer center regulartext">
             <div class="em1"/>
             <div class="timerTitle">
@@ -192,13 +216,15 @@
             <div class="timerSubtitle">
                 {$timerSubtitle}
             </div>
-            <p class="numbersTime fade" transition:fade>
+            {#key $timeElement}
+            <div class="numbersTime fade">
                 {#each $timeElement as e (e.type)}
                     {#if !((e.type === 'hours') && (e.value <= 0))}
                         {#if ((e.type !== 'hours') && (e.value < 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
                     {/if}
                 {/each}
-            </p>
+            </div>
+            {/key}
             <button
             class="bounce fade regular {buttonEnabled ? '' : 'disabled'}"
             type="button"
@@ -249,7 +275,6 @@
 
         {#if debug}
             <div class="debug">
-                <p>{m.x}, {m.y}</p>
                 <button
                 type="button"
                 on:click={() => {
@@ -258,6 +283,15 @@
                 }}
                 >
                 timer in progress: {$timerInProgress}
+                </button>
+                <button
+                type="button"
+                on:click={() => {
+                    alert(menuVisible);
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                }}
+                >
+                menu visible: {menuVisible}
                 </button>
                 <button
                 type="button"
@@ -298,11 +332,11 @@
                 <button
                 type="button"
                 on:click={() => {
-                    alert($bell);
+                    playAudio();
                     vibrate.vibrateAction(vibrate.VibrateType.Standard);
                 }}
                 >
-                    bell: {$bell}
+                    play bell
                 </button>
                 <button
                 type="button"
@@ -342,7 +376,7 @@
 
             </div>
         {/if}
-    </div>
+    </main>
 
 </div>
 </body>
@@ -498,7 +532,6 @@
         border-radius: 25px;
         background-color: var(--divback);
         border: 2px solid var(--neutralbright);
-        
         margin: auto;
         font-size: 20px;
     }
@@ -551,8 +584,8 @@
     }
 
     .menuWrapper {
-        transition: all 200ms ease-out;
-        top: -260px;
+        /* transition: all 100ms ease-out; */
+        top: 0px;
         width: 100%;
         height: 296px;
         display: grid;
@@ -563,13 +596,9 @@
         pointer-events: none;
     }
     
-    .optionsPadding {
-        display: flex;
-        justify-content: end;
-        padding-right: 20px;
-        padding-left: 20px;
-        order: 2;
-        pointer-events: none;
+    .deadtabs {
+        position: absolute;
+        width: 100%;
     }
 
     .debug {
@@ -580,26 +609,6 @@
         font-size: 8px;
     }
 
-    .hangingButtons {
-        margin-top: -2px;
-        z-index: 2;
-        height: 36px;
-    }
-
-    button.hanging, button.hanging:active {
-        height: 100%;
-        min-width: 120px;
-        width: 120px;
-        border-radius: 0px 0px 25px 25px !important;
-        border-top: 0px !important;
-    }
-
-    @media(hover: hover) {
-        button.hanging:hover {
-            border-top: 0px;
-        }
-    }
-    
     #loadingIcon {
         grid-row: 3;
         justify-self: center;

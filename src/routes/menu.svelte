@@ -8,7 +8,7 @@
     import { styles, changeTheme } from './themes.svelte';
     import * as Themes from "./themes.svelte";
     import ImageSVG from './images.svelte';
-	import { Sounds } from "./bell.svelte";
+	import { SoundArray, changeAudio, playAudio } from "./bell.svelte";
 
     export let mobileMode: boolean = false;
     export let menuVisible: boolean = false;
@@ -39,7 +39,7 @@
     <div class="menu themes {menuVisible ? "visible" : "invisible"}">
         <div class="modes">
             <button
-            class="fade alt {currentThemeOption === ThemeMenu.Palettes ? "selectedOption" : "unselectedOption"} {debug ? "debug" : ""}"
+            class="fade alt {currentThemeOption === ThemeMenu.Palettes ? "selectedOption" : "unselectedOption"}"
             id="Palettes"
             title="Palettes"
             type="button"
@@ -50,52 +50,67 @@
             >
                 Palettes
             </button>
-            {#if debug}
-                <button
-                class="fade alt {currentThemeOption === ThemeMenu.Sounds ? "selectedOption" : "unselectedOption"}"
-                id="Sounds"
-                title="Sounds"
-                type="button"
-                on:click={() => {
-                    currentThemeOption = ThemeMenu.Sounds;
-                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                }}
-                >
-                    Sounds
-                </button>
-            {/if}
+            <button
+            class="fade alt {currentThemeOption === ThemeMenu.Sounds ? "selectedOption" : "unselectedOption"}"
+            id="Sounds"
+            title="Sounds"
+            type="button"
+            on:click={() => {
+                currentThemeOption = ThemeMenu.Sounds;
+                vibrate.vibrateAction(vibrate.VibrateType.Standard);
+            }}
+            >
+                Sounds
+            </button>
             
         </div>
-        <div class="palettes">
-            {#each Themes.themeColours as theme}
+        {#if currentThemeOption === ThemeMenu.Palettes}
+            <div class="palettes">
+                {#each Themes.themeColours as theme}
+                    <button
+                    class="palette fade bounce alt"
+                    title="{theme.name.description} Theme"
+                    on:click={() => {changeTheme(theme.name)}}
+                    >
+                        <ImageSVG
+                        colour={theme.background}
+                        colour1={theme.accent1}
+                        colour2={theme.accent2}
+                        colour3={theme.neutralbright}
+                        colour4={theme.divback}
+                        type="Palette"/>
+                    </button>
+                {/each}
                 <button
                 class="palette fade bounce alt"
-                title="{theme.name.description} Theme"
-                on:click={() => {changeTheme(theme.name)}}
+                title="Terminal Theme"
+                on:click={() => {changeTheme(Themes.existingThemes.Terminal)}}
                 >
                     <ImageSVG
-                    colour={theme.background}
-                    colour1={theme.accent1}
-                    colour2={theme.accent2}
-                    colour3={theme.neutralbright}
-                    colour4={theme.divback}
+                    colour="#000"
+                    colour1="#00ff00"
+                    colour2="#00ff00"
+                    colour3="#00ff00"
+                    colour4="#00ff00"
                     type="Palette"/>
                 </button>
-            {/each}
-            <button
-            class="palette fade bounce alt"
-            title="Terminal Theme"
-            on:click={() => {changeTheme(Themes.existingThemes.Terminal)}}
-            >
-                <ImageSVG
-                colour="#000"
-                colour1="#00ff00"
-                colour2="#00ff00"
-                colour3="#00ff00"
-                colour4="#00ff00"
-                type="Palette"/>
-            </button>
-        </div>
+            </div>
+        {:else if currentThemeOption === ThemeMenu.Sounds}
+            <div class="palettes">
+                {#each Object.entries(SoundArray) as [key, value]}
+                    <button
+                    class="palette fade bounce alt"
+                    title="{key} Sound"
+                    on:click={async () => {
+                        changeAudio(value);
+                        playAudio();
+                    }}
+                    >
+                        {key}
+                    </button>
+                {/each}
+            </div>
+        {/if}
     </div>
 {:else}
     <div 
@@ -535,7 +550,7 @@
         height: 100%;
         background-image: linear-gradient(to bottom, var(--accent1), var(--neutralbright));
         color: var(--alttext);
-        overflow: auto;
+        overflow: none;
         pointer-events: auto;
         border-bottom: 2px solid var(--divback);
     }
@@ -608,10 +623,6 @@
     }
 
     .modes button#Palettes {
-        border-radius: 25px 25px 0px 0px;
-    }
-
-    .modes button#Palettes.debug {
         border-radius: 25px 0px 0px 0px;
         border-right: 0px;
     }
@@ -645,6 +656,7 @@
         z-index: 3;
         padding: 2px;
         margin: 4px;
+        font-size: 16px;
     }
 
     .selectedOption, .unselectedOption {

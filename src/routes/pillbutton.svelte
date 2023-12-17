@@ -111,11 +111,20 @@
         pointer-events: auto;
     }
 
+    .pillButtonContainer button:hover, .pillButtonContainer button:focus {
+        background-color: var(--accent);
+        border: 0px;
+    }
+
     @media(hover: hover) {
-        .pillButtonContainer button:hover {
+        .pillButtonContainer button:hover, .pillButtonContainer button:focus-visible {
             background-color: var(--accent);
             border: 0px;
         }
+    }
+
+    .pillButtonContainer button:not(:focus-visible, :hover) {
+        background-color: var(--background);
     }
 
     .pillButtonContainer button:after {

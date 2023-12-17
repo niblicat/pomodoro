@@ -26,7 +26,8 @@
         Funky: Symbol('Funky'),
         Aurora: Symbol('Aurora'),
         Terminal: Symbol('Terminal'),
-        Deep: Symbol('Deep')
+        Deep: Symbol('Deep'),
+        Rooster: Symbol('Rooster')
     };
 
     let Aurora: Theme = {
@@ -124,7 +125,26 @@
         gradientdirection: 'to bottom right'
     };
 
-    export let themeColours = [Aurora, Classic, Funky, Deep]
+    let Rooster: Theme = {
+        name: existingThemes.Rooster,
+        background: '#E61F05',
+        divback: '#FA9061',
+        accent1: '#FAC423',
+        accent2: '#FAD18C',
+        contrast: '#FA9061',
+        complement: '#FAC423',
+        neutraldark: '#FAC423',
+        neutralbright: '#FA9437',
+        title: '#000',
+        text: '#fff',
+        neutral: '#E61F05',
+        input: '#E61F05',
+        altinput: '#E61F05',
+        alttext: '#fff',
+        gradientdirection: 'to bottom right'
+    };
+
+    export const themeColours = [Aurora, Classic, Funky, Deep, Rooster]
 
     export let styles: Writable<Theme> = writable(Aurora);
 
@@ -144,6 +164,9 @@
                 break;
             case existingThemes.Deep:
                 styles.set(Deep);
+                break;
+            case existingThemes.Rooster:
+                styles.set(Rooster);
                 break;
         }
     };

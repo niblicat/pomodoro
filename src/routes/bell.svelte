@@ -1,21 +1,33 @@
 <script lang="ts" context="module">
+	import { sequence } from "@sveltejs/kit/hooks";
+
+
     export let bellSound: string | null;
     export const Sounds = {
-        Squeaky: '/sounds/squeaky.mp3'
+        Squeaky: '/sounds/squeaky.mp3',
+        Alarm: '/sounds/alarm.mp3',
+        Chicken: '/sounds/chicken.mp3'
     }
 
-    export async function storeLocalAudio(soundLocation: string) {
-        const response: Response = await fetch(soundLocation);
-        const audioBlob: Blob = await response.blob();
-        const reader: FileReader = new FileReader();
-        reader.onloadend = () => {
-            if (typeof reader.result === 'string') {
-                localStorage.setItem('bellSound', reader.result);
-                bellSound = reader.result;
-            }
-            else console.log('There was a problem loading the bell sound to Local Storage.')
-        };
-        reader.readAsDataURL(audioBlob);
+    // export const SoundArray: string[] = Object.values(Sounds);
+    export const SoundArray = {
+        Squeaky: Sounds.Squeaky,
+        Alarm:  Sounds.Alarm,
+        Chicken:  Sounds.Chicken
+    }
+
+    export let audioFile: HTMLAudioElement;
+
+    export function changeVolume(value: number) {
+        audioFile.volume = value / 100;
+    }
+
+    export function changeAudio(file: string) {
+        audioFile = new Audio(file);
+    }
+
+    export function playAudio() {
+        audioFile.play();
     }
 
 </script>
