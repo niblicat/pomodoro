@@ -77,7 +77,7 @@
     }
 	.st0 {
         fill: var(--colour, #FF0000);
-        stroke: var(--colour1, #FFFF00);
+        stroke: var(--colour2, #00FF00);
         stroke-linecap: round;
         stroke-miterlimit: 10;
         stroke-width: 8px;
