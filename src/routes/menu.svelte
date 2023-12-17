@@ -115,17 +115,15 @@
                     <button
                     class="palette fade bounce alt"
                     title="{key} Sound"
-                    on:click={() => {
+                    on:click={async () => {
                         testBell = false;
-                        storeLocalAudio(value);
-                        setTimeout(() => {
-                            testBell = true;
-                        }, 200);
+                        await storeLocalAudio(value);
+                        testBell = true;
                     }}
                     >
-                        <ImageSVG
+                        <!-- <ImageSVG
                         colour={'#fff'}
-                        type="CloseIcon"/>
+                        type="CloseIcon"/> -->
                         {key}
                     </button>
                 {/each}
@@ -680,6 +678,7 @@
         z-index: 3;
         padding: 2px;
         margin: 4px;
+        font-size: 16px;
     }
 
     .selectedOption, .unselectedOption {
