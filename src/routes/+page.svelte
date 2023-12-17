@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { fade, slide } from 'svelte/transition';
+    import { fade, slide, fly } from 'svelte/transition';
     import { onMount } from 'svelte';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgress, timerState, bell, timerTitle, timerSubtitle } from './timer.svelte';
@@ -183,7 +183,7 @@
         </div>
     </div>
 
-    <div class="wrapper center {landscapeMode ? "landscape" : ""}">
+    <main class="wrapper center {landscapeMode ? "landscape" : ""}">
         <div class="timer center regulartext">
             <div class="em1"/>
             <div class="timerTitle">
@@ -192,13 +192,15 @@
             <div class="timerSubtitle">
                 {$timerSubtitle}
             </div>
-            <p class="numbersTime fade" transition:fade>
+            {#key $timeElement}
+            <div class="numbersTime fade">
                 {#each $timeElement as e (e.type)}
                     {#if !((e.type === 'hours') && (e.value <= 0))}
                         {#if ((e.type !== 'hours') && (e.value < 10))}0{/if}{e.value}{#if (e.type !== 'seconds')}:{/if}
                     {/if}
                 {/each}
-            </p>
+            </div>
+            {/key}
             <button
             class="bounce fade regular {buttonEnabled ? '' : 'disabled'}"
             type="button"
@@ -342,7 +344,7 @@
 
             </div>
         {/if}
-    </div>
+    </main>
 
 </div>
 </body>

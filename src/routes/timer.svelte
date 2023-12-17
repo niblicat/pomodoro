@@ -143,6 +143,7 @@
                 }
             ]);
         }
+        timeElement = timeElement;
         return time;
 	}
 
