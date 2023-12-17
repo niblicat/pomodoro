@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { fade, slide, fly } from 'svelte/transition';
+    import { slide } from 'svelte/transition';
     import { onMount } from 'svelte';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgress, timerState, bell, timerTitle, timerSubtitle } from './timer.svelte';
@@ -10,7 +10,7 @@
     import { ModePage } from './modepage';
     import Menu from './menu.svelte';
     import MenuTabs from './menutabs.svelte';
-	import { backIn, quintOut, backInOut, quintInOut, quintIn } from 'svelte/easing';
+	import { backIn } from 'svelte/easing';
 
     let debug: boolean = true;
 
@@ -45,7 +45,6 @@
 
     // closes preference menu
     function closeSettings() {
-        // menu.style.top = -260 + 'px';
         setTimeout(() => {
             menuVisible = false;
         }, 200);
@@ -54,7 +53,6 @@
     // opens preference menu
     function openSettings() {
         menuVisible = true;
-        // menu.style.top = 0 + 'px';
     }
 
     function toggleMenu(buttonClick: Symbol) {
@@ -150,28 +148,28 @@
         out:slide={{ axis: 'y', easing: backIn }}
         in:slide={{ axis: 'y' }}
         >
-            <Menu
-            bind:mobileMode={mobileMode}
-            bind:menuVisible={menuVisible}
-            bind:currentModePage={currentModePage}
-            bind:debug={debug}
-            bind:hours={hours}
-            bind:minutes={minutes}
-            bind:seconds={seconds}
-            bind:pomoWork={pomoWork}
-            bind:pomoShort={pomoShort}
-            bind:pomoLong={pomoLong}
-            bind:pomoLongPhase={pomoLongPhase}
-            bind:sageWork={sageWork}
-            bind:sageBreak={sageBreak}
-            bind:sageDescend={sageDescend}
-
-            on:close={() => {
-                closeSettings();
-            }}
-
-            />
             {#if menuVisible}
+                <Menu
+                bind:mobileMode={mobileMode}
+                bind:menuVisible={menuVisible}
+                bind:currentModePage={currentModePage}
+                bind:debug={debug}
+                bind:hours={hours}
+                bind:minutes={minutes}
+                bind:seconds={seconds}
+                bind:pomoWork={pomoWork}
+                bind:pomoShort={pomoShort}
+                bind:pomoLong={pomoLong}
+                bind:pomoLongPhase={pomoLongPhase}
+                bind:sageWork={sageWork}
+                bind:sageBreak={sageBreak}
+                bind:sageDescend={sageDescend}
+
+                on:close={() => {
+                    closeSettings();
+                }}
+
+                />
                 <MenuTabs
                 buttonEnabled={buttonEnabled}
                 on:toggleMenu={(e) => {
