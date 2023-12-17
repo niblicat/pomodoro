@@ -9,8 +9,10 @@
     import PillButton from './pillbutton.svelte'
     import { ModePage } from './modepage';
     import Menu from './menu.svelte';
+    import MenuTabs from './menutabs.svelte';
+	import { backIn, quintOut, backInOut, quintInOut, quintIn } from 'svelte/easing';
 
-    let debug: boolean = false;
+    let debug: boolean = true;
 
     let loading: boolean = false;
     let loadingIcon: HTMLElement;
@@ -43,7 +45,7 @@
 
     // closes preference menu
     function closeSettings() {
-        menu.style.top = -260 + 'px';
+        // menu.style.top = -260 + 'px';
         setTimeout(() => {
             menuVisible = false;
         }, 200);
@@ -52,7 +54,7 @@
     // opens preference menu
     function openSettings() {
         menuVisible = true;
-        menu.style.top = 0 + 'px';
+        // menu.style.top = 0 + 'px';
     }
 
     function toggleMenu(buttonClick: Symbol) {
@@ -127,61 +129,61 @@
             <source src={bellSound} type="audio/mp3">
         </audio>
     {/if}
-
-    <div
-    class="menuWrapper"
-    bind:this={menu}
-    transition:slide|global
-    >
-        <Menu
-        bind:mobileMode={mobileMode}
-        bind:menuVisible={menuVisible}
-        bind:currentModePage={currentModePage}
-        bind:debug={debug}
-        bind:hours={hours}
-        bind:minutes={minutes}
-        bind:seconds={seconds}
-        bind:pomoWork={pomoWork}
-        bind:pomoShort={pomoShort}
-        bind:pomoLong={pomoLong}
-        bind:pomoLongPhase={pomoLongPhase}
-        bind:sageWork={sageWork}
-        bind:sageBreak={sageBreak}
-        bind:sageDescend={sageDescend}
-
-        on:close={() => {
-            closeSettings();
-        }}
-
-        />
-        
-        <div class="optionsPadding">
-            <div class="hangingButtons">
-                <button 
-                    class="fade regular hanging {buttonEnabled ? '' : 'disabled'}"
-                    type="button"
-                    on:click={() => {
-                        toggleMenu(ModePage.Themes);
-                        disableButtons();
-                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                    }}
-                >
-                    themes
-                </button>
-                <button 
-                    class="fade regular hanging {buttonEnabled ? '' : 'disabled'}"
-                    type="button"
-                    on:click={() => {
-                        toggleMenu(ModePage.Options);
-                        disableButtons();
-                        vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                    }}
-                >
-                    settings
-                </button>
-            </div>
+    
+    {#if !menuVisible}
+        <div class="deadtabs">
+            <MenuTabs
+            buttonEnabled={buttonEnabled}
+            on:toggleMenu={(e) => {
+                toggleMenu(e.detail);
+            }}
+            on:disableButtons={() => {
+                disableButtons();
+            }}
+            />
         </div>
-    </div>
+    {/if}
+    {#key menuVisible}
+        <div
+        class="menuWrapper"
+        bind:this={menu}
+        out:slide={{ axis: 'y', easing: backIn }}
+        in:slide={{ axis: 'y' }}
+        >
+            <Menu
+            bind:mobileMode={mobileMode}
+            bind:menuVisible={menuVisible}
+            bind:currentModePage={currentModePage}
+            bind:debug={debug}
+            bind:hours={hours}
+            bind:minutes={minutes}
+            bind:seconds={seconds}
+            bind:pomoWork={pomoWork}
+            bind:pomoShort={pomoShort}
+            bind:pomoLong={pomoLong}
+            bind:pomoLongPhase={pomoLongPhase}
+            bind:sageWork={sageWork}
+            bind:sageBreak={sageBreak}
+            bind:sageDescend={sageDescend}
+
+            on:close={() => {
+                closeSettings();
+            }}
+
+            />
+            {#if menuVisible}
+                <MenuTabs
+                buttonEnabled={buttonEnabled}
+                on:toggleMenu={(e) => {
+                    toggleMenu(e.detail);
+                }}
+                on:disableButtons={() => {
+                    disableButtons();
+                }}
+                />
+            {/if}
+        </div>
+    {/key}
 
     <main class="wrapper center {landscapeMode ? "landscape" : ""}">
         <div class="timer center regulartext">
@@ -260,6 +262,15 @@
                 }}
                 >
                 timer in progress: {$timerInProgress}
+                </button>
+                <button
+                type="button"
+                on:click={() => {
+                    alert(menuVisible);
+                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
+                }}
+                >
+                menu visible: {menuVisible}
                 </button>
                 <button
                 type="button"
@@ -553,8 +564,8 @@
     }
 
     .menuWrapper {
-        transition: all 200ms ease-out;
-        top: -260px;
+        /* transition: all 100ms ease-out; */
+        top: 0px;
         width: 100%;
         height: 296px;
         display: grid;
@@ -565,13 +576,9 @@
         pointer-events: none;
     }
     
-    .optionsPadding {
-        display: flex;
-        justify-content: end;
-        padding-right: 20px;
-        padding-left: 20px;
-        order: 2;
-        pointer-events: none;
+    .deadtabs {
+        position: absolute;
+        width: 100%;
     }
 
     .debug {
@@ -582,26 +589,6 @@
         font-size: 8px;
     }
 
-    .hangingButtons {
-        margin-top: -2px;
-        z-index: 2;
-        height: 36px;
-    }
-
-    button.hanging, button.hanging:active {
-        height: 100%;
-        min-width: 120px;
-        width: 120px;
-        border-radius: 0px 0px 25px 25px !important;
-        border-top: 0px !important;
-    }
-
-    @media(hover: hover) {
-        button.hanging:hover {
-            border-top: 0px;
-        }
-    }
-    
     #loadingIcon {
         grid-row: 3;
         justify-self: center;

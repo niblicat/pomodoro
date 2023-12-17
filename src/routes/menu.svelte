@@ -8,7 +8,7 @@
     import { styles, changeTheme } from './themes.svelte';
     import * as Themes from "./themes.svelte";
     import ImageSVG from './images.svelte';
-	import { Sounds } from "./bell.svelte";
+	// import { Sounds } from "./bell.svelte";
 
     export let mobileMode: boolean = false;
     export let menuVisible: boolean = false;
