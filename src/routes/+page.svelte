@@ -12,8 +12,9 @@
     import { ModePage } from './modepage';
     import Menu from './menu.svelte';
     import MenuTabs from './menutabs.svelte';
+    import DynamicButton from './dynamicbutton.svelte';
 
-    let debug: boolean = false;
+    let debug: boolean = true;
 
     let loading: boolean = false;
     let loadingIcon: HTMLElement;
@@ -373,6 +374,12 @@
                 }}
                 />
                 {boundValue}
+
+                <DynamicButton
+                on:click={() => {alert('hello!')}}
+                >
+                    hello
+                </DynamicButton>
 
             </div>
         {/if}
