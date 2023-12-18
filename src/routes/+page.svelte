@@ -226,33 +226,32 @@
                 {/each}
             </div>
             {/key}
-            <button
+            <DynamicButton
             class="bounce fade regular {buttonEnabled ? '' : 'disabled'}"
-            type="button"
-                on:click={() => {
-                    if ($timerInProgress) timer.stopTimer();
-                    else {
-                        switch ($timerState) {
-                        case timer.TimerStates.Pomodoro: 
-                            timer.pomodoroActive();
-                            break;
-                        case timer.TimerStates.Sage: 
-                            timer.sageActive();
-                            break;
-                        case timer.TimerStates.Standard: 
-                            timer.standardStartTimer()
-                            break;
-                        }
+            on:click={() => {
+                if ($timerInProgress) timer.stopTimer();
+                else {
+                    switch ($timerState) {
+                    case timer.TimerStates.Pomodoro: 
+                        timer.pomodoroActive();
+                        break;
+                    case timer.TimerStates.Sage: 
+                        timer.sageActive();
+                        break;
+                    case timer.TimerStates.Standard: 
+                        timer.standardStartTimer()
+                        break;
                     }
-                    disableButtons();
-                    vibrate.vibrateAction(vibrate.VibrateType.Standard);
-                }}
-                title={!$timerInProgress ? 'Start' : 'Pause'}
-                id={!$timerInProgress ? 'Start' : 'Pause'}
-                disabled={!buttonEnabled}
+                }
+                disableButtons();
+                vibrate.vibrateAction(vibrate.VibrateType.Standard);
+            }}
+            title={!$timerInProgress ? 'Start' : 'Pause'}
+            id={!$timerInProgress ? 'Start' : 'Pause'}
+            disabled={!buttonEnabled}
             >
                 {!$timerInProgress ? 'start' : 'pause'}
-            </button>
+            </DynamicButton>
             <button
             class="bounce fade regular"
             type="button"
@@ -356,6 +355,14 @@
                 >
                     Disable Debug
                 </button>
+
+                <DynamicButton
+                class="debug bounce fade regular {buttonEnabled ? '' : 'disabled'}"
+                on:click={() => {alert('hello!')}}
+                >
+                    hello
+                </DynamicButton>
+
                 <PillButton
                 bind:bound={boundValue}
                 label="testing"
@@ -375,11 +382,6 @@
                 />
                 {boundValue}
 
-                <DynamicButton
-                on:click={() => {alert('hello!')}}
-                >
-                    hello
-                </DynamicButton>
 
             </div>
         {/if}
@@ -418,7 +420,7 @@
         font-family: ExoRegular, Arial, Helvetica, sans-serif;
     }
 
-    button {
+    button, :global(button) {
         border-radius: 25px;
         min-width: 60px;
         border: 2px solid var(--divback);
@@ -429,7 +431,7 @@
         pointer-events: auto;
     }
 
-    .regular/*, .regular > * */ {
+    .regular, :global(.regular) {
         color: var(--text);
         background-color: var(--input);
     }
@@ -447,27 +449,27 @@
         background-color: var(--altinput);
     } */
 
-    button:disabled {
+    button:disabled, :global(button:disabled) {
         color: var(--neutraldark);
     }
 
-    button:not(:focus-visible) {
+    button:not(:focus-visible), :global(button:not(:focus-visible)) {
         border: 2px solid var(--divback);
     }
 
-    button.regular:not(:focus-visible) {
+    button.regular:not(:focus-visible), :global(button.regular:not(:focus-visible)) {
         background-color: var(--input);
     }
 
     @media(hover: hover) {
-        button.regular:hover, button.regular:focus-visible {
+        button.regular:hover, button.regular:focus-visible, :global(button.regular:hover), :global(button.regular:focus-visible) {
             background-color: var(--accent2);
             border: 2px solid var(--input);
         }
     }
     
     @media(hover: hover) {
-        button.bounce:hover, button.bounce:focus-visible {
+        button.bounce:hover, button.bounce:focus-visible, :global(button.bounce:hover), :global(button.bounce:focus-visible) {
             transform: scale(1.1);
             -webkit-transform: scale(1.1);
             -moz-transform: scale(1.1);
@@ -488,7 +490,7 @@
         }
     }
 
-    button.bounce:active {
+    button.bounce:active, :global(button.bounce:active) {
         transform: scale(0.9);
         -webkit-transform: scale(0.9);
         -moz-transform: scale(0.9);
@@ -543,7 +545,7 @@
         font-size: 20px;
     }
 
-    .timer > * {
+    .timer > *, :global(.timer > *) {
         display: flex;
         justify-self: center;
         align-self: center;
@@ -574,7 +576,7 @@
         color: var(--title, #000);
     }
 
-    .timer button {
+    .timer button, :global(.timer button) {
         align-self: baseline;
         grid-row: 5;
         display: grid;
@@ -612,7 +614,7 @@
         grid-row: 4;
     }
 
-    .debug button {
+    .debug button, :global(.debug button) {
         font-size: 8px;
     }
 
@@ -635,7 +637,7 @@
         100% { transform: rotate(360deg); }
     }
 
-    .fade {
+    .fade, :global(.fade) {
         transition: all .2s ease-in-out;
         animation: fadeIn .5s;
         -webkit-animation: fadeIn .5s;

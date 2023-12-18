@@ -3,6 +3,9 @@
 
     const dispatch = createEventDispatcher();
 
+    export let height = "60px";
+    export let width = "28px";
+
     let amClicked: boolean = false;
     
     function handleClick() {
@@ -14,14 +17,19 @@
             }, 5);
         }
     }
+    $: cssVarStyles = '--height:' + height + ';' + '--width:' + width + ';'
 </script>
 
 <button
 class="outer"
+tabindex="-1"
 on:click={handleClick}
+id="{$$restProps.id || ''}"
+style={cssVarStyles}
 >
     <button
-    class="inner"
+    class="inner {$$restProps.class || ''}"
+    title="{$$restProps.title || ''}"
     on:click={handleClick}
     >
         <slot/>
@@ -30,12 +38,9 @@ on:click={handleClick}
 
 <style>
     button.outer {
-        display: flex;
-        flex: none;
-        width: 60px;
-        height: 28px;
+        width: var(--width);
+        height: var(--height);
         margin: 0;
-        padding: 0;
         background-color: transparent;
         border: 0;
     }
@@ -46,33 +51,30 @@ on:click={handleClick}
         margin: 0;
         padding: 0;
         border-radius: 25px;
-        border: 2px solid var(--divback);
-        font-size: var(--fontsize);
+        /* border: 2px solid var(--divback);
+        font-size: var(--fontsize); */
         line-height: 100%;
         text-align: center;
         cursor: pointer;
         pointer-events: auto;
-        color: var(--text);
-        background-color: var(--input);
+        /* color: var(--text);
+        background-color: var(--input); */
         font-family: ExoRegular, Arial, Helvetica, sans-serif;
     }
 
     button.inner:disabled {
-        color: var(--neutraldark);
+        /* color: var(--neutraldark); */
     }
 
     button.inner:not(:focus-visible) {
-        border: 2px solid var(--divback);
-    }
-
-    button.inner:not(:focus-visible) {
-        background-color: var(--input);
+        /* border: 2px solid var(--divback);
+        background-color: var(--input); */
     }
 
     @media(hover: hover) {
         button.inner:hover, button.inner:focus-visible {
-            background-color: var(--accent2);
-            border: 2px solid var(--input);
+            /* background-color: var(--accent2);
+            border: 2px solid var(--input); */
         }
     }
     
@@ -84,15 +86,6 @@ on:click={handleClick}
             -o-transform: scale(1.1);
             -ms-transform: scale(1.1);
         }
-    }
-
-    .inner {
-        transition: all .2s ease-in-out;
-        animation: fadeIn .5s;
-        -webkit-animation: fadeIn .5s;
-        -moz-animation: fadeIn .5s;
-        -o-animation: fadeIn .5s;
-        -ms-animation: fadeIn .5s;
     }
 
     button.inner:active {
