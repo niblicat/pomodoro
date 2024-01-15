@@ -571,7 +571,7 @@
         border: 2px solid var(--divback);
         justify-content: left;
         align-items: baseline;
-        overflow: scroll;
+        overflow: auto;
         border-radius: 0px 25px 25px 25px;
         height: calc(100% - 4px);
         width: calc(100% - 8px);
