@@ -14,4 +14,4 @@ This timer is just a regular timer in which you can modify the hours, minutes, a
 Choose from a variety of colour palettes and sounds!
 
 ## Try It Out
-[Try out the latest version of the timer](https://pomodoro-timer-72366.web.app/).
+[Try out the latest version of the timer](https://timer.nibli.net/).
