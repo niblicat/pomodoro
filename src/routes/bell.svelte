@@ -1,6 +1,4 @@
 <script lang="ts" context="module">
-	import { sequence } from "@sveltejs/kit/hooks";
-
 
     export let bellSound: string | null;
     export const Sounds = {
