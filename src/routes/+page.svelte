@@ -15,10 +15,7 @@
 
     let debug: boolean = false;
 
-    let loading: boolean = false;
-    let loadingIcon: HTMLElement;
     let menuVisible: boolean = false;
-    let m = { x: 0, y: 0};
 
     let innerWidth: number;
     let innerHeight: number;
@@ -269,11 +266,6 @@
             </button>
             <div class="em2"/>
         </div>
-        <div 
-            id={loading === true ? "loadingIcon" : "noID"}
-            class="center"
-            bind:this={loadingIcon}
-        />
 
         {#if debug}
             <div class="debug">
@@ -609,20 +601,6 @@
 
     .debug button {
         font-size: 8px;
-    }
-
-    #loadingIcon {
-        grid-row: 3;
-        justify-self: center;
-        border: 4px solid var(--neutral);
-        border-top: 4px solid var(--contrast);
-        border-radius: 50%;
-        width: 30px;
-        height: 30px;
-        animation: spin 0.5s linear infinite;
-        pointer-events: none;
-        cursor: unset;
-        z-index: 9;
     }
 
     @keyframes spin {
