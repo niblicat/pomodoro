@@ -109,6 +109,18 @@
                         {key}
                     </button>
                 {/each}
+                {#if debug}
+                <button
+                    class="palette fade bounce alt"
+                    title="Test Sound"
+                    on:click={async () => {
+                        changeAudio('/sounds/squeaky2.mp3');
+                        playAudio();
+                    }}
+                    >
+                        Test
+                    </button>
+                {/if}
             </div>
         {/if}
     </div>
