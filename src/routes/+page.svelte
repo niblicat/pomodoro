@@ -5,7 +5,7 @@
     import { page } from '$app/stores';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgress, timerState, timerTitle, timerSubtitle } from './timer.svelte';
-    import { styles } from './themes.svelte';
+    import Themes, { styles, specialThemes } from './themes.svelte';
     import { changeAudio, changeVolume, playAudio, Sounds } from './bell.svelte';
     import * as vibrate from './vibrate';
     import PillButton from './pillbutton.svelte'
@@ -37,6 +37,8 @@
 
         changeAudio(Sounds.Squeaky);
         changeVolume(100);
+
+        specialThemes();
 
         let mode = $page.url.searchParams.get('mode');
         let hours = $page.url.searchParams.get('hours');

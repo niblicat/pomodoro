@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-    import { writable, type Writable} from 'svelte/store';
+    import { writable, type Writable } from 'svelte/store';
 
     export interface Theme {
         name: Symbol,
@@ -167,6 +167,18 @@
     export const themeColours = [Aurora, Classic, Funky, Deep, Rooster, Infatuation]
 
     export let styles: Writable<Theme> = writable(Aurora);
+
+    export function specialThemes() {
+        // check date for special themes
+        const date = new Date();
+        const month = date.getMonth();
+        const day = date.getDate();
+        alert(month + " "  + day)
+        if (month === 1 && day === 14)
+            changeTheme(existingThemes.Infatuation); // Valentine's Day
+        if (month === 0 && day === 18)
+            changeTheme(existingThemes.Deep); // test
+    }
 
     export function changeTheme(newTheme: Symbol) {
         switch(newTheme) {
