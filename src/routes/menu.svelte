@@ -114,7 +114,7 @@
                     class="palette fade bounce alt"
                     title="Test Sound"
                     on:click={async () => {
-                        changeAudio('/sounds/squeaky2.mp3');
+                        changeAudio('/sounds/squeaky.mp3');
                         playAudio();
                     }}
                     >

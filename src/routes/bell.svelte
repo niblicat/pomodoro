@@ -2,7 +2,7 @@
 
     export let bellSound: string | null;
     export const Sounds = {
-        Squeaky: '/sounds/squeaky.mp3',
+        Squeaky: '/sounds/squeaky2.mp3',
         Alarm: '/sounds/alarm.mp3',
         Chicken: '/sounds/chicken.mp3',
         Meow: '/sounds/meow.mp3'
