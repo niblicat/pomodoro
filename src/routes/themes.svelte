@@ -17,6 +17,8 @@
         input: string,
         altinput: string,
         alttext: string,
+        font: string,
+        timerfont?: string,
         hasgradient?: boolean,
         gradientdirection?: string
     };
@@ -47,7 +49,9 @@
         input: '#022859',
         altinput: '#04BF9D',
         alttext: '#000',
-        gradientdirection: 'to bottom right'
+        gradientdirection: 'to bottom right',
+        font: 'ExoRegular',
+        timerfont: 'MonofontoRegular'
     };
     
     let Infatuation: Theme = {
@@ -66,7 +70,9 @@
         input: '#F0F2F0',
         altinput: '#F2BBC9',
         alttext: '#000',
-        gradientdirection: 'to top right'
+        gradientdirection: 'to top right',
+        font: 'ExoRegular',
+        timerfont: 'MonofontoRegular'
     };
 
     let Classic: Theme = {
@@ -85,7 +91,9 @@
         input: '#feffff',
         altinput: '#feffff',
         alttext: '#000',
-        gradientdirection: 'to bottom right'
+        gradientdirection: 'to bottom right',
+        font: 'ExoRegular',
+        timerfont: 'MonofontoRegular'
     };
 
     let Funky: Theme = {
@@ -104,7 +112,9 @@
         input: '#fff',
         altinput: '#870f0f',
         alttext: '#fff',
-        gradientdirection: 'to bottom right'
+        gradientdirection: 'to bottom right',
+        font: 'ExoRegular',
+        timerfont: 'MonofontoRegular'
     };
 
     let Terminal: Theme = {
@@ -123,7 +133,9 @@
         input: '#00ff00',
         altinput: '#00ff00',
         alttext: '#000',
-        hasgradient: false
+        hasgradient: false,
+        font: 'Terminal',
+        timerfont: 'Terminal'
     };
 
     let Deep: Theme = {
@@ -142,7 +154,9 @@
         input: '#4B4861',
         altinput: '#4B4861',
         alttext: '#fff',
-        gradientdirection: 'to bottom right'
+        gradientdirection: 'to bottom right',
+        font: 'ExoRegular',
+        timerfont: 'MonofontoRegular'
     };
 
     let Rooster: Theme = {
@@ -161,7 +175,9 @@
         input: '#E61F05',
         altinput: '#E61F05',
         alttext: '#fff',
-        gradientdirection: 'to bottom right'
+        gradientdirection: 'to bottom right',
+        font: 'ExoRegular',
+        timerfont: 'MonofontoRegular'
     };
 
     export const themeColours = [Aurora, Classic, Funky, Deep, Rooster, Infatuation]

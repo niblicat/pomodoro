@@ -46,6 +46,7 @@
 <style>
     * {
         color: var(--text);
+        font: var(--font);
     }
     .labelPillBinder {
         display: flex;

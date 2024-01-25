@@ -5,7 +5,7 @@
     import { page } from '$app/stores';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgress, timerState, timerTitle, timerSubtitle } from './timer.svelte';
-    import { styles, specialThemes } from './themes.svelte';
+    import { styles, specialThemes, existingThemes } from './themes.svelte';
     import { changeAudio, changeVolume, playAudio, Sounds } from './bell.svelte';
     import * as vibrate from './vibrate';
     import PillButton from './pillbutton.svelte'
@@ -144,14 +144,15 @@
 <svelte:window bind:innerWidth bind:innerHeight />
 <svelte:head>
     <link rel="stylesheet" media="screen" href="fonts/fonts.css" type="text/css"/>
-    <link rel="stylesheet" media="screen" href="https://fontlibrary.org//face/dogica" type="text/css"/> 
     <title>
         {$timerTitle}
     </title>
 </svelte:head>
 <html lang="en">
 <body class={$styles.hasgradient === false ? "nogradient" : ""} style={cssVarStyles}>
-    <div class="scanline"></div>
+{#if $styles.name === existingThemes.Terminal}
+    <div class="scanline"/>
+{/if}
 <div class="background">
     
     {#if !menuVisible}
@@ -379,52 +380,6 @@
 </html>
 
 <style>
-    body:before {
-        content: " ";
-        display: block;
-        position: absolute;
-        top: 0;
-        left: 0;
-        bottom: 0;
-        right: 0;
-        background: linear-gradient(
-            to bottom,
-            rgba(18, 16, 16, 0) 50%,
-            rgba(0, 0, 0, 0.25) 50%
-        );
-        background-size: 100% 6px;
-        z-index: 4;
-        pointer-events: none;
-    }
-
-    .scanline {
-        width: 100%;
-        height: 100px;
-        z-index: 8;
-        background: linear-gradient(
-            0deg,
-            rgba(0, 0, 0, 0) 0%,
-            rgba(255, 255, 255, 0.2) 10%,
-            rgba(0, 0, 0, 0.1) 100%
-        );
-        opacity: 0.1;
-        position: absolute;
-        bottom: 100%;
-        animation: scanline 10s linear infinite;
-    }
-
-    @keyframes scanline {
-        0% {
-            bottom: 100%;
-        }
-        80% {
-            bottom: 100%;
-        }
-        100% {
-            bottom: 0%;
-        }
-    }
-
     html, body {
         margin: 0px;
         padding: 0px;
@@ -450,7 +405,7 @@
 
     * {
         box-sizing: border-box;
-        font-family: 'DogicaPixelRegular', Arial, Helvetica, sans-serif;
+        font-family: var(--font), Arial, Helvetica, sans-serif;
     }
 
     button {
@@ -605,7 +560,7 @@
         font-size: 64px;
         grid-row: 4;
         grid-column: span 2;
-        font-family: 'DogicaPixelRegular', Arial, Helvetica, sans-serif;
+        font-family: var(--timerfont, --font), Arial, Helvetica, sans-serif;
         color: var(--title, #000);
     }
 
@@ -663,6 +618,34 @@
         -moz-animation: fadeIn .5s;
         -o-animation: fadeIn .5s;
         -ms-animation: fadeIn .5s;
+    }
+    
+    .scanline {
+        width: 100%;
+        height: 100px;
+        z-index: 8;
+        background: linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(255, 255, 255, 0.5) 10%,
+            rgba(0, 0, 0, 0.1) 100%
+        );
+        opacity: 0.1;
+        position: absolute;
+        bottom: 100%;
+        animation: scanline 8s linear infinite;
+    }
+
+    @keyframes scanline {
+        0% {
+            bottom: 100%;
+        }
+        80% {
+            bottom: 100%;
+        }
+        100% {
+            bottom: 0%;
+        }
     }
 
 </style>
