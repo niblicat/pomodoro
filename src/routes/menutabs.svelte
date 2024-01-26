@@ -36,6 +36,9 @@
 </div>
 
 <style>
+    * {
+        font: var(--font);
+    }
     .optionsPadding {
         display: flex;
         justify-content: end;
@@ -49,6 +52,7 @@
         margin-top: -2px;
         z-index: 2;
         height: 36px;
+        font-size: 0;
     }
 
     button {
@@ -59,6 +63,7 @@
         text-align: center;
         cursor: pointer;
         pointer-events: auto;
+        margin: 0 2px 0 2px
     }
 
     .regular/*, .regular > * */ {

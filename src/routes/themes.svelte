@@ -1,5 +1,5 @@
 <script lang="ts" context="module">
-    import { writable, type Writable} from 'svelte/store';
+    import { writable, type Writable } from 'svelte/store';
 
     export interface Theme {
         name: Symbol,
@@ -17,6 +17,8 @@
         input: string,
         altinput: string,
         alttext: string,
+        font: string,
+        timerfont?: string,
         hasgradient?: boolean,
         gradientdirection?: string
     };
@@ -27,7 +29,8 @@
         Aurora: Symbol('Aurora'),
         Terminal: Symbol('Terminal'),
         Deep: Symbol('Deep'),
-        Rooster: Symbol('Rooster')
+        Rooster: Symbol('Rooster'),
+        Infatuation: Symbol('Infatuation')
     };
 
     let Aurora: Theme = {
@@ -46,7 +49,30 @@
         input: '#022859',
         altinput: '#04BF9D',
         alttext: '#000',
-        gradientdirection: 'to bottom right'
+        gradientdirection: 'to bottom right',
+        font: 'ExoRegular',
+        timerfont: 'MonofontoRegular'
+    };
+    
+    let Infatuation: Theme = {
+        name: existingThemes.Infatuation,
+        background: '#BF1F3C',
+        divback: '#F2385A',
+        accent1: '#F26D91',
+        accent2: '#F2BBC9',
+        contrast: '#F0F2F0',
+        complement: '#544ECB',
+        neutraldark: '#BF1F3C',
+        neutralbright: '#F0F2F0',
+        title: '#fff',
+        text: '#000',
+        neutral: '#F26D91',
+        input: '#F0F2F0',
+        altinput: '#F2BBC9',
+        alttext: '#000',
+        gradientdirection: 'to top right',
+        font: 'ExoRegular',
+        timerfont: 'MonofontoRegular'
     };
 
     let Classic: Theme = {
@@ -65,7 +91,9 @@
         input: '#feffff',
         altinput: '#feffff',
         alttext: '#000',
-        gradientdirection: 'to bottom right'
+        gradientdirection: 'to bottom right',
+        font: 'ExoRegular',
+        timerfont: 'MonofontoRegular'
     };
 
     let Funky: Theme = {
@@ -84,7 +112,9 @@
         input: '#fff',
         altinput: '#870f0f',
         alttext: '#fff',
-        gradientdirection: 'to bottom right'
+        gradientdirection: 'to bottom right',
+        font: 'ExoRegular',
+        timerfont: 'MonofontoRegular'
     };
 
     let Terminal: Theme = {
@@ -103,7 +133,9 @@
         input: '#00ff00',
         altinput: '#00ff00',
         alttext: '#000',
-        hasgradient: false
+        hasgradient: false,
+        font: 'Terminal',
+        timerfont: 'Terminal'
     };
 
     let Deep: Theme = {
@@ -122,7 +154,9 @@
         input: '#4B4861',
         altinput: '#4B4861',
         alttext: '#fff',
-        gradientdirection: 'to bottom right'
+        gradientdirection: 'to bottom right',
+        font: 'ExoRegular',
+        timerfont: 'MonofontoRegular'
     };
 
     let Rooster: Theme = {
@@ -141,12 +175,23 @@
         input: '#E61F05',
         altinput: '#E61F05',
         alttext: '#fff',
-        gradientdirection: 'to bottom right'
+        gradientdirection: 'to bottom right',
+        font: 'ExoRegular',
+        timerfont: 'MonofontoRegular'
     };
 
-    export const themeColours = [Aurora, Classic, Funky, Deep, Rooster]
+    export const themeColours = [Aurora, Classic, Funky, Deep, Rooster, Infatuation]
 
     export let styles: Writable<Theme> = writable(Aurora);
+
+    export function specialThemes() {
+        // check date for special themes
+        const date = new Date();
+        const month = date.getMonth();
+        const day = date.getDate();
+        if (month === 1 && day === 14)
+            changeTheme(existingThemes.Infatuation); // Valentine's Day
+    }
 
     export function changeTheme(newTheme: Symbol) {
         switch(newTheme) {
@@ -167,6 +212,9 @@
                 break;
             case existingThemes.Rooster:
                 styles.set(Rooster);
+                break;
+            case existingThemes.Infatuation:
+                styles.set(Infatuation);
                 break;
         }
     };

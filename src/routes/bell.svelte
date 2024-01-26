@@ -1,19 +1,19 @@
 <script lang="ts" context="module">
-	import { sequence } from "@sveltejs/kit/hooks";
-
 
     export let bellSound: string | null;
     export const Sounds = {
-        Squeaky: '/sounds/squeaky.mp3',
+        Squeaky: '/sounds/squeaky2.mp3',
         Alarm: '/sounds/alarm.mp3',
-        Chicken: '/sounds/chicken.mp3'
+        Chicken: '/sounds/chicken.mp3',
+        Meow: '/sounds/meow.mp3'
     }
 
     // export const SoundArray: string[] = Object.values(Sounds);
     export const SoundArray = {
         Squeaky: Sounds.Squeaky,
         Alarm:  Sounds.Alarm,
-        Chicken:  Sounds.Chicken
+        Chicken:  Sounds.Chicken,
+        Meow:  Sounds.Meow
     }
 
     export let audioFile: HTMLAudioElement;
