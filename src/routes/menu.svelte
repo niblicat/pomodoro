@@ -499,7 +499,7 @@
 
     * {
         box-sizing: border-box;
-        font-family: ExoRegular, Arial, Helvetica, sans-serif;
+        font-family: var(--font), Arial, Helvetica, sans-serif;
     }
 
     button {

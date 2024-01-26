@@ -5,7 +5,7 @@
     import { page } from '$app/stores';
     import * as timer from './timer.svelte';
     import { timeElement, timerInProgress, timerState, timerTitle, timerSubtitle } from './timer.svelte';
-    import { styles, specialThemes } from './themes.svelte';
+    import { styles, specialThemes, existingThemes } from './themes.svelte';
     import { changeAudio, changeVolume, playAudio, Sounds } from './bell.svelte';
     import * as vibrate from './vibrate';
     import PillButton from './pillbutton.svelte'
@@ -150,6 +150,9 @@
 </svelte:head>
 <html lang="en">
 <body class={$styles.hasgradient === false ? "nogradient" : ""} style={cssVarStyles}>
+{#if $styles.name === existingThemes.Terminal}
+    <div class="scanline"/>
+{/if}
 <div class="background">
     
     {#if !menuVisible}
@@ -402,7 +405,7 @@
 
     * {
         box-sizing: border-box;
-        font-family: ExoRegular, Arial, Helvetica, sans-serif;
+        font-family: var(--font), Arial, Helvetica, sans-serif;
     }
 
     button {
@@ -557,7 +560,7 @@
         font-size: 64px;
         grid-row: 4;
         grid-column: span 2;
-        font-family: MonofontoRegular, Arial, Helvetica, sans-serif;
+        font-family: var(--timerfont, --font), Arial, Helvetica, sans-serif;
         color: var(--title, #000);
     }
 
@@ -615,6 +618,34 @@
         -moz-animation: fadeIn .5s;
         -o-animation: fadeIn .5s;
         -ms-animation: fadeIn .5s;
+    }
+    
+    .scanline {
+        width: 100%;
+        height: 100px;
+        z-index: 8;
+        background: linear-gradient(
+            0deg,
+            rgba(0, 0, 0, 0) 0%,
+            rgba(255, 255, 255, 0.5) 10%,
+            rgba(0, 0, 0, 0.1) 100%
+        );
+        opacity: 0.1;
+        position: absolute;
+        bottom: 100%;
+        animation: scanline 8s linear infinite;
+    }
+
+    @keyframes scanline {
+        0% {
+            bottom: 100%;
+        }
+        80% {
+            bottom: 100%;
+        }
+        100% {
+            bottom: 0%;
+        }
     }
 
 </style>
